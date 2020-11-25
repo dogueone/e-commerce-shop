@@ -2,11 +2,15 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 5000
 
+const connectDB = require('./config/db');
+
 // to create modular, mountable route handlers
 const adminRoutes = require('./routes/admin.js');
 const shopRoutes = require('./routes/shop.js');
 
 const bodyParser = require('body-parser');
+
+connectDB();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

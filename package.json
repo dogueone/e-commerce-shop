@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/dogueone/e-commerce-shop#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "config": "^3.3.2",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.15"
   },
   "devDependencies": {
     "nodemon": "^2.0.5"
