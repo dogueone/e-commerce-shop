@@ -1,0 +1,31 @@
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.nav-links li {
+  margin: 1rem;
+  border-radius: 6px;
+}
+
+.nav-links li a {
+  padding: 6px;
+  color: black;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  border: solid 2px black;
+  border-radius: 6px;
+}
+
+@media (min-width: 768px) {
+  .nav-links {
+    flex-direction: row;
+  }
+
+  .nav-links li a {
+    color: white;
+  }
+}
