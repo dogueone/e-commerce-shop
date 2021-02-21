@@ -2,15 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import BookImage from "./UIElements/BookImage";
-
-import "./BookItem.css";
 import Card from "./UIElements/Card";
+import "./BookItem.css";
 
 const BookItem = (props) => {
   return (
     <li className="book-item">
       <Card className="book-item__content">
-        <Link to={`/${props.id}`}>
+        <Link to={`/books/${props.id}`}>
           <div className="book-item__image">
             <BookImage image={props.image} alt={props.title} />
           </div>
