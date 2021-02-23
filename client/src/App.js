@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import AuthPage from "./pages/Auth";
 import ProductsPage from "./pages/Products";
-import AddProductPage from "./pages/AddProduct";
+import NewProductPage from "./pages/NewProductPage";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
 
@@ -22,7 +22,7 @@ class App extends Component {
               <Route path="/" component={ProductsPage} exact />
               <Route
                 path="/books/add-product"
-                component={AddProductPage}
+                component={NewProductPage}
                 exact
               />
               <Route path="/books/:bid" component={ProductPage} />
