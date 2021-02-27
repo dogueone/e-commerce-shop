@@ -2,6 +2,7 @@ import "./App.css";
 import React, { Component, Fragment } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
+import EditProductPage from "./pages/EditProductPage";
 import AuthPage from "./pages/Auth";
 import ProductsPage from "./pages/Products";
 import NewProductPage from "./pages/NewProductPage";
@@ -23,6 +24,11 @@ class App extends Component {
               <Route
                 path="/books/add-product"
                 component={NewProductPage}
+                exact
+              />
+              <Route
+                path="/books/edit-product/:bid"
+                component={EditProductPage}
                 exact
               />
               <Route path="/books/:bid" component={ProductPage} />

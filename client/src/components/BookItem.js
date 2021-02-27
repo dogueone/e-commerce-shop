@@ -20,6 +20,9 @@ const BookItem = (props) => {
             <h2>{props.price}</h2>
           </div>
         </Link>
+        <Link to={`/books/edit-product/${props.id}`}>
+          <div className="editproduct-test">EDIT</div>
+        </Link>
       </Card>
     </li>
   );
