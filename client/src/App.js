@@ -3,14 +3,13 @@ import React, { Component, Fragment } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import EditProductPage from "./pages/EditProductPage";
-import AuthPage from "./pages/Auth";
+import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/Products";
 import NewProductPage from "./pages/NewProductPage";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
 
 // <Redirect from='/' to='/auth' exact />
-// <Route path='/auth' component={AuthPage} />
 
 class App extends Component {
   render() {
@@ -21,6 +20,7 @@ class App extends Component {
           <main className="main-content all-center">
             <Switch>
               <Route path="/" component={ProductsPage} exact />
+              <Route path="/auth" component={AuthPage} exact />;
               <Route
                 path="/books/add-product"
                 component={NewProductPage}
@@ -29,7 +29,6 @@ class App extends Component {
               <Route
                 path="/books/edit-product/:bid"
                 component={EditProductPage}
-                exact
               />
               <Route path="/books/:bid" component={ProductPage} />
               <Redirect to="/" />
