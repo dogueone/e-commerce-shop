@@ -1,5 +1,6 @@
 const HttpError = require("../models/http-error");
 const { v4: uuidv4 } = require("uuid");
+const { validationResult } = require("express-validator");
 
 let BOOKS = [
   {
@@ -54,7 +55,13 @@ const getBookById = (req, res, next) => {
 };
 
 const createBook = (req, res, next) => {
-  console.log(req.body);
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+
   const { title, description, image, price } = req.body;
   const createdBook = {
     id: uuidv4(),
@@ -68,7 +75,14 @@ const createBook = (req, res, next) => {
 };
 
 const updateBook = (req, res, next) => {
-  const { title, description } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+
+  const { title, description, price } = req.body;
   const bookId = req.params.bid;
 
   const updatedBook = { ...BOOKS.find((b) => b.id === bookId) };
@@ -76,6 +90,7 @@ const updateBook = (req, res, next) => {
 
   updatedBook.title = title;
   updatedBook.description = description;
+  updatedBook.price = price;
 
   BOOKS[updatedBookIndex] = updatedBook;
   res.status(200).json({ book: updatedBook });
@@ -83,6 +98,10 @@ const updateBook = (req, res, next) => {
 
 const deleteBook = (req, res, next) => {
   const bookId = req.params.bid;
+
+  if (!BOOKS.find((b) => b.id === bookId)) {
+    throw new HttpError("Could not find book for that id.", 404);
+  }
 
   BOOKS = BOOKS.filter((b) => b.id !== bookId);
   res.status(200).json({ message: "Deleted place." });

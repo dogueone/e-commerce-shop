@@ -1,4 +1,5 @@
 const express = require("express");
+const { body } = require("express-validator");
 
 const booksControllers = require("../controllers/books-controllers");
 
@@ -8,9 +9,25 @@ router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
 
-router.post("/add-book", booksControllers.createBook);
+router.post(
+  "/add-book",
+  [
+    body("title").not().isEmpty(),
+    body("description").isLength({ min: 5 }),
+    body("price").isFloat({ min: 0.1 }),
+  ],
+  booksControllers.createBook
+);
 
-router.patch("/:bid", booksControllers.updateBook);
+router.patch(
+  "/:bid",
+  [
+    body("title").not().isEmpty(),
+    body("description").isLength({ min: 5 }),
+    body("price").isFloat({ min: 0.1 }),
+  ],
+  booksControllers.updateBook
+);
 
 router.delete("/:bid", booksControllers.deleteBook);
 
