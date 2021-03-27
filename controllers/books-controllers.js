@@ -1,7 +1,10 @@
+const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
+const mongoose = require("mongoose");
 
 const HttpError = require("../models/http-error");
 const Product = require("../models/product");
+const User = require("../models/user");
 
 const getBooks = async (req, res, next) => {
   let books;
@@ -59,13 +62,32 @@ const createBook = async (req, res, next) => {
     creator,
   });
 
+  let user;
+
   try {
-    await createdBook.save();
+    user = await User.findById(creator);
+  } catch (err) {
+    return next(new HttpError("Creating book failed, please try again", 500));
+  }
+
+  if (!user) {
+    return next(new HttpError("Could not find user for provide id", 404));
+  }
+
+  console.log(user);
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdBook.save({ session: sess });
+    user.books.push(createdBook); // adds only _id of a book to user
+    await user.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError("Creating book failed, please try again.", 500);
     return next(error);
   }
-  res.status(201).json({ createdBook: createdBook });
+  res.status(201).json({ book: createdBook });
 };
 
 const updateBook = async (req, res, next) => {

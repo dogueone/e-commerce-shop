@@ -32,7 +32,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, products } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -50,7 +50,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const createdUser = new User({ name, email, password, products });
+  const createdUser = new User({ name, email, password, books: [] });
 
   try {
     await createdUser.save();
