@@ -42,6 +42,29 @@ const getBookById = async (req, res, next) => {
   res.json({ book: book.toObject({ getters: true }) });
 };
 
+const getBooksByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+
+  let userWithBooks;
+
+  try {
+    userWithBooks = await User.findById(userId).populate("books");
+  } catch (err) {
+    return next(
+      new HttpError("Fetching user failed, please try again later", 500)
+    );
+  }
+
+  if (!userWithBooks || userWithBooks.books.length === 0) {
+    return next(
+      new HttpError("Could not find books for the provided user id", 404)
+    );
+  }
+
+  res.json({
+    books: userWithBooks.books.map((b) => b.toObject({ getters: true })),
+  });
+};
 const createBook = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -132,16 +155,26 @@ const updateBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
   const bookId = req.params.bid;
   let book;
+
   try {
-    book = await Product.findById(bookId);
+    book = await Product.findById(bookId).populate("creator");
   } catch (err) {
     return next(
       new HttpError("Fetching book failed, please try again later", 500)
     );
   }
 
+  if (!book) {
+    return next(new HttpError("Could not find book for provide id", 404));
+  }
+
   try {
-    book = await book.remove();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await book.remove({ session: sess });
+    book.creator.books.pull(book);
+    await book.creator.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     return next(
       new HttpError("Fetching book failed, please try again later", 500)
@@ -156,3 +189,4 @@ exports.getBooks = getBooks;
 exports.createBook = createBook;
 exports.updateBook = updateBook;
 exports.deleteBook = deleteBook;
+exports.getBooksByUserId = getBooksByUserId;
