@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
+import Card from "../components/UIElements/Card";
+import { useHttpClient } from "../hooks/http-hook";
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import ErrorModal from "../components/UIElements/ErrorModal";
 import { useForm } from "../hooks/form-hook";
 import {
   VALIDATOR_REQUIRE,
@@ -11,142 +15,166 @@ import Input from "../components/FormElements/Input";
 import Button from "../components/FormElements/Button";
 import "./ProductForm.css";
 
-const BOOKS = [
-  {
-    id: "1",
-    title: "Book1",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    description:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-    price: "1.99",
-  },
-  {
-    id: "2",
-    title: "Book2",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    description:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-    price: "2.99",
-  },
-  {
-    id: "3",
-    title: "Book3",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    description:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-    price: "3.99",
-  },
-];
-
 const EditProductPage = (props) => {
+  const { error, clearError, sendRequest, isLoading } = useHttpClient();
+  const [loadedBook, setLoadedBook] = useState();
   const bookId = useParams().bid;
 
-  const identifiedBook = BOOKS.find((book) => book.id === bookId);
-
-  const [formState, inputHandler] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
-        value: identifiedBook.title,
-        isValid: true,
+        value: "",
+        isValid: false,
       },
       description: {
-        value: identifiedBook.description,
-        isValid: true,
+        value: "",
+        isValid: false,
+      },
+      image: {
+        value: "",
+        isValid: false,
       },
       price: {
-        value: identifiedBook.price,
-        isValid: true,
+        value: 0,
+        isValid: false,
       },
     },
-    true
+    false
   );
 
-  // useEffect(() => {
-  //   setFormData(
-  //     {
-  //       title: {
-  //         value: identifiedBook.title,
-  //         isValid: true,
-  //       },
-  //       description: {
-  //         value: identifiedBook.description,
-  //         isValid: true,
-  //       },
-  //       price: {
-  //         value: identifiedBook.price,
-  //         isValid: true,
-  //       },
-  //     },
-  //     true
-  //   );
-  // }, [setFormData, identifiedBook]); //setFormData will never change because of useCallback, identifiedBook either becase it has same place in memmory.
+  const history = useHistory();
 
-  const bookUpdateSubmitHandler = (event) => {
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/books/${bookId}`
+        );
+        setLoadedBook(responseData.book);
+        console.log(loadedBook);
+        console.log(formState);
+        setFormData(
+          {
+            title: {
+              value: responseData.book.title,
+              isValid: true,
+            },
+            description: {
+              value: responseData.book.description,
+              isValid: true,
+            },
+            image: {
+              value: responseData.book.image,
+              isValid: true,
+            },
+            price: {
+              value: responseData.book.price,
+              isValid: true,
+            },
+          },
+          true
+        );
+        console.log(formState);
+      } catch (err) {}
+    };
+    fetchBook();
+  }, [sendRequest, bookId, setFormData]); // setFormData will never be recreated during rerender because of useCallback, identifiedBook either, because it has same place in memory.
+
+  const bookUpdateSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/books/${bookId}`,
+        "PATCH",
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          image: formState.inputs.image.value,
+          price: formState.inputs.price.value,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+    } catch (err) {}
+    history.push("/");
   };
 
-  if (!identifiedBook) {
+  if (isLoading) {
     return (
       <div className="center">
-        <h2>Could not find Book!</h2>
+        <LoadingSpinner />;
+      </div>
+    );
+  }
+
+  if (!loadedBook && !error) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>Could not find Book!</h2>
+        </Card>
       </div>
     );
   }
 
   return (
-    <form className="product-form" onSubmit={bookUpdateSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputHandler}
-        initialValue={formState.inputs.title.value}
-        initialValid={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        type="text"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid description (at least 5 characters)."
-        onInput={inputHandler}
-        initialValue={formState.inputs.description.value}
-        initialValid={formState.inputs.description.isValid}
-      />
-      {/* <Input
-        id="image"
-        element="input"
-        type="url"
-        label="Image URL"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please upload an image."
-        onInput={inputHandler}
-      /> */}
-      <Input
-        id="price"
-        element="input"
-        type="number"
-        label="Price"
-        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MIN(1)]}
-        errorText="Please enter a valid price."
-        onInput={inputHandler}
-        initialValue={formState.inputs.price.value}
-        initialValid={formState.inputs.price.isValid}
-      />
-      <div>
-        <Button type="submit" disabled={!formState.isValid}>
-          EDIT PRODUCT
-        </Button>
-      </div>
-    </form>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && loadedBook && (
+        <form className="product-form" onSubmit={bookUpdateSubmitHandler}>
+          <Input
+            id="title"
+            element="input"
+            type="text"
+            label="Title"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter a valid title."
+            onInput={inputHandler}
+            initialValue={loadedBook.title}
+            initialValid={true}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            type="text"
+            label="Description"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please enter a valid description (at least 5 characters)."
+            onInput={inputHandler}
+            initialValue={loadedBook.description}
+            initialValid={true}
+          />
+          <Input
+            id="image"
+            element="input"
+            type="text"
+            label="Image"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please upload an image."
+            onInput={inputHandler}
+            initialValue={loadedBook.image}
+            initialValid={true}
+          />
+          <Input
+            id="price"
+            element="input"
+            type="number"
+            label="Price"
+            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MIN(1)]}
+            errorText="Please enter a valid price."
+            onInput={inputHandler}
+            initialValue={loadedBook.price}
+            initialValid={true}
+          />
+          <div>
+            <Button type="submit" disabled={!formState.isValid}>
+              UPDATE PRODUCT
+            </Button>
+          </div>
+        </form>
+      )}
+    </React.Fragment>
   );
 };
 

@@ -9,7 +9,7 @@ router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
 
-router.get("/user/:uid", booksControllers.getBooksByUserId);
+// router.get("/user/:uid", booksControllers.getBooksByUserId);
 
 router.post(
   "/add-book",

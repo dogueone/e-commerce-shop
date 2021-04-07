@@ -1,6 +1,6 @@
 import React from "react";
-import BookImage from "./UIElements/BookImage";
 
+import BookImage from "./UIElements/BookImage";
 import "./BookContent.css";
 
 const BookContent = (props) => {

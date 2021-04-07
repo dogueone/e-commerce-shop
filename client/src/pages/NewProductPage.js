@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 
+import LoadingSpinner from "../components/UIElements/LoadingSpinner";
+import ErrorModal from "../components/UIElements/ErrorModal";
+import { AuthContext } from "../context/auth-context";
+import { useHttpClient } from "../hooks/http-hook";
 import { useForm } from "../hooks/form-hook";
 import Button from "../components/FormElements/Button";
 import {
@@ -35,6 +40,9 @@ import "./ProductForm.css";
 // };
 
 const NewProductPage = (props) => {
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
   const [formState, inputHandler] = useForm(
     {
       title: {
@@ -52,6 +60,8 @@ const NewProductPage = (props) => {
     },
     false
   );
+
+  const history = useHistory();
 
   // const [formState, dispatch] = useReducer(formReducer, {
   //   inputs: {
@@ -76,31 +86,51 @@ const NewProductPage = (props) => {
   //   });
   // }, []);
 
-  const productSubmitHandler = (event) => {
+  const productSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/books/add-book",
+        "POST",
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+          price: formState.inputs.price.value,
+          image: "PLACEHOLDER FOR IMAGE",
+          creator: auth.userId,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      history.push("/");
+      console.log(responseData);
+    } catch (err) {}
   };
 
   return (
-    <form className="product-form" onSubmit={productSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputHandler}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid description (at least 5 characters)."
-        onInput={inputHandler}
-      />
-      {/* <Input
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      <form className="product-form" onSubmit={productSubmitHandler}>
+        {isLoading && <LoadingSpinner asOverlay />}
+        <Input
+          id="title"
+          element="input"
+          type="text"
+          label="Title"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid title."
+          onInput={inputHandler}
+        />
+        <Input
+          id="description"
+          element="textarea"
+          label="Description"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          errorText="Please enter a valid description (at least 5 characters)."
+          onInput={inputHandler}
+        />
+        {/* <Input
         id="image"
         element="input"
         type="url"
@@ -109,21 +139,22 @@ const NewProductPage = (props) => {
         errorText="Please upload an image."
         onInput={inputHandler}
       /> */}
-      <Input
-        id="price"
-        element="input"
-        type="number"
-        label="Price"
-        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MIN(1)]}
-        errorText="Please enter a valid price."
-        onInput={inputHandler}
-      />
-      <div className="product-form__btn">
-        <Button type="submit" disabled={!formState.isValid}>
-          ADD PRODUCT
-        </Button>
-      </div>
-    </form>
+        <Input
+          id="price"
+          element="input"
+          type="number"
+          label="Price"
+          validators={[VALIDATOR_REQUIRE(), VALIDATOR_MIN(1)]}
+          errorText="Please enter a valid price."
+          onInput={inputHandler}
+        />
+        <div className="product-form__btn">
+          <Button type="submit" disabled={!formState.isValid}>
+            ADD PRODUCT
+          </Button>
+        </div>
+      </form>
+    </React.Fragment>
   );
 };
 

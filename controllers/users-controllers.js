@@ -80,7 +80,7 @@ const login = async (req, res, next) => {
     );
   }
 
-  res.json({ message: "Logged in!" });
+  res.json({ user: identifiedUser.toObject({ getters: true }) });
 };
 
 module.exports = {

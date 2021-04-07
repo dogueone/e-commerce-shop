@@ -42,29 +42,30 @@ const getBookById = async (req, res, next) => {
   res.json({ book: book.toObject({ getters: true }) });
 };
 
-const getBooksByUserId = async (req, res, next) => {
-  const userId = req.params.uid;
+// const getBooksByUserId = async (req, res, next) => {
+//   const userId = req.params.uid;
 
-  let userWithBooks;
+//   let userWithBooks;
 
-  try {
-    userWithBooks = await User.findById(userId).populate("books");
-  } catch (err) {
-    return next(
-      new HttpError("Fetching user failed, please try again later", 500)
-    );
-  }
+//   try {
+//     userWithBooks = await User.findById(userId).populate("books");
+//   } catch (err) {
+//     return next(
+//       new HttpError("Fetching user failed, please try again later", 500)
+//     );
+//   }
 
-  if (!userWithBooks || userWithBooks.books.length === 0) {
-    return next(
-      new HttpError("Could not find books for the provided user id", 404)
-    );
-  }
+//   if (!userWithBooks || userWithBooks.books.length === 0) {
+//     return next(
+//       new HttpError("Could not find books for the provided user id", 404)
+//     );
+//   }
 
-  res.json({
-    books: userWithBooks.books.map((b) => b.toObject({ getters: true })),
-  });
-};
+//   res.json({
+//     books: userWithBooks.books.map((b) => b.toObject({ getters: true })),
+//   });*
+// };
+
 const createBook = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -123,7 +124,7 @@ const updateBook = async (req, res, next) => {
     );
   }
 
-  const { title, description, price } = req.body;
+  const { title, description, image, price } = req.body;
   const bookId = req.params.bid;
 
   let updatedBook;
@@ -137,6 +138,7 @@ const updateBook = async (req, res, next) => {
 
   updatedBook.title = title;
   updatedBook.description = description;
+  updatedBook.image = image;
   updatedBook.price = price;
 
   try {
@@ -189,4 +191,4 @@ exports.getBooks = getBooks;
 exports.createBook = createBook;
 exports.updateBook = updateBook;
 exports.deleteBook = deleteBook;
-exports.getBooksByUserId = getBooksByUserId;
+// exports.getBooksByUserId = getBooksByUserId;

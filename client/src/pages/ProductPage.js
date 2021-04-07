@@ -10,8 +10,7 @@ const BOOKS = [
   {
     id: "1",
     title: "Book1",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    image: "hfdafda",
     description:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
     price: "1.99",
@@ -19,8 +18,7 @@ const BOOKS = [
   {
     id: "2",
     title: "Book2",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    image: "fsafafaf",
     description:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
     price: "2.99",
@@ -28,8 +26,7 @@ const BOOKS = [
   {
     id: "3",
     title: "Book3",
-    image:
-      "https://images.pexels.com/photos/415071/pexels-photo-415071.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    image: "adfsafsdafas",
     description:
       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
     price: "3.99",

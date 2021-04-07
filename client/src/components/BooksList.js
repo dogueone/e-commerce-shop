@@ -19,6 +19,7 @@ const BooksList = (props) => {
           key={book.id}
           id={book.id}
           title={book.title}
+          description={book.description}
           image={book.image}
           price={book.price}
         />
