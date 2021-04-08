@@ -22,6 +22,7 @@ const BooksList = (props) => {
           description={book.description}
           image={book.image}
           price={book.price}
+          deleteBook={props.onDeleteBook}
         />
       ))}
     </ul>

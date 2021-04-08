@@ -21,6 +21,12 @@ const Products = () => {
     fetchBooks();
   }, [sendRequest]);
 
+  const onDeleteBookHandler = (bookId) => {
+    setLoadedBooks((prevState) =>
+      prevState.filter((book) => book.id !== bookId)
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="center">
@@ -44,7 +50,7 @@ const Products = () => {
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedBooks && (
         <div>
-          <BooksList items={loadedBooks} />
+          <BooksList items={loadedBooks} onDeleteBook={onDeleteBookHandler} />
         </div>
       )}
     </React.Fragment>
