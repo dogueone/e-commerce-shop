@@ -7,7 +7,6 @@ import "./Input.css";
 const inputReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE":
-      console.log(state.isValid);
       return {
         ...state,
         value: action.val,
@@ -36,7 +35,6 @@ const Input = (props) => {
   const { value, isValid } = inputState;
 
   useEffect(() => {
-    console.log("imput mounted");
     onInput(id, value, isValid);
   }, [id, value, isValid, onInput]);
 

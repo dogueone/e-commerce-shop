@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
+import ImageUpload from "../components/FormElements/ImageUpload";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import { AuthContext } from "../context/auth-context";
@@ -49,12 +50,16 @@ const NewProductPage = (props) => {
         value: "",
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
       description: {
         value: "",
         isValid: false,
       },
       price: {
-        value: "",
+        value: null,
         isValid: false,
       },
     },
@@ -88,6 +93,7 @@ const NewProductPage = (props) => {
 
   const productSubmitHandler = async (event) => {
     event.preventDefault();
+    console.log(formState.inputs);
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/books/add-book",
@@ -130,15 +136,16 @@ const NewProductPage = (props) => {
           errorText="Please enter a valid description (at least 5 characters)."
           onInput={inputHandler}
         />
+        <ImageUpload id="image" onInput={inputHandler} center />
         {/* <Input
-        id="image"
-        element="input"
-        type="url"
-        label="Image URL"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please upload an image."
-        onInput={inputHandler}
-      /> */}
+          id="image"
+          element="input"
+          type="url"
+          label="Image URL"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please upload an image."
+          onInput={inputHandler}
+        /> */}
         <Input
           id="price"
           element="input"
