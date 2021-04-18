@@ -1,8 +1,8 @@
 const express = require("express");
 const { body } = require("express-validator");
 
+const fileUpload = require("../middleware/file-upload");
 const booksControllers = require("../controllers/books-controllers");
-
 const router = express.Router();
 
 router.get("/", booksControllers.getBooks);
@@ -13,6 +13,8 @@ router.get("/:bid", booksControllers.getBookById);
 
 router.post(
   "/add-book",
+  //middleware to retrieve a single file
+  fileUpload.single("image"),
   [
     body("title").not().isEmpty(),
     body("description").isLength({ min: 5 }),

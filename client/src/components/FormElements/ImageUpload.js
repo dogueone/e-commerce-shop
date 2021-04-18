@@ -31,6 +31,7 @@ const ImageUpload = (props) => {
     let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
+      console.dir(pickedFile);
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;
@@ -39,8 +40,6 @@ const ImageUpload = (props) => {
       fileIsValid = false;
     }
     props.onInput(props.id, pickedFile, fileIsValid);
-
-    console.log(event.target.files);
   };
 
   return (
@@ -62,7 +61,7 @@ const ImageUpload = (props) => {
           PICK IMAGE
         </Button>
       </div>
-      {!isValid && <p>{props.errorText}</p>}
+      {!isValid && !file && <p>{props.errorText}</p>}
     </div>
   );
 };

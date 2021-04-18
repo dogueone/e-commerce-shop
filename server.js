@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+const path = require("path");
 
 // to create modular, mountable route handlers
 const usersRoutes = require("./routes/users-routes.js");
@@ -13,6 +15,9 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 app.use(bodyParser.json());
+
+//middleware to serve images statically
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 // To allow cross origin request on this server(CORS-security mechanism build in the modern browsers) - to allow client to make a request to a different server ( by deafault its not allowed and client can only sent requests to the same host and port)
 app.use((req, res, next) => {
@@ -48,6 +53,12 @@ app.use((req, res, next) => {
 
 // special error handling middleware
 app.use((error, req, res, next) => {
+  //
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
   if (res.headerSent) {
     return next(error);
   }

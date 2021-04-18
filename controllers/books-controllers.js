@@ -76,11 +76,11 @@ const createBook = async (req, res, next) => {
     );
   }
 
-  const { title, description, image, price, creator } = req.body;
+  const { title, description, price, creator } = req.body;
 
   const createdBook = new Product({
     title,
-    image,
+    image: req.file.path,
     description,
     price,
     creator,

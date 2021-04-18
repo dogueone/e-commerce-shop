@@ -25,6 +25,7 @@ const BookItem = (props) => {
     } catch (err) {}
   };
 
+  console.log(props.image);
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -35,7 +36,10 @@ const BookItem = (props) => {
           <Card className="book-item__content">
             {/* <Link to={`/books/${props.id}`}> */}
             <div className="book-item__image">
-              <BookImage image={props.image} alt={props.title} />
+              <BookImage
+                img={`http://localhost:5000/${props.image}`}
+                alt={props.title}
+              />
             </div>
             <div className="book-item__info">
               <h2>{props.title}</h2>

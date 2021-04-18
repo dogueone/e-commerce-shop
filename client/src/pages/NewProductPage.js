@@ -66,6 +66,8 @@ const NewProductPage = (props) => {
     false
   );
 
+  console.log(formState.inputs);
+
   const history = useHistory();
 
   // const [formState, dispatch] = useReducer(formReducer, {
@@ -94,20 +96,18 @@ const NewProductPage = (props) => {
   const productSubmitHandler = async (event) => {
     event.preventDefault();
     console.log(formState.inputs);
+
+    const formData = new FormData();
+    formData.append("title", formState.inputs.title.value);
+    formData.append("image", formState.inputs.image.value);
+    formData.append("description", formState.inputs.description.value);
+    formData.append("price", formState.inputs.price.value);
+    formData.append("creator", auth.userId);
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/books/add-book",
         "POST",
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          price: formState.inputs.price.value,
-          image: "PLACEHOLDER FOR IMAGE",
-          creator: auth.userId,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
+        formData
       );
       history.push("/");
       console.log(responseData);
@@ -136,7 +136,12 @@ const NewProductPage = (props) => {
           errorText="Please enter a valid description (at least 5 characters)."
           onInput={inputHandler}
         />
-        <ImageUpload id="image" onInput={inputHandler} center />
+        <ImageUpload
+          id="image"
+          onInput={inputHandler}
+          center
+          errorText="Please provide an image."
+        />
         {/* <Input
           id="image"
           element="input"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
+import ImageUpload from "../components/FormElements/ImageUpload";
 import Card from "../components/UIElements/Card";
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
@@ -145,7 +146,7 @@ const EditProductPage = (props) => {
             initialValue={loadedBook.description}
             initialValid={true}
           />
-          <Input
+          {/* <Input
             id="image"
             element="input"
             type="text"
@@ -155,7 +156,7 @@ const EditProductPage = (props) => {
             onInput={inputHandler}
             initialValue={loadedBook.image}
             initialValid={true}
-          />
+          /> */}
           <Input
             id="price"
             element="input"
