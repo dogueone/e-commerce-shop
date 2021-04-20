@@ -35,7 +35,7 @@ const ImageUpload = (props) => {
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;
-    } else {
+    } else if (!file) {
       setIsValid(false);
       fileIsValid = false;
     }
@@ -61,7 +61,7 @@ const ImageUpload = (props) => {
           PICK IMAGE
         </Button>
       </div>
-      {!isValid && !file && <p>{props.errorText}</p>}
+      {/* {!isValid && !file && <p>{props.errorText}</p>} */}
     </div>
   );
 };
