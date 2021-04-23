@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
@@ -170,6 +171,8 @@ const deleteBook = async (req, res, next) => {
     return next(new HttpError("Could not find book for provide id", 404));
   }
 
+  const imagePath = book.image;
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -182,6 +185,10 @@ const deleteBook = async (req, res, next) => {
       new HttpError("Fetching book failed, please try again later", 500)
     );
   }
+
+  fs.unlink(imagePath, (err) => {
+    console.log(err);
+  });
 
   res.status(200).json({ message: "Deleted place." });
 };
