@@ -19,7 +19,9 @@ const BookItem = (props) => {
     try {
       await sendRequest(
         `http://localhost:5000/api/books/${props.id}`,
-        "DELETE"
+        "DELETE",
+        null,
+        { Authorization: "Bearer " + auth.token }
       );
       props.deleteBook(props.id);
     } catch (err) {}
@@ -54,7 +56,7 @@ const BookItem = (props) => {
             <Link to={`/books/edit-product/${props.id}`}>
               <div className="editproduct-test">EDIT</div>
             </Link>
-            {auth.isLoggedIn && (
+            {auth.isLoggedIn && auth.userId === props.creatorId && (
               <Button size={"small"} inverse onClick={deleteBookHandler}>
                 DELETE
               </Button>

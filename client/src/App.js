@@ -11,22 +11,22 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  const login = useCallback((resUserId) => {
-    setIsLoggedIn(true);
-    setUserId(resUserId);
+  const login = useCallback((userId, token) => {
+    setToken(token);
+    setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUserId(null);
   }, []);
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Switch>
         <Route path="/" component={ProductsPage} exact />
@@ -53,7 +53,8 @@ const App = () => {
     <AuthContext.Provider
       value={{
         userId: userId,
-        isLoggedIn: isLoggedIn,
+        token: token,
+        isLoggedIn: !!token,
         login: login,
         logout: logout,
       }}

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
+import { AuthContext } from "../context/auth-context";
 import ImageUpload from "../components/FormElements/ImageUpload";
 import Card from "../components/UIElements/Card";
 import { useHttpClient } from "../hooks/http-hook";
@@ -20,6 +21,8 @@ const EditProductPage = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [loadedBook, setLoadedBook] = useState();
   const bookId = useParams().bid;
+
+  const auth = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -95,6 +98,7 @@ const EditProductPage = (props) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
     } catch (err) {}

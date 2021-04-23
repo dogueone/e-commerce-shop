@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 
+const checkAuth = require("../middleware/check-auth");
 const fileUpload = require("../middleware/file-upload");
 const booksControllers = require("../controllers/books-controllers");
 const router = express.Router();
@@ -8,6 +9,8 @@ const router = express.Router();
 router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
+
+router.use(checkAuth);
 
 // router.get("/user/:uid", booksControllers.getBooksByUserId);
 

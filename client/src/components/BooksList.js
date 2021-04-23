@@ -23,6 +23,7 @@ const BooksList = (props) => {
           image={book.image}
           price={book.price}
           deleteBook={props.onDeleteBook}
+          creatorId={book.creator}
         />
       ))}
     </ul>

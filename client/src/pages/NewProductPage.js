@@ -107,7 +107,8 @@ const NewProductPage = (props) => {
       const responseData = await sendRequest(
         "http://localhost:5000/api/books/add-book",
         "POST",
-        formData
+        formData,
+        { Authorization: "Bearer " + auth.token }
       );
       history.push("/");
       console.log(responseData);
