@@ -137,6 +137,12 @@ const updateBook = async (req, res, next) => {
     );
   }
 
+  if (updatedBook.creator.toString() !== req.userData.userId) {
+    return next(
+      new HttpError("You are not allowed to update this product", 401)
+    );
+  }
+
   updatedBook.title = title;
   updatedBook.description = description;
   updatedBook.image = image;
@@ -164,6 +170,12 @@ const deleteBook = async (req, res, next) => {
   } catch (err) {
     return next(
       new HttpError("Fetching book failed, please try again later", 500)
+    );
+  }
+
+  if (book.creator.id !== req.userData.userId) {
+    return next(
+      new HttpError("You are not allowed to delete this product", 401)
     );
   }
 
