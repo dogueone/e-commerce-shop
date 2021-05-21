@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import Backdrop from "../UIElements/Backdrop"
+import Backdrop from "../UIElements/Backdrop";
 import SideDrawer from "./SideDrawer";
 import MainHeader from "./MainHeader";
 import NavLinks from "./NavLinks";
@@ -9,28 +9,30 @@ import "./MainNavigation.css";
 
 const MainNavigation = (props) => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  
+
   const openDrawerHandler = () => {
-    setDrawerIsOpen(true)
-  }
-  
+    setDrawerIsOpen(true);
+  };
+
   const closeDrawerHandler = () => {
     setDrawerIsOpen(false);
-  }
+  };
 
   return (
     <React.Fragment>
-      {drawerIsOpen && <Backdrop onClick={closeDrawerHandler}/>}
-      {drawerIsOpen && (
-      <SideDrawer onClick={closeDrawerHandler}>
+      <Backdrop show={drawerIsOpen} onClick={closeDrawerHandler} />
+      <SideDrawer show={drawerIsOpen}>
         <nav className="main-navigation__drawer-nav">
-          <NavLinks />
+          <NavLinks onClick={closeDrawerHandler} />
         </nav>
       </SideDrawer>
-      )}
+
       <MainHeader>
         <div className="main-navigation">
-          <button className="main-navigation__menu-btn" onClick={openDrawerHandler}>
+          <button
+            className="main-navigation__menu-btn"
+            onClick={openDrawerHandler}
+          >
             <span />
             <span />
             <span />

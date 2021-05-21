@@ -1,9 +1,27 @@
 .backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgb(0,0,0,0.75);
-    z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.75);
+  z-index: 10;
+}
+
+.fade-appear-enter {
+  opacity: 0;
+}
+
+.fade-appear-enter-active {
+  opacity: 100%;
+  transition: all 0.4s;
+}
+
+.fade-appear-exit {
+  opacity: 100%;
+}
+
+.fade-appear-exit-active {
+  opacity: 0;
+  transition: all 0.4s;
 }

@@ -1,14 +1,12 @@
 .main-content {
-  margin: 7rem 2rem;
-  box-sizing: border-box;
+  margin-top: 5rem;
+  width: 80%;
 }
 
-/* .all-center {
+.all-center {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: auto;
+  margin: 5rem auto 5rem auto;
   justify-content: center;
   align-items: center;
-  text-align: center;
-} */
+}
