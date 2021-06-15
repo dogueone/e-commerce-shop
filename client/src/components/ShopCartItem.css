@@ -1,0 +1,15 @@
+.cart-item-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+}
+
+.cart-item__remove {
+  height: 1rem;
+  width: 1.5rem;
+}
+
+.cart-item-grid span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

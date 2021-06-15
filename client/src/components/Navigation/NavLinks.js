@@ -2,15 +2,17 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
 import { AuthContext } from "../../context/auth-context";
+import { MiscContext } from "../../context/misc-context";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
   const auth = useContext(AuthContext);
+  const misc = useContext(MiscContext);
   return (
     <ul className="nav-links">
       <li>
-        <NavLink to="/" exact onClick={props.onClick}>
-          Busket
+        <NavLink to="/cart" exact onClick={props.onClick}>
+          {`Shopping Cart ${misc.cartItems ? misc.cartItems : ""}`}
         </NavLink>
       </li>
       <li>

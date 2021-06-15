@@ -10,6 +10,8 @@ router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
 
+router.get("/cart/:bids", booksControllers.getBooksByIds);
+
 router.use(checkAuth);
 
 // router.get("/user/:uid", booksControllers.getBooksByUserId);

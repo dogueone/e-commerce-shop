@@ -43,6 +43,20 @@ const getBookById = async (req, res, next) => {
   res.json({ book: book.toObject({ getters: true }) });
 };
 
+const getBooksByIds = async (req, res, next) => {
+  const booksIds = req.params.bids.split(",");
+  console.log(booksIds);
+  try {
+    books = await Product.find({ _id: { $in: booksIds } });
+  } catch (err) {
+    return next(new HttpError("Fetching failed, please try again later", 500));
+  }
+  if (!books) {
+    return next(new HttpError("Fetching failed, please try again later", 404));
+  }
+  res.json({ books: books.map((book) => book.toObject({ getters: true })) });
+};
+
 // const getBooksByUserId = async (req, res, next) => {
 //   const userId = req.params.uid;
 
@@ -210,4 +224,5 @@ exports.getBooks = getBooks;
 exports.createBook = createBook;
 exports.updateBook = updateBook;
 exports.deleteBook = deleteBook;
+exports.getBooksByIds = getBooksByIds;
 // exports.getBooksByUserId = getBooksByUserId;

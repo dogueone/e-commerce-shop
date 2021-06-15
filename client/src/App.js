@@ -3,12 +3,14 @@ import React, { Fragment, useState, useCallback, useEffect } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import { AuthContext } from "./context/auth-context";
+import { MiscContext } from "./context/misc-context";
 import EditProductPage from "./pages/EditProductPage";
 import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/Products";
 import NewProductPage from "./pages/NewProductPage";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
+import ShopCartPage from "./pages/ShopCartPage";
 
 let logoutTimer;
 
@@ -16,6 +18,26 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [expirationDate, setExpirationDate] = useState();
+  const [cartItems, setCartItems] = useState();
+
+  // const increment = useCallback(() => {
+  //   setCartItems((prevState) => prevState + 1);
+  // }, []);
+
+  // const decrement = useCallback(() => {
+  //   setCartItems((prevState) => (prevState > 0 ? prevState - 1 : 0));
+  // }, []);
+
+  const updateQuantity = useCallback(() => {
+    const LocalData = JSON.parse(localStorage.getItem("cart"));
+    if (LocalData) {
+      setCartItems(LocalData.length);
+    }
+  }, []);
+
+  const setCartQantity = useCallback((updatedLength) => {
+    setCartItems(updatedLength);
+  });
 
   const login = useCallback((userId, token, expiration) => {
     setToken(token);
@@ -64,6 +86,10 @@ const App = () => {
     }
   }, [login]);
 
+  useEffect(() => {
+    updateQuantity(); //update cart items quantity
+  }, []);
+
   let routes;
 
   if (token) {
@@ -72,6 +98,7 @@ const App = () => {
         <Route path="/" component={ProductsPage} exact />
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
+        <Route path="/cart" component={ShopCartPage} />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>
@@ -83,6 +110,7 @@ const App = () => {
         <Route path="/auth" component={AuthPage} exact />
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
+        <Route path="/cart" component={ShopCartPage} />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>
@@ -99,12 +127,22 @@ const App = () => {
         logout: logout,
       }}
     >
-      <BrowserRouter>
-        <Fragment>
-          <MainNavigation />
-          <main className="main-content all-center">{routes}</main>
-        </Fragment>
-      </BrowserRouter>
+      <MiscContext.Provider
+        value={{
+          cartItems: cartItems,
+          // increment: increment,
+          // decrement: decrement,
+          updateQuantity: updateQuantity,
+          setCartQantity: setCartQantity,
+        }}
+      >
+        <BrowserRouter>
+          <Fragment>
+            <MainNavigation />
+            <main className="main-content all-center">{routes}</main>
+          </Fragment>
+        </BrowserRouter>
+      </MiscContext.Provider>
     </AuthContext.Provider>
   );
 };

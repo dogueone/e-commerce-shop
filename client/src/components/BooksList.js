@@ -2,6 +2,7 @@ import React from "react";
 
 import "./BooksList.css";
 import BookItem from "./BookItem";
+import ShopCartItem from "./ShopCartItem";
 
 const BooksList = (props) => {
   if (props.items.length === 0) {
@@ -13,7 +14,7 @@ const BooksList = (props) => {
   }
 
   return (
-    <ul className="books-list">
+    <ul className={props.cart ? "cart-list" : "books-list"}>
       {props.items.map((book) => (
         <BookItem
           key={book.id}

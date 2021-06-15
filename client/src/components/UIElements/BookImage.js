@@ -4,7 +4,7 @@ import "./BookImage.css";
 
 const BookImage = (props) => {
   return (
-    <div className="book-image">
+    <div className={props.imageStyle}>
       <img src={props.img} alt={props.alt} />
     </div>
   );

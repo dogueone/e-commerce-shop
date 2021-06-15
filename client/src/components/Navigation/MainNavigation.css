@@ -42,24 +42,6 @@
 .main-navigation__drawer-nav {
 }
 
-.fade-slide-enter {
-}
-
-.fade-slide-enter-active {
-  /* animation: openSide 0.4s ease-out forwards; */
-  opacity: 1;
-  transition: all 400ms;
-}
-
-.fade-slide-exit {
-}
-
-.fade-slide-exit-active {
-  /* animation: closeSide 0.4s ease-out ; */
-  opacity: 0;
-  transition: all 400ms;
-}
-
 @media (min-width: 768px) {
   .main-navigation__menu-btn {
     display: none;

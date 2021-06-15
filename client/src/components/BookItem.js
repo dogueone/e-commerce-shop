@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/auth-context";
+import { MiscContext } from "../context/misc-context";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import { useHttpClient } from "../hooks/http-hook";
@@ -14,6 +15,7 @@ const BookItem = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
 
   const auth = useContext(AuthContext);
+  const misc = useContext(MiscContext);
 
   const deleteBookHandler = async () => {
     try {
@@ -27,7 +29,36 @@ const BookItem = (props) => {
     } catch (err) {}
   };
 
+  const addToCartHandler = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    console.log(cart);
+    // let updatedCart;
+    let existedItem;
+    if (cart.length !== 0) {
+      existedItem = cart.find((item) => item.id === props.id);
+    }
+    console.log(existedItem);
+    if (existedItem) {
+      // updatedCart = [...cart];
+      const itemIndex = cart.findIndex((item) => item.id === props.id);
+      console.log(`1 ${cart} `);
+      cart[itemIndex] = {
+        id: props.id,
+        quantity: cart[itemIndex].quantity + 1,
+      };
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      const cartItem = { id: props.id, quantity: 1 };
+      // updatedCart = [...cart];
+      console.log(cart);
+      cart.push(cartItem);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    misc.setCartQantity(cart.length);
+  };
+
   console.log(props.image);
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -41,6 +72,7 @@ const BookItem = (props) => {
               <BookImage
                 img={`http://localhost:5000/${props.image}`}
                 alt={props.title}
+                imageStyle="book-image"
               />
             </div>
             <div className="book-item__info">
@@ -56,6 +88,9 @@ const BookItem = (props) => {
             <Link to={`/books/edit-product/${props.id}`}>
               <div className="editproduct-test">EDIT</div>
             </Link>
+            <Button size={"small"} onClick={addToCartHandler}>
+              ADD TO CART
+            </Button>
             {auth.isLoggedIn && auth.userId === props.creatorId && (
               <Button size={"small"} inverse onClick={deleteBookHandler}>
                 DELETE
