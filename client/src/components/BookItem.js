@@ -31,33 +31,33 @@ const BookItem = (props) => {
 
   const addToCartHandler = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log(cart);
     // let updatedCart;
     let existedItem;
     if (cart.length !== 0) {
       existedItem = cart.find((item) => item.id === props.id);
     }
-    console.log(existedItem);
     if (existedItem) {
       // updatedCart = [...cart];
-      const itemIndex = cart.findIndex((item) => item.id === props.id);
-      console.log(`1 ${cart} `);
-      cart[itemIndex] = {
-        id: props.id,
-        quantity: cart[itemIndex].quantity + 1,
-      };
+      // const itemIndex = cart.findIndex((item) => item.id === props.id);
+      // cart[itemIndex] = {
+      //   id: props.id,
+      //   quantity: cart[itemIndex].quantity + 1,
+      // };
+      existedItem.quantity += 1; //increment item reference by 1
       localStorage.setItem("cart", JSON.stringify(cart));
     } else {
       const cartItem = { id: props.id, quantity: 1 };
       // updatedCart = [...cart];
-      console.log(cart);
       cart.push(cartItem);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-    misc.setCartQantity(cart.length);
-  };
 
-  console.log(props.image);
+    misc.setCartQantity(
+      cart.reduce((sum, item) => {
+        return sum + item.quantity;
+      }, 0)
+    );
+  };
 
   return (
     <React.Fragment>

@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
+  list-style: none;
 }
 
 .nav-links li {
@@ -14,6 +15,7 @@
   font-weight: bold;
   color: black;
   transition: font-size 0.2s;
+  text-decoration: none;
 }
 
 .nav-links a:hover {

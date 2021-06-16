@@ -16,19 +16,27 @@ const ShopCartList = (props) => {
       </li>
       {props.items.map((book) => (
         <ShopCartItem
-          quantity={
-            props.itemsQuantity.find((item) => {
-              return item.id === book.id;
-            }).quantity
-          }
-          key={book.id}
-          id={book.id}
-          title={book.title}
-          description={book.description}
-          price={book.price}
-          image={book.image}
+          update={props.updateCart}
+          // quantity={
+          //   props.itemsQuantity.find((item) => {
+          //     return item.id === book.id;
+          //   }).quantity
+          // }
+          quantity={book.quantity}
+          key={book.content.id}
+          id={book.content.id}
+          title={book.content.title}
+          description={book.content.description}
+          price={book.content.price}
+          image={book.content.image}
         />
       ))}
+      <li className="cart-list-grid__footer">
+        <strong>buy</strong>
+        <strong>{`total: ${props.items.reduce((sum, item) => {
+          return sum + item.content.price * item.quantity;
+        }, 0)}`}</strong>
+      </li>
     </ul>
   );
 };

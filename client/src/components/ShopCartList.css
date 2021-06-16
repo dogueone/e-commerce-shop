@@ -1,9 +1,10 @@
 .cart-list-grid {
   display: grid;
   grid-template-columns: 80vw;
-  grid-auto-rows: minmax(250px, 100px);
+  grid-auto-rows: minmax(100px, auto);
   border-left: 1px solid black;
   border-bottom: 1px solid black;
+  list-style: none;
 }
 
 .cart-list-grid span,
@@ -18,4 +19,17 @@ strong {
 .cart-list-grid__header {
   display: grid;
   grid-template-columns: 2fr repeat(5, 1fr);
+}
+
+.cart-list-grid__footer {
+  display: grid;
+  grid-template-columns: 5fr 2fr;
+}
+
+.cart-list-grid__footer strong {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

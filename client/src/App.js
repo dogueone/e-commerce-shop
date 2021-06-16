@@ -29,15 +29,19 @@ const App = () => {
   // }, []);
 
   const updateQuantity = useCallback(() => {
-    const LocalData = JSON.parse(localStorage.getItem("cart"));
-    if (LocalData) {
-      setCartItems(LocalData.length);
+    const CartData = JSON.parse(localStorage.getItem("cart"));
+    if (CartData) {
+      setCartItems(
+        CartData.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
     }
   }, []);
 
   const setCartQantity = useCallback((updatedLength) => {
     setCartItems(updatedLength);
-  });
+  }, []);
 
   const login = useCallback((userId, token, expiration) => {
     setToken(token);
@@ -88,7 +92,7 @@ const App = () => {
 
   useEffect(() => {
     updateQuantity(); //update cart items quantity
-  }, []);
+  }, [updateQuantity]);
 
   let routes;
 
