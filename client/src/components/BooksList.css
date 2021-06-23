@@ -7,9 +7,11 @@
   flex-wrap: wrap;
 }
 
-.cart-list {
+.order-list {
   list-style: none;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: auto;
+  width: 100%;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

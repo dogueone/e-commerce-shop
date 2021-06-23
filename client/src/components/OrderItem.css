@@ -1,0 +1,16 @@
+.order-item__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+  width: 80%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 5px;
+}
+.order-item__grid div {
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  width: 100%;
+  padding-left: 4px;
+}

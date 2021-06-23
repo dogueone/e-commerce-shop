@@ -11,6 +11,32 @@ let LocalData;
 const ShopCartPage = () => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [loadedCart, setLoadedCart] = useState(null);
+  const [checkout, setCheckout] = useState(null);
+
+  const onOrderHandler = async () => {
+    // 1) Open CheckoutPage with orderData [{id:31dse1sqr1ewdas, quantity: 2},{id:31dse1sqrsdad54, quantity: 1},..]
+    // 2)
+    // const MutatedLoadedCart = [];
+    // loadedCart.forEach((item) => {
+    //   return MutatedLoadedCart.push(
+    //     (item = { id: item.content.id, quantity: item.quantity })
+    //   );
+    // });
+    // try {
+    //   const responseData = await sendRequest(
+    //     "http://localhost:5000/api/books/cart/order",
+    //     "POST",
+    //     JSON.stringify(MutatedLoadedCart),
+    //     {
+    //       "Content-Type": "application/json",
+    //     }
+    //   );
+    //   console.log(responseData);
+    //   setCheckout(responseData);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
 
   const updateLoadedCartItem = (itemId, itemQuantity) => {
     const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
@@ -40,11 +66,11 @@ const ShopCartPage = () => {
       const fetchBooks = async () => {
         try {
           const loadedBooks = await sendRequest(
-            `http://localhost:5000/api/books/cart/${LocalDataIds}`
+            `http://localhost:5000/api/books/local/${LocalDataIds}`
           );
-          const CompiledLocalData = [];
+          const MutatedLocalData = [];
           LocalData.forEach((item) => {
-            return CompiledLocalData.push(
+            return MutatedLocalData.push(
               (item = {
                 content: loadedBooks.books.find((book) => book.id === item.id),
                 quantity: item.quantity,
@@ -52,7 +78,7 @@ const ShopCartPage = () => {
             );
           });
 
-          setLoadedCart(CompiledLocalData);
+          setLoadedCart(MutatedLocalData);
         } catch (err) {}
       };
       fetchBooks();
@@ -65,7 +91,7 @@ const ShopCartPage = () => {
   if (isLoading) {
     return (
       <div className="center">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   }
@@ -79,6 +105,17 @@ const ShopCartPage = () => {
       </div>
     );
   }
+
+  if (checkout) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>{JSON.stringify(checkout)}</h2>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="shop-cart">
       <ShopCartList

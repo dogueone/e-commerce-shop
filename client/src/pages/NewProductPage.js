@@ -66,8 +66,6 @@ const NewProductPage = (props) => {
     false
   );
 
-  console.log(formState.inputs);
-
   const history = useHistory();
 
   // const [formState, dispatch] = useReducer(formReducer, {
@@ -111,7 +109,6 @@ const NewProductPage = (props) => {
         { Authorization: "Bearer " + auth.token }
       );
       history.push("/");
-      console.log(responseData);
     } catch (err) {}
   };
 

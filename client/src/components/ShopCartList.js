@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 
 import ShopCartItem from "./ShopCartItem";
 import "./ShopCartList.css";
+import Button from "./FormElements/Button";
+import { AuthContext } from "../context/auth-context";
 
 const ShopCartList = (props) => {
+  const auth = useContext(AuthContext);
   return (
     <ul className="cart-list-grid">
       <li className="cart-list-grid__header">
@@ -32,7 +36,20 @@ const ShopCartList = (props) => {
         />
       ))}
       <li className="cart-list-grid__footer">
-        <strong>buy</strong>
+        <strong>
+          {auth.isLoggedIn ? (
+            <Link
+              to={{
+                pathname: "/books/checkout",
+                state: { cartItems: props.items },
+              }}
+            >
+              Order Now
+            </Link>
+          ) : (
+            <Button to={"/auth"}>Order</Button>
+          )}
+        </strong>
         <strong>{`total: ${props.items.reduce((sum, item) => {
           return sum + item.content.price * item.quantity;
         }, 0)}`}</strong>

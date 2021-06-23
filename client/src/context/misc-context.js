@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 export const MiscContext = createContext({
-  cartItems: null,
+  // cartItems: null,
   // increment: () => {},
   // decrement: () => {},
   updateQuantity: () => {},

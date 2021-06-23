@@ -2,19 +2,41 @@ import React from "react";
 
 import "./BooksList.css";
 import BookItem from "./BookItem";
-import ShopCartItem from "./ShopCartItem";
+import OrderItem from "./OrderItem";
 
 const BooksList = (props) => {
-  if (props.items.length === 0) {
+  // if (props.items.length === 0) {
+  //   return (
+  //     <div>
+  //       <h2>No books found</h2>
+  //     </div>
+  //   );
+  // }
+
+  if (props.order) {
     return (
-      <div>
-        <h2>No books found</h2>
-      </div>
+      <React.Fragment>
+        <ul className={"order-list"}>
+          {props.loadedOrder.confirmedOrder.map((book) => (
+            <OrderItem
+              key={book.content.id}
+              id={book.content.id}
+              title={book.content.title}
+              description={book.content.description}
+              image={book.content.image}
+              price={book.content.price}
+              quantity={book.quantity}
+            />
+          ))}
+        </ul>
+        <h2>{"Total Price: " + props.loadedOrder.totalPrice}</h2>
+        <h2>Change order</h2>
+      </React.Fragment>
     );
   }
 
   return (
-    <ul className={props.cart ? "cart-list" : "books-list"}>
+    <ul className={"books-list"}>
       {props.items.map((book) => (
         <BookItem
           key={book.id}

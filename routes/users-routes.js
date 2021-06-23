@@ -18,4 +18,6 @@ router.post(
 
 router.post("/login", usersControllers.login);
 
+router.post("/payment", usersControllers.createPaymentIntent);
+
 module.exports = router;

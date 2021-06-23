@@ -1,8 +1,18 @@
 .card {
-  margin: 0;
+  margin: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   border-radius: 6px;
   padding: 1rem;
   overflow: hidden;
   background: white;
+}
+
+.book-item__content {
+}
+
+.order-item__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }

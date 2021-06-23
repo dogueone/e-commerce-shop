@@ -68,13 +68,11 @@ const BookItem = (props) => {
         ) : (
           <Card className="book-item__content">
             {/* <Link to={`/books/${props.id}`}> */}
-            <div className="book-item__image">
-              <BookImage
-                img={`http://localhost:5000/${props.image}`}
-                alt={props.title}
-                imageStyle="book-image"
-              />
-            </div>
+            <BookImage
+              imageStyle="book-item__image"
+              img={`http://localhost:5000/${props.image}`}
+              alt={props.title}
+            />
             <div className="book-item__info">
               <h2>{props.title}</h2>
             </div>

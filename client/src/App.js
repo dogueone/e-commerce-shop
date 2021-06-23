@@ -11,6 +11,7 @@ import NewProductPage from "./pages/NewProductPage";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
 import ShopCartPage from "./pages/ShopCartPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 let logoutTimer;
 
@@ -91,6 +92,17 @@ const App = () => {
   }, [login]);
 
   useEffect(() => {
+    const storageData = JSON.parse(localStorage.getItem("cart"));
+    if (storageData && storageData.cart && storageData.cart.length !== 0) {
+      login(
+        storageData.userId,
+        storageData.token,
+        new Date(storageData.expiration)
+      );
+    }
+  }, [login]);
+
+  useEffect(() => {
     updateQuantity(); //update cart items quantity
   }, [updateQuantity]);
 
@@ -103,6 +115,7 @@ const App = () => {
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
         <Route path="/cart" component={ShopCartPage} />
+        <Route path="/books/checkout" component={CheckoutPage} />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>
@@ -115,6 +128,7 @@ const App = () => {
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
         <Route path="/cart" component={ShopCartPage} />
+        <Route path="/books/checkout" component={CheckoutPage} />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>

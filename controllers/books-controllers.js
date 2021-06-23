@@ -7,6 +7,32 @@ const HttpError = require("../models/http-error");
 const Product = require("../models/product");
 const User = require("../models/user");
 
+const getOrder = async (req, res, next) => {
+  const orderData = req.body;
+  console.log(orderData);
+  let confirmedOrder = [];
+  let totalPrice = 0;
+  let bookId;
+  try {
+    for (item of orderData) {
+      bookId = item.id;
+      console.log(bookId);
+      const book = await Product.findById(item.id);
+      totalPrice += book.price * item.quantity;
+      confirmedOrder.push({ content: book, quantity: item.quantity });
+    }
+  } catch (err) {
+    return next(new HttpError("Could not find a book " + bookId, 404));
+  }
+  res.json({ confirmedOrder, totalPrice });
+
+  // try {
+  //   books = await Product.find()
+  // } catch (error) {
+
+  // }
+};
+
 const getBooks = async (req, res, next) => {
   let books;
   try {
@@ -45,7 +71,6 @@ const getBookById = async (req, res, next) => {
 
 const getBooksByIds = async (req, res, next) => {
   const booksIds = req.params.bids.split(",");
-  console.log(booksIds);
   try {
     books = await Product.find({ _id: { $in: booksIds } });
   } catch (err) {
@@ -81,6 +106,26 @@ const getBooksByIds = async (req, res, next) => {
 //   });*
 // };
 
+// const createCart = async (req, res, next) => {
+//   const { cart, creator } = req.body;
+//   const createdCart = new Cart({
+//     cart,
+//     creator,
+//   });
+
+//   let user;
+
+//   try {
+//     user = await User.findById(creator);
+//   } catch (err) {
+//     return next(new HttpError("Creating book failed, please try again", 500));
+//   }
+
+//   if (!user) {
+//     return next(new HttpError("Could not find user for provide id", 404));
+//   }
+// };
+
 const createBook = async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -112,8 +157,6 @@ const createBook = async (req, res, next) => {
   if (!user) {
     return next(new HttpError("Could not find user for provide id", 404));
   }
-
-  console.log(user);
 
   try {
     const sess = await mongoose.startSession();
@@ -225,4 +268,5 @@ exports.createBook = createBook;
 exports.updateBook = updateBook;
 exports.deleteBook = deleteBook;
 exports.getBooksByIds = getBooksByIds;
+exports.getOrder = getOrder;
 // exports.getBooksByUserId = getBooksByUserId;

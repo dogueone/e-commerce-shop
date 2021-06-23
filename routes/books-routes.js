@@ -10,7 +10,13 @@ router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
 
-router.get("/cart/:bids", booksControllers.getBooksByIds);
+router.get("/local/:bids", booksControllers.getBooksByIds);
+
+router.post("/cart/order", booksControllers.getOrder);
+
+// router.get("/cart/:uid", booksControllers.getСartById);
+
+// router.post("/cart/:uid", booksControllers.createCart);
 
 router.use(checkAuth);
 
