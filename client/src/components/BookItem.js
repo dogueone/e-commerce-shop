@@ -33,30 +33,35 @@ const BookItem = (props) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     // let updatedCart;
     let existedItem;
-    if (cart.length !== 0) {
-      existedItem = cart.find((item) => item.id === props.id);
+    try {
+      if (cart.length !== 0) {
+        existedItem = cart.find((item) => item.id === props.id);
+      }
+      if (existedItem) {
+        if (
+          isNaN(existedItem.quantity) ||
+          existedItem.quantity < 1 ||
+          !Number.isInteger(existedItem.quantity)
+        ) {
+          misc.clearCart();
+          throw new Error("wrong item quantity");
+        }
+        existedItem.quantity += 1; //increment item reference by 1
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } else {
+        const cartItem = { id: props.id, quantity: 1 };
+        cart.push(cartItem);
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      misc.setCartQuantity(
+        cart.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
+    } catch (error) {
+      misc.clearCart();
+      console.log(error.message);
     }
-    if (existedItem) {
-      // updatedCart = [...cart];
-      // const itemIndex = cart.findIndex((item) => item.id === props.id);
-      // cart[itemIndex] = {
-      //   id: props.id,
-      //   quantity: cart[itemIndex].quantity + 1,
-      // };
-      existedItem.quantity += 1; //increment item reference by 1
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } else {
-      const cartItem = { id: props.id, quantity: 1 };
-      // updatedCart = [...cart];
-      cart.push(cartItem);
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-    misc.setCartQantity(
-      cart.reduce((sum, item) => {
-        return sum + item.quantity;
-      }, 0)
-    );
   };
 
   return (
@@ -67,7 +72,6 @@ const BookItem = (props) => {
           <LoadingSpinner />
         ) : (
           <Card className="book-item__content">
-            {/* <Link to={`/books/${props.id}`}> */}
             <BookImage
               imageStyle="book-item__image"
               img={`http://localhost:5000/${props.image}`}
@@ -82,7 +86,6 @@ const BookItem = (props) => {
             <div>
               <h2>{props.price}</h2>
             </div>
-            {/* </Link> */}
             <Link to={`/books/edit-product/${props.id}`}>
               <div className="editproduct-test">EDIT</div>
             </Link>

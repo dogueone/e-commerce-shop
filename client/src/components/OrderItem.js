@@ -20,7 +20,7 @@ const OrderItem = (props) => {
           </div>
           <div>
             <h2>
-              {props.quantity} <h10>x</h10> {props.price}
+              {props.quantity} <span>x</span> {props.price}
             </h2>
           </div>
           <div>

@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useLocation, useHistory, Redirect } from "react-router-dom";
 
 import Card from "../components/UIElements/Card";
 import { useHttpClient } from "../hooks/http-hook";
 import StripeContainer from "../components/StripeContainer";
-import ShopCartItem from "../components/ShopCartItem";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import BookList from "../components/BooksList";
+import { AuthContext } from "../context/auth-context";
+import ErrorModal from "../components/UIElements/ErrorModal";
 
 const CheckoutPage = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedOrder, setLoadedOrder] = useState();
   const location = useLocation();
   const history = useHistory();
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     if (!location.state) {
-      history.push({
+      history.replace({
         pathname: "/cart",
       });
     } else {
@@ -30,7 +32,7 @@ const CheckoutPage = () => {
         });
         try {
           const responseData = await sendRequest(
-            "http://localhost:5000/api/books/cart/order",
+            "http://localhost:5000/api/order/cart/order",
             "POST",
             JSON.stringify(MutatedLoadedCart),
             {
@@ -43,48 +45,13 @@ const CheckoutPage = () => {
         }
       };
       onOrderHandler();
-      console.log(loadedOrder);
     }
-  }, [sendRequest, history, location.state]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const responseData = await sendRequest(
-  //         "http://localhost:5000/api/users/payment",
-  //         "POST",
-  //         JSON.stringify({ amount: 300, currency: "usd" }),
-  //         {
-  //           "Content-Type": "application/json",
-  //         }
-  //       );
-  //       console.log(responseData.client_secret);
-  //       // stripe.confirmCardPayment(responseData.client_secret)
-  //     } catch (err) {}
-  //   };
-  //   fetchData();
-  // }, [sendRequest]);
-
-  // const responseData = fetch("http://localhost:5000/api/users/payment", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ amount: 300, currency: "usd" }),
-  // })
-  //   .then((response) => response.json())
-  //   .then((responseJson) => {
-  //     console.log(responseJson);
-  //     return responseJson.client_secret;
-  //   })
-  //   .catch((err) => console.log(err));
-  // setLoadedOrder(responseData);
-  // console.log(responseData);
+  }, [sendRequest, history, location.state, auth.isLoggedIn]);
 
   if (isLoading) {
     return (
       <div className="center">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   }
@@ -101,71 +68,17 @@ const CheckoutPage = () => {
 
   return (
     <React.Fragment>
-      {loadedOrder ? (
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && !error && loadedOrder ? (
         <div className={"checkout-container"}>
           <BookList order loadedOrder={loadedOrder} />
-          <StripeContainer />
+          <StripeContainer loadedOrder={loadedOrder} />
         </div>
       ) : (
-        <h2>what</h2>
+        <Redirect to={"/"} />
       )}
     </React.Fragment>
   );
 };
 
-{
-  /* <form id="payment-form">
-        <div id="card-element"></div>
-        <button id="submit">
-          <div class="spinner hidden" id="spinner"></div>
-          <span id="button-text">Pay now</span>
-        </button>
-        <p id="card-error" role="alert"></p>
-        <p class="result-message hidden">
-          Payment succeeded, see the result in your
-          <a href="" target="_blank">
-            Stripe dashboard.
-          </a>{" "}
-          Refresh the page to pay again.
-        </p>
-      </form> */
-}
-
 export default CheckoutPage;
-
-// const authSubmitHandler = async (event) => {
-//   event.preventDefault();
-//   if (isLoginMode) {
-//     try {
-//       const responseData = await sendRequest(
-//         "http://localhost:5000/api/users/login",
-//         "POST",
-//         JSON.stringify({
-//           email: formState.inputs.email.value,
-//           password: formState.inputs.password.value,
-//         }),
-//         {
-//           "Content-Type": "application/json",
-//         }
-//       );
-//       auth.login(responseData.userId, responseData.token);
-//     } catch (err) {}
-//   } else {
-//     try {
-//       const responseData = await sendRequest(
-//         "http://localhost:5000/api/users/signup",
-//         "POST",
-//         JSON.stringify({
-//           name: formState.inputs.name.value,
-//           email: formState.inputs.email.value,
-//           password: formState.inputs.password.value,
-//         }),
-//         {
-//           "Content-Type": "application/json",
-//         }
-//       );
-//       auth.login(responseData.userId, responseData.token);
-//     } catch (err) {}
-//   }
-//   console.log(formState.inputs);
-// };

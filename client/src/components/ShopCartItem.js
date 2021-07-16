@@ -7,32 +7,40 @@ import { MiscContext } from "../context/misc-context";
 
 const ShopCartItem = (props) => {
   const misc = useContext(MiscContext);
-  // const [localState, setLocalState] = useState();
-
-  // useEffect(()=> {
-  // })
 
   const deleteCartItemHandler = () => {
-    const LocalData = JSON.parse(localStorage.getItem("cart"));
-    let UpdatedLocalData;
-    const ItemObject = { ...LocalData.find((item) => item.id === props.id) };
-    const ItemQuantity = ItemObject.quantity;
-    if (ItemQuantity === 1) {
-      UpdatedLocalData = LocalData.filter((item) => item.id !== props.id);
-    } else {
-      UpdatedLocalData = LocalData.map((item) =>
-        item.id === props.id ? { ...item, quantity: item.quantity - 1 } : item
-      );
+    const notParsedLocalData = localStorage.getItem("cart");
+    if (!(notParsedLocalData === props.validLocalData)) {
+      misc.clearCart();
+      window.location.reload();
+      console.log("not valid local data");
+      return;
     }
-    UpdatedLocalData.length === 0
-      ? localStorage.removeItem("cart")
-      : localStorage.setItem("cart", JSON.stringify(UpdatedLocalData));
-    misc.setCartQantity(
-      UpdatedLocalData.reduce((sum, item) => {
-        return sum + item.quantity;
-      }, 0)
-    );
-    props.update(props.id, props.quantity);
+
+    const LocalData = JSON.parse(notParsedLocalData);
+    let UpdatedLocalData;
+    try {
+      const ItemObject = { ...LocalData.find((item) => item.id === props.id) };
+      const ItemQuantity = ItemObject.quantity;
+      if (ItemQuantity <= 1) {
+        UpdatedLocalData = LocalData.filter((item) => item.id !== props.id);
+      } else {
+        UpdatedLocalData = LocalData.map((item) =>
+          item.id === props.id ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      }
+      if (UpdatedLocalData.length === 0) {
+        localStorage.removeItem("cart");
+      } else {
+        localStorage.setItem("cart", JSON.stringify(UpdatedLocalData));
+      }
+      misc.setCartQuantity(
+        UpdatedLocalData.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
+      props.update(props.id, props.quantity, JSON.stringify(UpdatedLocalData));
+    } catch (err) {}
   };
 
   return (

@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
@@ -14,11 +15,14 @@ import {
 import Input from "../components/FormElements/Input";
 import Button from "../components/FormElements/Button";
 import "./AuthPage.css";
+import { Redirect } from "react-router-dom";
 
 const AuthPage = (props) => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  const location = useLocation();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -68,7 +72,6 @@ const AuthPage = (props) => {
         auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
-    console.log(formState.inputs);
   };
 
   //If you have multiple state changes in 1 synchronous code block (in the same function) React will batch them together and perform single state update.
@@ -95,6 +98,41 @@ const AuthPage = (props) => {
     }
     setLoginMode((prevMode) => !prevMode);
   };
+
+  // useEffect(() => {
+  //   if (location.state && auth.isLoggedIn) {
+  //     props.history.push(location.state.prevLocation);
+  //     console.log("location");
+  //   } else if (auth.isLoggedIn) {
+  //     props.history.push("/");
+  //   }
+  //   // if (auth.isLoggedIn) {
+  //   //   props.history.goBack();
+  //   // }
+  // }, [auth.isLoggedIn]);
+
+  // if (auth.isLoggedIn) {
+  //   console.log(props.history);
+  //   console.log(location);
+  //   props.history.goBack();
+  //   props.history.push("/cart");
+  //   return <Redirect to={location.state.location} />;
+  //   return <div>hello</div>;
+  // } else {
+  // }
+  // if (location.state && auth.isLoggedIn) {
+  //   return <Redirect to={location.state.prevlocation} />;
+  // } else {
+  // }
+
+  if (location.state && auth.isLoggedIn) {
+    return <Redirect to={location.state.prevLocation} />;
+  }
+
+  if (auth.isLoggedIn) {
+    //implement redirecting to previous location
+    return <Redirect to="/" />;
+  }
 
   return (
     <React.Fragment>

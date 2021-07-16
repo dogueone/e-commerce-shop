@@ -12,7 +12,9 @@ const NavLinks = (props) => {
     <ul className="nav-links">
       <li>
         <NavLink to="/cart" exact onClick={props.onClick}>
-          {`Shopping Cart ${misc.cartItems ? misc.cartItems : ""}`}
+          {`Shopping Cart ${
+            misc.cartItemsQuantity ? misc.cartItemsQuantity : ""
+          }`}
         </NavLink>
       </li>
       <li>

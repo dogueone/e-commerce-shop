@@ -30,12 +30,12 @@ const Products = () => {
   if (isLoading) {
     return (
       <div className="center">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   }
 
-  if (!loadedBooks && !error) {
+  if (!isLoading && !loadedBooks && !error) {
     return (
       <div className="center">
         <Card>
@@ -49,9 +49,7 @@ const Products = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedBooks && (
-        <div>
-          <BooksList items={loadedBooks} onDeleteBook={onDeleteBookHandler} />
-        </div>
+        <BooksList items={loadedBooks} onDeleteBook={onDeleteBookHandler} />
       )}
     </React.Fragment>
   );

@@ -12,8 +12,6 @@ router.get("/:bid", booksControllers.getBookById);
 
 router.get("/local/:bids", booksControllers.getBooksByIds);
 
-router.post("/cart/order", booksControllers.getOrder);
-
 // router.get("/cart/:uid", booksControllers.getСartById);
 
 // router.post("/cart/:uid", booksControllers.createCart);

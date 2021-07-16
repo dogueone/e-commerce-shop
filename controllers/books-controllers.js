@@ -7,32 +7,6 @@ const HttpError = require("../models/http-error");
 const Product = require("../models/product");
 const User = require("../models/user");
 
-const getOrder = async (req, res, next) => {
-  const orderData = req.body;
-  console.log(orderData);
-  let confirmedOrder = [];
-  let totalPrice = 0;
-  let bookId;
-  try {
-    for (item of orderData) {
-      bookId = item.id;
-      console.log(bookId);
-      const book = await Product.findById(item.id);
-      totalPrice += book.price * item.quantity;
-      confirmedOrder.push({ content: book, quantity: item.quantity });
-    }
-  } catch (err) {
-    return next(new HttpError("Could not find a book " + bookId, 404));
-  }
-  res.json({ confirmedOrder, totalPrice });
-
-  // try {
-  //   books = await Product.find()
-  // } catch (error) {
-
-  // }
-};
-
 const getBooks = async (req, res, next) => {
   let books;
   try {
@@ -76,8 +50,9 @@ const getBooksByIds = async (req, res, next) => {
   } catch (err) {
     return next(new HttpError("Fetching failed, please try again later", 500));
   }
-  if (!books) {
-    return next(new HttpError("Fetching failed, please try again later", 404));
+  if (!books || booksIds.length != books.length) {
+    console.log(books);
+    return next(new HttpError("Product not found, please try again ", 404));
   }
   res.json({ books: books.map((book) => book.toObject({ getters: true })) });
 };
@@ -104,26 +79,6 @@ const getBooksByIds = async (req, res, next) => {
 //   res.json({
 //     books: userWithBooks.books.map((b) => b.toObject({ getters: true })),
 //   });*
-// };
-
-// const createCart = async (req, res, next) => {
-//   const { cart, creator } = req.body;
-//   const createdCart = new Cart({
-//     cart,
-//     creator,
-//   });
-
-//   let user;
-
-//   try {
-//     user = await User.findById(creator);
-//   } catch (err) {
-//     return next(new HttpError("Creating book failed, please try again", 500));
-//   }
-
-//   if (!user) {
-//     return next(new HttpError("Could not find user for provide id", 404));
-//   }
 // };
 
 const createBook = async (req, res, next) => {
@@ -268,5 +223,4 @@ exports.createBook = createBook;
 exports.updateBook = updateBook;
 exports.deleteBook = deleteBook;
 exports.getBooksByIds = getBooksByIds;
-exports.getOrder = getOrder;
 // exports.getBooksByUserId = getBooksByUserId;

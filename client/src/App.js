@@ -19,29 +19,37 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [expirationDate, setExpirationDate] = useState();
-  const [cartItems, setCartItems] = useState();
+  const [cartItemsQuantity, setCartItemsQuantity] = useState();
+  const [checkingToken, setCheckingToken] = useState(true);
 
-  // const increment = useCallback(() => {
-  //   setCartItems((prevState) => prevState + 1);
-  // }, []);
-
-  // const decrement = useCallback(() => {
-  //   setCartItems((prevState) => (prevState > 0 ? prevState - 1 : 0));
-  // }, []);
+  const clearCart = useCallback(() => {
+    localStorage.removeItem("cart");
+    console.log("clearing cart");
+    setCartItemsQuantity(null);
+  }, []);
 
   const updateQuantity = useCallback(() => {
-    const CartData = JSON.parse(localStorage.getItem("cart"));
-    if (CartData) {
-      setCartItems(
-        CartData.reduce((sum, item) => {
+    try {
+      const CartData = JSON.parse(localStorage.getItem("cart"));
+      if (CartData) {
+        let cartStorageItemCount = CartData.reduce((sum, item) => {
           return sum + item.quantity;
-        }, 0)
-      );
+        }, 0);
+        cartStorageItemCount >= 0 && Number.isInteger(cartStorageItemCount)
+          ? setCartItemsQuantity(cartStorageItemCount)
+          : clearCart();
+      }
+    } catch (error) {
+      clearCart();
+      window.location.reload();
+      console.log("Something wrong with local storage");
     }
   }, []);
 
-  const setCartQantity = useCallback((updatedLength) => {
-    setCartItems(updatedLength);
+  const setCartQuantity = useCallback((updatedQuantity) => {
+    updatedQuantity >= 0 && Number.isInteger(updatedQuantity)
+      ? setCartItemsQuantity(updatedQuantity)
+      : clearCart();
   }, []);
 
   const login = useCallback((userId, token, expiration) => {
@@ -58,6 +66,7 @@ const App = () => {
         expiration: tokenExpirationDate.toISOString(),
       })
     );
+    setCheckingToken(false);
   }, []);
 
   const logout = useCallback(() => {
@@ -88,17 +97,8 @@ const App = () => {
         storageData.token,
         new Date(storageData.expiration)
       );
-    }
-  }, [login]);
-
-  useEffect(() => {
-    const storageData = JSON.parse(localStorage.getItem("cart"));
-    if (storageData && storageData.cart && storageData.cart.length !== 0) {
-      login(
-        storageData.userId,
-        storageData.token,
-        new Date(storageData.expiration)
-      );
+    } else {
+      setCheckingToken(false);
     }
   }, [login]);
 
@@ -112,10 +112,11 @@ const App = () => {
     routes = (
       <Switch>
         <Route path="/" component={ProductsPage} exact />
+        <Route path="/auth" component={AuthPage} exact />
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
-        <Route path="/cart" component={ShopCartPage} />
-        <Route path="/books/checkout" component={CheckoutPage} />
+        <Route path="/cart" component={ShopCartPage} exact />
+        <Route path="/checkout" component={CheckoutPage} exact />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>
@@ -127,12 +128,15 @@ const App = () => {
         <Route path="/auth" component={AuthPage} exact />
         <Route path="/books/add-product" component={NewProductPage} exact />
         <Route path="/books/edit-product/:bid" component={EditProductPage} />
-        <Route path="/cart" component={ShopCartPage} />
-        <Route path="/books/checkout" component={CheckoutPage} />
+        <Route path="/cart" component={ShopCartPage} exact />
         <Route path="/books/:bid" component={ProductPage} />
         <Redirect to="/" />
       </Switch>
     );
+  }
+
+  if (checkingToken) {
+    return <div>Loading Spinner</div>;
   }
 
   return (
@@ -147,11 +151,10 @@ const App = () => {
     >
       <MiscContext.Provider
         value={{
-          cartItems: cartItems,
-          // increment: increment,
-          // decrement: decrement,
+          cartItemsQuantity: cartItemsQuantity,
           updateQuantity: updateQuantity,
-          setCartQantity: setCartQantity,
+          setCartQuantity: setCartQuantity,
+          clearCart: clearCart,
         }}
       >
         <BrowserRouter>

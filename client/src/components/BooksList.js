@@ -3,6 +3,7 @@ import React from "react";
 import "./BooksList.css";
 import BookItem from "./BookItem";
 import OrderItem from "./OrderItem";
+import { Link } from "react-router-dom";
 
 const BooksList = (props) => {
   // if (props.items.length === 0) {
@@ -19,8 +20,7 @@ const BooksList = (props) => {
         <ul className={"order-list"}>
           {props.loadedOrder.confirmedOrder.map((book) => (
             <OrderItem
-              key={book.content.id}
-              id={book.content.id}
+              key={book.content._id}
               title={book.content.title}
               description={book.content.description}
               image={book.content.image}
@@ -30,7 +30,7 @@ const BooksList = (props) => {
           ))}
         </ul>
         <h2>{"Total Price: " + props.loadedOrder.totalPrice}</h2>
-        <h2>Change order</h2>
+        <Link to="/cart">Change Order</Link>
       </React.Fragment>
     );
   }

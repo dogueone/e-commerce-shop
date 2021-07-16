@@ -6,6 +6,7 @@ const path = require("path");
 // to create modular, mountable route handlers
 const usersRoutes = require("./routes/users-routes.js");
 const booksRoutes = require("./routes/books-routes.js");
+const orderRoutes = require("./routes/order-routes.js");
 const connectDB = require("./config/db");
 const HttpError = require("./models/http-error");
 
@@ -45,6 +46,7 @@ app.use("/", (req, res, next) => {
 
 app.use("/api/users", usersRoutes);
 app.use("/api/books", booksRoutes); // => /api/books/... routes will be forwarded
+app.use("/api/order", orderRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route", 404);

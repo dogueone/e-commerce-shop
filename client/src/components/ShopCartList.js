@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import ShopCartItem from "./ShopCartItem";
 import "./ShopCartList.css";
@@ -8,6 +8,8 @@ import { AuthContext } from "../context/auth-context";
 
 const ShopCartList = (props) => {
   const auth = useContext(AuthContext);
+  const location = useLocation();
+
   return (
     <ul className="cart-list-grid">
       <li className="cart-list-grid__header">
@@ -21,11 +23,7 @@ const ShopCartList = (props) => {
       {props.items.map((book) => (
         <ShopCartItem
           update={props.updateCart}
-          // quantity={
-          //   props.itemsQuantity.find((item) => {
-          //     return item.id === book.id;
-          //   }).quantity
-          // }
+          validLocalData={props.validLocalData}
           quantity={book.quantity}
           key={book.content.id}
           id={book.content.id}
@@ -40,14 +38,21 @@ const ShopCartList = (props) => {
           {auth.isLoggedIn ? (
             <Link
               to={{
-                pathname: "/books/checkout",
+                pathname: "/checkout",
                 state: { cartItems: props.items },
               }}
             >
               Order Now
             </Link>
           ) : (
-            <Button to={"/auth"}>Order</Button>
+            <Link
+              to={{
+                pathname: "/auth",
+                state: { prevLocation: location },
+              }}
+            >
+              Log In
+            </Link>
           )}
         </strong>
         <strong>{`total: ${props.items.reduce((sum, item) => {

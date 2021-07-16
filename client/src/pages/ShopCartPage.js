@@ -1,44 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
+import { MiscContext } from "../context/misc-context";
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import Card from "../components/UIElements/Card";
 import ShopCartList from "../components/ShopCartList";
+import ErrorModal from "../components/UIElements/ErrorModal";
 import "./ShopCartPage.css";
-
-let LocalData;
 
 const ShopCartPage = () => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [loadedCart, setLoadedCart] = useState(null);
-  const [checkout, setCheckout] = useState(null);
+  const [validLocalData, setValidLocalData] = useState(null);
 
-  const onOrderHandler = async () => {
-    // 1) Open CheckoutPage with orderData [{id:31dse1sqr1ewdas, quantity: 2},{id:31dse1sqrsdad54, quantity: 1},..]
-    // 2)
-    // const MutatedLoadedCart = [];
-    // loadedCart.forEach((item) => {
-    //   return MutatedLoadedCart.push(
-    //     (item = { id: item.content.id, quantity: item.quantity })
-    //   );
-    // });
-    // try {
-    //   const responseData = await sendRequest(
-    //     "http://localhost:5000/api/books/cart/order",
-    //     "POST",
-    //     JSON.stringify(MutatedLoadedCart),
-    //     {
-    //       "Content-Type": "application/json",
-    //     }
-    //   );
-    //   console.log(responseData);
-    //   setCheckout(responseData);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-  };
+  const misc = useContext(MiscContext);
 
-  const updateLoadedCartItem = (itemId, itemQuantity) => {
+  const updateLoadedCartItem = (itemId, itemQuantity, newValidLocalData) => {
     const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
     if (itemQuantity === 1) {
       if (loadedCart.length === 1) {
@@ -48,6 +25,7 @@ const ShopCartPage = () => {
           (cartItem) => cartItem.content.id !== itemId
         );
         setLoadedCart(updatedLoadedCart);
+        setValidLocalData(newValidLocalData);
       }
     } else {
       const selectedItem = loadedCartClone.find(
@@ -56,35 +34,84 @@ const ShopCartPage = () => {
       selectedItem.quantity -= 1; //to change reference.quantity in loadedCartClone
       const updatedLoadedCart = loadedCartClone;
       setLoadedCart(updatedLoadedCart);
+      setValidLocalData(newValidLocalData);
     }
   };
 
   useEffect(() => {
-    LocalData = JSON.parse(localStorage.getItem("cart"));
-    if (LocalData && LocalData.length !== 0) {
-      const LocalDataIds = LocalData.map((item) => item.id);
+    let Valid = true;
+    const notParsedLocalData = localStorage.getItem("cart");
+
+    if (notParsedLocalData === null) {
+      Valid = false;
+      misc.clearCart();
+    }
+
+    if (Valid && !notParsedLocalData) {
+      Valid = false;
+      misc.clearCart();
+      console.log("empty string");
+    }
+    let LocalData;
+    if (Valid) {
+      LocalData = JSON.parse(notParsedLocalData);
+      if (!Array.isArray(LocalData) || LocalData.length === 0) {
+        Valid = false;
+        misc.clearCart();
+        console.log("cart is an empty array or not an array, storage cleared");
+      }
+    }
+    let LocalDataIds;
+    if (Valid) {
+      LocalDataIds = LocalData.map((item) => item.id);
+      for (let i of LocalDataIds) {
+        if (!i || i.length != 24) {
+          Valid = false;
+          misc.clearCart();
+          console.log("cart is not valid");
+          break;
+        }
+      }
+    }
+
+    if (Valid) {
+      let loadedBooks;
       const fetchBooks = async () => {
         try {
-          const loadedBooks = await sendRequest(
+          loadedBooks = await sendRequest(
             `http://localhost:5000/api/books/local/${LocalDataIds}`
           );
-          const MutatedLocalData = [];
-          LocalData.forEach((item) => {
-            return MutatedLocalData.push(
-              (item = {
-                content: loadedBooks.books.find((book) => book.id === item.id),
-                quantity: item.quantity,
-              })
-            );
-          });
 
-          setLoadedCart(MutatedLocalData);
-        } catch (err) {}
+          if (loadedBooks) {
+            const MutatedLocalData = [];
+            LocalData.forEach((item) => {
+              const itemQuantity = item.quantity;
+              if (
+                isNaN(itemQuantity) ||
+                itemQuantity < 1 ||
+                !Number.isInteger(itemQuantity)
+              ) {
+                throw new Error("Wrong item quantity");
+              }
+              return MutatedLocalData.push(
+                (item = {
+                  content: loadedBooks.books.find(
+                    (book) => book.id === item.id
+                  ),
+                  quantity: itemQuantity,
+                })
+              );
+            });
+            setLoadedCart(MutatedLocalData);
+            setValidLocalData(notParsedLocalData);
+          }
+        } catch (err) {
+          setLoadedCart(null);
+          misc.clearCart();
+          console.log(err.message);
+        }
       };
       fetchBooks();
-    } else {
-      // localStorage.removeItem("cart");
-      // setLoadedCart(null);
     }
   }, [sendRequest]);
 
@@ -106,24 +133,20 @@ const ShopCartPage = () => {
     );
   }
 
-  if (checkout) {
-    return (
-      <div className="center">
-        <Card>
-          <h2>{JSON.stringify(checkout)}</h2>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="shop-cart">
-      <ShopCartList
-        items={loadedCart}
-        // itemsQuantity={LocalData}
-        updateCart={updateLoadedCartItem}
-      />
-    </div>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && !error && loadedCart && (
+        <div className="shop-cart">
+          <ShopCartList
+            items={loadedCart}
+            validLocalData={validLocalData}
+            // itemsQuantity={LocalData}
+            updateCart={updateLoadedCartItem}
+          />
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 

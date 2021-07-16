@@ -3,7 +3,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import "./CheckoutForm.css";
 
-export default function CheckoutForm() {
+export default function CheckoutForm(props) {
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
@@ -12,14 +12,19 @@ export default function CheckoutForm() {
   const stripe = useStripe(); //access the stripe library
   const elements = useElements();
 
-  const orderData = [
-    { id: "606dc59a75750e33d015983d", quantity: 2 },
-    { id: "607ea6bc39cfab365442ef60", quantity: 2 },
-  ];
+  // orderData should be [
+  //   { id: "606dc59a75750e33d015983d", quantity: 2 },
+  //   { id: "607ea6bc39cfab365442ef60", quantity: 2 },
+  // ];
 
   useEffect(() => {
+    //loadedOrder ={confirmedOrder: [{content:{...prop}, quantity: number}, {content: ..., qant...}...], totalPrice: number}
+    const orderData = props.loadedOrder.confirmedOrder.map((item) => {
+      return { id: item.content._id, quantity: item.quantity };
+    });
+
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:5000/api/users/payment", {
+    fetch("http://localhost:5000/api/order/payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,6 +83,7 @@ export default function CheckoutForm() {
       setSucceeded(true);
     }
   };
+
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement

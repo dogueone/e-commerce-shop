@@ -14,7 +14,7 @@ const StripeContainer = (props) => {
   return (
     <div className={"stripe"}>
       <Elements stripe={stripeTestPromise}>
-        <CheckoutForm />
+        <CheckoutForm loadedOrder={props.loadedOrder} />
       </Elements>
     </div>
   );
