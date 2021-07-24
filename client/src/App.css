@@ -1,12 +1,12 @@
 .main-content {
-  margin-top: 5rem;
-  width: 80%;
+  margin: 5rem auto;
+  max-width: 1260px;
 }
 
 .all-center {
   display: flex;
   flex-direction: column;
-  margin: 5rem auto 5rem auto;
+  margin: 0rem auto;
   justify-content: center;
   align-items: center;
 }

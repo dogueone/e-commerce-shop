@@ -1,0 +1,42 @@
+.search-bar {
+  /* border: 1px solid #333; */
+  /* border-radius: 2px; */
+  /* background-color: #ddd; */
+  /* width: 30rem; */
+  height: 2rem;
+  /* transition: width 250ms ease-in-out; */
+}
+
+.hideBar {
+  width: 0px;
+}
+
+.showBar {
+  width: 30rem;
+}
+
+.search-bar__input {
+  border: none;
+  background-color: #ddd;
+  width: 100%;
+  height: 100%;
+}
+
+.search-bar__input:focus {
+  outline: none;
+  border: 2px solid #333;
+}
+
+/* @keyframes expand {
+  0% {
+    width: 0%;
+  }
+
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 100%;
+  }
+} */

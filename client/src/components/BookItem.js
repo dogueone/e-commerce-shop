@@ -71,31 +71,41 @@ const BookItem = (props) => {
         {isLoading ? (
           <LoadingSpinner />
         ) : (
-          <Card className="book-item__content">
+          <Card className="book-item__content animated">
             <BookImage
               imageStyle="book-item__image"
               img={`http://localhost:5000/${props.image}`}
               alt={props.title}
             />
-            <div className="book-item__info">
-              <h2>{props.title}</h2>
+            <div className="book-item__category">
+              <p>Books</p>
             </div>
             <div className="book-item__info">
-              <h2>{props.description}</h2>
+              <p>{props.title}</p>
             </div>
-            <div>
-              <h2>{props.price}</h2>
+            {/* <div className="book-item__info">
+              <p>check description</p>
+            </div> */}
+            <div className="book-item__price">
+              <p>{"$" + props.price}</p>
             </div>
-            <Link to={`/books/edit-product/${props.id}`}>
-              <div className="editproduct-test">EDIT</div>
-            </Link>
-            <Button size={"small"} onClick={addToCartHandler}>
+            <Button size={"big"} onClick={addToCartHandler}>
               ADD TO CART
             </Button>
             {auth.isLoggedIn && auth.userId === props.creatorId && (
-              <Button size={"small"} inverse onClick={deleteBookHandler}>
-                DELETE
-              </Button>
+              <div className="book-item__update">
+                <Button
+                  inverse
+                  size={"small"}
+                  to={`/books/edit-product/${props.id}`}
+                  onClick={deleteBookHandler}
+                >
+                  EDIT
+                </Button>
+                <Button size={"small"} danger onClick={deleteBookHandler}>
+                  DELETE
+                </Button>
+              </div>
             )}
           </Card>
         )}

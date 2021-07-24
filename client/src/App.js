@@ -160,7 +160,7 @@ const App = () => {
         <BrowserRouter>
           <Fragment>
             <MainNavigation />
-            <main className="main-content all-center">{routes}</main>
+            <main className="main-content">{routes}</main>
           </Fragment>
         </BrowserRouter>
       </MiscContext.Provider>

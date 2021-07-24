@@ -1,17 +1,27 @@
 .card {
   margin: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  border-radius: 6px;
+  /* border-radius: 6px; */
   padding: 1rem;
   overflow: hidden;
   background: white;
 }
 
+.animated {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: box-shadow 250ms ease-in-out;
+}
+
+.animated:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
 .book-item__content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  /* height: 24rem; */
 }
 
 .order-item__content {

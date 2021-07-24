@@ -3,11 +3,18 @@
   justify-content: space-between;
   height: 100%;
   align-items: center;
+  max-width: 1260px;
+  min-width: 300px;
+  margin: auto;
 }
 
 .main-navigation__title {
-  padding: 0 0.6rem 0 0.6rem;
-  margin: 0 1rem 0 1rem;
+  font-weight: 500;
+  /* padding: 0 0.6rem; */
+  margin: 0 3rem;
+}
+
+.main-navigation__title:hover {
 }
 
 .main-navigation__menu-btn {
@@ -19,7 +26,7 @@
   flex-direction: column;
   justify-content: space-around;
   cursor: pointer;
-  margin: 0 1rem 0 1rem;
+  margin: 0 2rem 0 2rem;
   padding: 0;
 }
 
@@ -27,16 +34,16 @@
   display: block;
   height: 2.5px;
   width: 36px;
-  background-color: white;
+  background-color: black;
 }
 
 .main-navigation a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
 .main-navigation__header-nav {
-  display: none;
+  height: 100%;
 }
 
 .main-navigation__drawer-nav {
@@ -52,6 +59,6 @@
   }
 
   .main-navigation {
-    justify-content: space-around;
+    justify-content: space-between;
   }
 }
