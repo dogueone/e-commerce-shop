@@ -26,6 +26,7 @@ const getBooks = async (req, res, next) => {
 
 const getBookById = async (req, res, next) => {
   const bookId = req.params.bid;
+  console.log(bookId);
   let book;
   try {
     book = await Product.findById(bookId);

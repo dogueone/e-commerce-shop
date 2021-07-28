@@ -7,6 +7,10 @@
   background: white;
 }
 
+.void {
+  box-shadow: none;
+}
+
 .animated {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   transition: box-shadow 250ms ease-in-out;
@@ -25,6 +29,13 @@
 }
 
 .order-item__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-container {
   display: flex;
   flex-direction: row;
   align-items: center;

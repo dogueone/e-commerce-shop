@@ -3,6 +3,7 @@ import React from "react";
 import "./BooksList.css";
 import BookItem from "./BookItem";
 import OrderItem from "./OrderItem";
+import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 
 const BooksList = (props) => {
@@ -13,6 +14,26 @@ const BooksList = (props) => {
   //     </div>
   //   );
   // }
+
+  if (props.cart) {
+    return (
+      <ul className={"cart-list"}>
+        {props.items.map((book) => (
+          <CartItem
+            validLocalData={props.validLocalData}
+            updateCart={props.updateCart}
+            key={book.content.id}
+            id={book.content.id}
+            title={book.content.title}
+            description={book.content.description}
+            image={book.content.image}
+            price={book.content.price}
+            quantity={book.quantity}
+          />
+        ))}
+      </ul>
+    );
+  }
 
   if (props.order) {
     return (

@@ -5,4 +5,5 @@ export const MiscContext = createContext({
   updateQuantity: () => {},
   setCartQantity: () => {},
   clearCart: () => {},
+  addToCart: () => {},
 });

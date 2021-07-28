@@ -4,7 +4,8 @@ import { MiscContext } from "../context/misc-context";
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import Card from "../components/UIElements/Card";
-import ShopCartList from "../components/ShopCartList";
+// import ShopCartList from "../components/ShopCartList";
+import BooksList from "../components/BooksList";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import "./ShopCartPage.css";
 
@@ -15,23 +16,45 @@ const ShopCartPage = () => {
 
   const misc = useContext(MiscContext);
 
-  const updateLoadedCartItem = (itemId, itemQuantity, newValidLocalData) => {
-    const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
-    if (itemQuantity === 1) {
-      if (loadedCart.length === 1) {
-        setLoadedCart(null);
+  const updateLoadedCartItem = (
+    itemId,
+    itemQuantity,
+    newValidLocalData,
+    action,
+    max = 10
+  ) => {
+    if (action === "decrement") {
+      const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
+      if (itemQuantity === 1) {
+        if (loadedCart.length === 1) {
+          setLoadedCart(null);
+        } else {
+          const updatedLoadedCart = loadedCartClone.filter(
+            (cartItem) => cartItem.content.id !== itemId
+          );
+          setLoadedCart(updatedLoadedCart);
+          setValidLocalData(newValidLocalData);
+        }
       } else {
-        const updatedLoadedCart = loadedCartClone.filter(
-          (cartItem) => cartItem.content.id !== itemId
+        const selectedItem = loadedCartClone.find(
+          (item) => item.content.id === itemId
         );
+        selectedItem.quantity -= 1; //to mutate reference.quantity in loadedCartClone
+        const updatedLoadedCart = loadedCartClone;
         setLoadedCart(updatedLoadedCart);
         setValidLocalData(newValidLocalData);
       }
-    } else {
+    }
+    if (action === "increment") {
+      const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
       const selectedItem = loadedCartClone.find(
         (item) => item.content.id === itemId
       );
-      selectedItem.quantity -= 1; //to change reference.quantity in loadedCartClone
+      if (selectedItem.quantity === max) {
+        console.log("Maximum amount per transaction, can't add more"); //backup validation
+        return;
+      }
+      selectedItem.quantity += 1;
       const updatedLoadedCart = loadedCartClone;
       setLoadedCart(updatedLoadedCart);
       setValidLocalData(newValidLocalData);
@@ -65,7 +88,7 @@ const ShopCartPage = () => {
     if (Valid) {
       LocalDataIds = LocalData.map((item) => item.id);
       for (let i of LocalDataIds) {
-        if (!i || i.length != 24) {
+        if (!i || i.length !== 24) {
           Valid = false;
           misc.clearCart();
           console.log("cart is not valid");
@@ -138,10 +161,10 @@ const ShopCartPage = () => {
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && !error && loadedCart && (
         <div className="shop-cart">
-          <ShopCartList
+          <BooksList
+            cart
             items={loadedCart}
             validLocalData={validLocalData}
-            // itemsQuantity={LocalData}
             updateCart={updateLoadedCartItem}
           />
         </div>

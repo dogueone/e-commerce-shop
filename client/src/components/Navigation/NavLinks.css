@@ -62,9 +62,6 @@
   margin: 0 1rem;
 }
 
-.nav-links__search {
-}
-
 .search-icon {
   cursor: pointer;
   margin-right: 1rem;
@@ -77,7 +74,7 @@
     justify-content: flex-end;
     align-items: center;
     margin: auto 1rem auto 1rem;
-    width: calc(60 * 16px);
+    width: 50rem;
   }
 
   .nav-links li {
@@ -86,6 +83,12 @@
     align-items: center;
     height: 100%;
     margin: 0 1rem;
+  }
+
+  .nav-links li.nav-links__search {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   .nav-links li a {

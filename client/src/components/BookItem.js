@@ -29,41 +29,6 @@ const BookItem = (props) => {
     } catch (err) {}
   };
 
-  const addToCartHandler = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    // let updatedCart;
-    let existedItem;
-    try {
-      if (cart.length !== 0) {
-        existedItem = cart.find((item) => item.id === props.id);
-      }
-      if (existedItem) {
-        if (
-          isNaN(existedItem.quantity) ||
-          existedItem.quantity < 1 ||
-          !Number.isInteger(existedItem.quantity)
-        ) {
-          misc.clearCart();
-          throw new Error("wrong item quantity");
-        }
-        existedItem.quantity += 1; //increment item reference by 1
-        localStorage.setItem("cart", JSON.stringify(cart));
-      } else {
-        const cartItem = { id: props.id, quantity: 1 };
-        cart.push(cartItem);
-        localStorage.setItem("cart", JSON.stringify(cart));
-      }
-      misc.setCartQuantity(
-        cart.reduce((sum, item) => {
-          return sum + item.quantity;
-        }, 0)
-      );
-    } catch (error) {
-      misc.clearCart();
-      console.log(error.message);
-    }
-  };
-
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -72,11 +37,13 @@ const BookItem = (props) => {
           <LoadingSpinner />
         ) : (
           <Card className="book-item__content animated">
-            <BookImage
-              imageStyle="book-item__image"
-              img={`http://localhost:5000/${props.image}`}
-              alt={props.title}
-            />
+            <Link to={`books/${props.id}`}>
+              <BookImage
+                imageStyle="book-item__image"
+                img={`http://localhost:5000/${props.image}`}
+                alt={props.title}
+              />
+            </Link>
             <div className="book-item__category">
               <p>Books</p>
             </div>
@@ -89,7 +56,7 @@ const BookItem = (props) => {
             <div className="book-item__price">
               <p>{"$" + props.price}</p>
             </div>
-            <Button size={"big"} onClick={addToCartHandler}>
+            <Button size={"big"} onClick={() => misc.addToCart(props.id)}>
               ADD TO CART
             </Button>
             {auth.isLoggedIn && auth.userId === props.creatorId && (

@@ -28,6 +28,49 @@ const App = () => {
     setCartItemsQuantity(null);
   }, []);
 
+  const addToCart = (productId, amount = 1) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // let updatedCart;
+    let existedItem;
+    try {
+      if (cart.length !== 0) {
+        existedItem = cart.find((item) => item.id === productId);
+      }
+      if (existedItem) {
+        if (
+          isNaN(existedItem.quantity) ||
+          existedItem.quantity < 1 ||
+          !Number.isInteger(existedItem.quantity)
+        ) {
+          clearCart();
+          throw new Error("Wrong item quantity");
+        }
+        if (existedItem.quantity === 10) {
+          console.log("Maximum item quantity per transaction, can't add more");
+          return;
+        }
+        existedItem.quantity += amount;
+        console.log(existedItem.quantity);
+        if (existedItem.quantity > 10) {
+          existedItem.quantity = 10;
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } else {
+        const cartItem = { id: productId, quantity: amount > 10 ? 10 : amount };
+        cart.push(cartItem);
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      setCartQuantity(
+        cart.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
+    } catch (error) {
+      clearCart();
+      console.log(error.message);
+    }
+  };
+
   const updateQuantity = useCallback(() => {
     try {
       const CartData = JSON.parse(localStorage.getItem("cart"));
@@ -155,6 +198,7 @@ const App = () => {
           updateQuantity: updateQuantity,
           setCartQuantity: setCartQuantity,
           clearCart: clearCart,
+          addToCart: addToCart,
         }}
       >
         <BrowserRouter>

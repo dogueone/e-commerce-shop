@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import "./ShopCartItem.css";
 
+import Button from "./FormElements/Button";
 import BookImage from "./UIElements/BookImage";
 import { MiscContext } from "../context/misc-context";
 
@@ -57,9 +58,12 @@ const ShopCartItem = (props) => {
       <span>{props.quantity}</span>
       <span>{props.price * props.quantity}</span>
       <span>
-        <button className="cart-item__remove" onClick={deleteCartItemHandler}>
+        <input type="number" max={10} min={1}></input>
+        <Button onClick={deleteCartItemHandler}>Remove item</Button>
+        <Button></Button>
+        {/* <button className="cart-item__remove" onClick={deleteCartItemHandler}>
           X
-        </button>
+        </button> */}
       </span>
     </li>
   );

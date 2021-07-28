@@ -1,3 +1,13 @@
+:root {
+  --primary-color: #20b2aa;
+  --dark-color: #333333;
+  --light-color: #f4f4f4;
+  --danger-color: #fe696a;
+  --success-color: #58cc73;
+
+  --price-color: #4e54c8;
+}
+
 .main-content {
   margin: 5rem auto;
   max-width: 1260px;
@@ -10,3 +20,15 @@
   justify-content: center;
   align-items: center;
 }
+
+.unselectable {
+  user-select: none;
+}
+
+/* .center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+} */
