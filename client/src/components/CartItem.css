@@ -2,6 +2,16 @@
   width: 100%;
 }
 
+.cart-item__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e3e9ef;
+}
+
 .cart-item__content {
   display: flex;
   flex-direction: row;

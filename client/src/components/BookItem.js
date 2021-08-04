@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import Modal from "./UIElements/Modal";
 import { AuthContext } from "../context/auth-context";
 import { MiscContext } from "../context/misc-context";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
@@ -13,11 +14,18 @@ import "./BookItem.css";
 
 const BookItem = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
+  const [alert, setAlert] = useState(false);
 
   const auth = useContext(AuthContext);
   const misc = useContext(MiscContext);
 
+  const addToCartHandler = () => {
+    misc.addToCart(props.id);
+    props.setShowPopUp(true);
+  };
+
   const deleteBookHandler = async () => {
+    setAlert(false);
     try {
       await sendRequest(
         `http://localhost:5000/api/books/${props.id}`,
@@ -25,13 +33,30 @@ const BookItem = (props) => {
         null,
         { Authorization: "Bearer " + auth.token }
       );
-      props.deleteBook(props.id);
+      props.onDeleteBook(props.id);
     } catch (err) {}
   };
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
+
+      <Modal
+        header="Action Confirmation"
+        onCancel={() => setAlert(false)}
+        show={alert}
+        children={"This action will delete item permanently, are you sure?"}
+        footer={
+          <React.Fragment>
+            <Button neutral onClick={() => setAlert(false)}>
+              Decline
+            </Button>
+            <Button danger onClick={deleteBookHandler}>
+              Accept
+            </Button>
+          </React.Fragment>
+        }
+      ></Modal>
       <li className="book-item">
         {isLoading ? (
           <LoadingSpinner />
@@ -56,20 +81,19 @@ const BookItem = (props) => {
             <div className="book-item__price">
               <p>{"$" + props.price}</p>
             </div>
-            <Button size={"big"} onClick={() => misc.addToCart(props.id)}>
+            <Button size={"big"} onClick={addToCartHandler}>
               ADD TO CART
             </Button>
             {auth.isLoggedIn && auth.userId === props.creatorId && (
               <div className="book-item__update">
                 <Button
-                  inverse
+                  neutral
                   size={"small"}
                   to={`/books/edit-product/${props.id}`}
-                  onClick={deleteBookHandler}
                 >
                   EDIT
                 </Button>
-                <Button size={"small"} danger onClick={deleteBookHandler}>
+                <Button size={"small"} danger onClick={() => setAlert(true)}>
                   DELETE
                 </Button>
               </div>

@@ -12,6 +12,7 @@ import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
   VALIDATOR_MIN,
+  VALIDATOR_MAX,
 } from "../util/validators";
 import Input from "../components/FormElements/Input";
 import Button from "../components/FormElements/Button";
@@ -166,7 +167,11 @@ const EditProductPage = (props) => {
             element="input"
             type="number"
             label="Price"
-            validators={[VALIDATOR_REQUIRE(), VALIDATOR_MIN(1)]}
+            validators={[
+              VALIDATOR_REQUIRE(),
+              VALIDATOR_MIN(1),
+              VALIDATOR_MAX(999.99),
+            ]}
             errorText="Please enter a valid price."
             onInput={inputHandler}
             initialValue={loadedBook.price}

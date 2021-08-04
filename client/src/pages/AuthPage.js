@@ -137,8 +137,8 @@ const AuthPage = (props) => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
+      {isLoading && <LoadingSpinner asOverlay />}
       <Card className="authentication">
-        {isLoading && <LoadingSpinner asOverlay />}
         <h2>Login required</h2>
         <hr />
         <form onSubmit={authSubmitHandler}>

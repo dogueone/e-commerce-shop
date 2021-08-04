@@ -1,4 +1,4 @@
-.cart-list-grid {
+P.cart-list-grid {
   display: grid;
   grid-template-columns: 80vw;
   grid-auto-rows: minmax(100px, auto);

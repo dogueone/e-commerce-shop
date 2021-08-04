@@ -22,14 +22,21 @@ const App = () => {
   const [cartItemsQuantity, setCartItemsQuantity] = useState();
   const [checkingToken, setCheckingToken] = useState(true);
 
-  const clearCart = useCallback(() => {
+  const clearCart = useCallback((message = "Clearing cart") => {
     localStorage.removeItem("cart");
-    console.log("clearing cart");
+    console.log(message);
     setCartItemsQuantity(null);
   }, []);
 
   const addToCart = (productId, amount = 1) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart;
+    try {
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+    } catch (error) {
+      clearCart(error.name);
+      return;
+    }
+
     // let updatedCart;
     let existedItem;
     try {
@@ -42,7 +49,7 @@ const App = () => {
           existedItem.quantity < 1 ||
           !Number.isInteger(existedItem.quantity)
         ) {
-          clearCart();
+          // clearCart();
           throw new Error("Wrong item quantity");
         }
         if (existedItem.quantity === 10) {
@@ -66,8 +73,7 @@ const App = () => {
         }, 0)
       );
     } catch (error) {
-      clearCart();
-      console.log(error.message);
+      clearCart(error.message);
     }
   };
 
@@ -83,9 +89,8 @@ const App = () => {
           : clearCart();
       }
     } catch (error) {
-      clearCart();
-      window.location.reload();
-      console.log("Something wrong with local storage");
+      clearCart(error.name);
+      // window.location.reload();
     }
   }, []);
 

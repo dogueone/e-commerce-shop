@@ -1,20 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 
+import Button from "../components/FormElements/Button";
+import { AuthContext } from "../context/auth-context";
 import { MiscContext } from "../context/misc-context";
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import Card from "../components/UIElements/Card";
-// import ShopCartList from "../components/ShopCartList";
 import BooksList from "../components/BooksList";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import "./ShopCartPage.css";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const ShopCartPage = () => {
+const ShopCartPage = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
-  const [loadedCart, setLoadedCart] = useState(null);
+  const [loadedCart, setLoadedCart] = useState([]);
   const [validLocalData, setValidLocalData] = useState(null);
+  const [showBackup, setShowBackup] = useState(false);
 
   const misc = useContext(MiscContext);
+  const auth = useContext(AuthContext);
+
+  const clearLoadedCart = () => {
+    setLoadedCart([]);
+    setShowBackup(true);
+  };
 
   const updateLoadedCartItem = (
     itemId,
@@ -23,17 +33,37 @@ const ShopCartPage = () => {
     action,
     max = 10
   ) => {
+    if (action === "remove") {
+      const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
+      const updatedLoadedCart = loadedCartClone.filter(
+        (cartItem) => cartItem.content.id !== itemId
+      );
+      setLoadedCart(updatedLoadedCart);
+      misc.setCartQuantity(
+        updatedLoadedCart.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
+      setValidLocalData(JSON.stringify(newValidLocalData));
+    }
+
     if (action === "decrement") {
       const loadedCartClone = JSON.parse(JSON.stringify(loadedCart)); //to create deep clone
       if (itemQuantity === 1) {
         if (loadedCart.length === 1) {
-          setLoadedCart(null);
+          setLoadedCart([]);
+          misc.clearCart();
         } else {
           const updatedLoadedCart = loadedCartClone.filter(
             (cartItem) => cartItem.content.id !== itemId
           );
           setLoadedCart(updatedLoadedCart);
-          setValidLocalData(newValidLocalData);
+          misc.setCartQuantity(
+            updatedLoadedCart.reduce((sum, item) => {
+              return sum + item.quantity;
+            }, 0)
+          );
+          setValidLocalData(JSON.stringify(newValidLocalData));
         }
       } else {
         const selectedItem = loadedCartClone.find(
@@ -42,7 +72,12 @@ const ShopCartPage = () => {
         selectedItem.quantity -= 1; //to mutate reference.quantity in loadedCartClone
         const updatedLoadedCart = loadedCartClone;
         setLoadedCart(updatedLoadedCart);
-        setValidLocalData(newValidLocalData);
+        misc.setCartQuantity(
+          updatedLoadedCart.reduce((sum, item) => {
+            return sum + item.quantity;
+          }, 0)
+        );
+        setValidLocalData(JSON.stringify(newValidLocalData));
       }
     }
     if (action === "increment") {
@@ -51,47 +86,107 @@ const ShopCartPage = () => {
         (item) => item.content.id === itemId
       );
       if (selectedItem.quantity === max) {
-        console.log("Maximum amount per transaction, can't add more"); //backup validation
+        console.log("Maximum amount per transaction, can't add more");
         return;
       }
       selectedItem.quantity += 1;
       const updatedLoadedCart = loadedCartClone;
       setLoadedCart(updatedLoadedCart);
-      setValidLocalData(newValidLocalData);
+      misc.setCartQuantity(
+        updatedLoadedCart.reduce((sum, item) => {
+          return sum + item.quantity;
+        }, 0)
+      );
+      setValidLocalData(JSON.stringify(newValidLocalData));
     }
   };
 
+  //localstorage validation
   useEffect(() => {
     let Valid = true;
     const notParsedLocalData = localStorage.getItem("cart");
 
+    //Optional
+    //===============================//
+
     if (notParsedLocalData === null) {
       Valid = false;
-      misc.clearCart();
+      misc.clearCart("No cart");
+      setShowBackup(true);
     }
 
     if (Valid && !notParsedLocalData) {
       Valid = false;
-      misc.clearCart();
-      console.log("empty string");
+      misc.clearCart("Empty string");
+      setShowBackup(true);
     }
+
+    //===============================//
+
     let LocalData;
     if (Valid) {
-      LocalData = JSON.parse(notParsedLocalData);
-      if (!Array.isArray(LocalData) || LocalData.length === 0) {
+      try {
+        LocalData = JSON.parse(notParsedLocalData);
+      } catch (error) {
+        misc.clearCart(error.name);
+        setShowBackup(true);
         Valid = false;
-        misc.clearCart();
-        console.log("cart is an empty array or not an array, storage cleared");
       }
     }
+
+    //structure validation
+    if (Valid) {
+      if (!Array.isArray(LocalData) || LocalData.length === 0) {
+        Valid = false;
+        misc.clearCart("Cart is an empty array or not an array");
+        setShowBackup(true);
+      }
+    }
+
+    let UniqueProductsAmmount = 30; //hardcoded
+
+    if (Valid) {
+      if (LocalData.length > UniqueProductsAmmount) {
+        Valid = false;
+        misc.clearCart("Too much data");
+        setShowBackup(true);
+      }
+    }
+
+    if (Valid) {
+      for (let i of LocalData) {
+        if (Object.keys(i).length !== 2) {
+          Valid = false;
+          misc.clearCart("Wrong number of properties");
+          setShowBackup(true);
+          break;
+        }
+      }
+    }
+
+    //id validation
     let LocalDataIds;
     if (Valid) {
       LocalDataIds = LocalData.map((item) => item.id);
       for (let i of LocalDataIds) {
-        if (!i || i.length !== 24) {
+        console.log(typeof i === "string");
+        if (!i || !(typeof i === "string") || i.trim().length !== 24) {
           Valid = false;
-          misc.clearCart();
-          console.log("cart is not valid");
+          misc.clearCart("Not a valid id");
+          setShowBackup(true);
+          break;
+        }
+      }
+    }
+
+    //quantity validation
+    if (Valid) {
+      const LocalDataQuantities = LocalData.map((item) => item.quantity);
+      for (let i of LocalDataQuantities) {
+        if (!i || isNaN(i) || !Number.isInteger(i) || i < 1 || i > 10) {
+          Valid = false;
+          misc.clearCart("Wrong item quantity, not a valid quantity");
+          setShowBackup(true);
           break;
         }
       }
@@ -109,13 +204,6 @@ const ShopCartPage = () => {
             const MutatedLocalData = [];
             LocalData.forEach((item) => {
               const itemQuantity = item.quantity;
-              if (
-                isNaN(itemQuantity) ||
-                itemQuantity < 1 ||
-                !Number.isInteger(itemQuantity)
-              ) {
-                throw new Error("Wrong item quantity");
-              }
               return MutatedLocalData.push(
                 (item = {
                   content: loadedBooks.books.find(
@@ -126,49 +214,127 @@ const ShopCartPage = () => {
               );
             });
             setLoadedCart(MutatedLocalData);
+            misc.setCartQuantity(
+              MutatedLocalData.reduce((sum, item) => {
+                return sum + item.quantity;
+              }, 0)
+            );
             setValidLocalData(notParsedLocalData);
           }
         } catch (err) {
-          setLoadedCart(null);
-          misc.clearCart();
-          console.log(err.message);
+          setLoadedCart([]);
+          setShowBackup(true);
+          misc.clearCart(err.message);
         }
       };
       fetchBooks();
     }
   }, [sendRequest]);
 
-  if (isLoading) {
-    return (
-      <div className="center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  let content;
 
-  if (!loadedCart && !error) {
-    return (
-      <div className="center">
-        <Card>
-          <h2>Shoping cart is empty!</h2>
-        </Card>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   content = (
+  //     <div className="center">
+  //       <LoadingSpinner />
+  //     </div>
+  //   );
+  // }
+
+  // if (!loadedCart && !error) {
+  //   content = (
+  //     <div className="center">
+  //       <Card>
+  //         <h2>Shoping cart is empty!</h2>
+  //       </Card>
+  //     </div>
+  //   );
+  // }
+
+  // if (!isLoading && loadedCart) {
+  //   content = (
+
+  //   );
+  // }
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {!isLoading && !error && loadedCart && (
-        <div className="shop-cart">
-          <BooksList
-            cart
-            items={loadedCart}
-            validLocalData={validLocalData}
-            updateCart={updateLoadedCartItem}
-          />
+      {isLoading && <LoadingSpinner asOverlay />}
+      {showBackup && (
+        <div
+          style={{
+            position: "absolute",
+            top: "15%",
+            left: "40%",
+            fontSize: "1.5rem",
+            margin: "auto",
+            color: "#ddd",
+          }}
+        >
+          Shopping Cart is empty
         </div>
       )}
+      <article className="shop-cart">
+        <BooksList
+          cart
+          items={loadedCart}
+          validLocalData={validLocalData}
+          updateCart={updateLoadedCartItem}
+          clearCartState={clearLoadedCart}
+        />
+        <CSSTransition
+          timeout={500}
+          classNames="page-group1"
+          in={loadedCart.length > 0}
+          appear
+          unmountOnExit
+          mountOnEnter
+        >
+          <Card>
+            <aside className="shop-cart__order">
+              <section className="shop-cart__order--total">
+                <h4>Total</h4>
+                <p>
+                  {loadedCart
+                    .reduce((sum, item) => {
+                      return sum + item.content.price * item.quantity;
+                    }, 0)
+                    .toFixed(2)}
+                </p>
+              </section>
+              <section className="shop-cart__order--link">
+                {auth.isLoggedIn ? (
+                  <Button
+                    to={{
+                      pathname: "/checkout",
+                      state: { cartItems: loadedCart },
+                    }}
+                  >
+                    Order Now
+                  </Button>
+                ) : (
+                  <Button
+                    to={{
+                      pathname: "/auth",
+                      state: { prevLocation: props.location },
+                    }}
+                  >
+                    Log In
+                  </Button>
+                )}
+              </section>
+            </aside>
+          </Card>
+        </CSSTransition>
+        {/* <CSSTransition
+          in={loadedCart.length < 1 && !isLoading}
+          timeout={500}
+          classNames="page-group2"
+        >
+          
+        </CSSTransition> */}
+      </article>
     </React.Fragment>
   );
 };

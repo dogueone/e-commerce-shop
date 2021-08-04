@@ -27,7 +27,7 @@ router.post(
   [
     body("title").not().isEmpty(),
     body("description").isLength({ min: 5 }),
-    body("price").isFloat({ min: 0.1 }),
+    body("price").isFloat({ min: 0.1, max: 999.99 }),
   ],
   booksControllers.createBook
 );
@@ -37,7 +37,7 @@ router.patch(
   [
     body("title").not().isEmpty(),
     body("description").isLength({ min: 5 }),
-    body("price").isFloat({ min: 0.1 }),
+    body("price").isFloat({ min: 0.1, max: 999.99 }),
   ],
   booksControllers.updateBook
 );

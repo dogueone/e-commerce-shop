@@ -85,13 +85,17 @@ export default function CheckoutForm(props) {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form className="stripe-form" id="payment-form" onSubmit={handleSubmit}>
       <CardElement
         id="card-element"
         options={cardStyle}
         onChange={handleChange}
       />
-      <button disabled={processing || disabled || succeeded} id="submit">
+      <button
+        className="stripe-button"
+        disabled={processing || disabled || succeeded}
+        id="submit"
+      >
         <span id="button-text">
           {processing ? (
             <div className="spinner" id="spinner"></div>
@@ -133,6 +137,7 @@ export default function CheckoutForm(props) {
 // //     },
 // //   },
 // // };
+
 // const CARD_OPTIONS = {
 //   iconStyle: "solid",
 //   style: {
@@ -152,76 +157,3 @@ export default function CheckoutForm(props) {
 //     },
 //   },
 // };
-
-// const PaymentForm = () => {
-//   const [success, setSuccess] = useState(false);
-//   const stripe = useStripe();
-//   const elements = useElements();
-
-//   const handleSubmit = async (event) => {
-//     // Block native form submission.
-//     event.preventDefault();
-
-//     if (!stripe || !elements) {
-//       // Stripe.js has not loaded yet. Make sure to disable
-//       // form submission until Stripe.js has loaded.
-//       return;
-//     }
-
-//     // Get a reference to a mounted CardElement. Elements knows how
-//     // to find your CardElement because there can only ever be one of
-//     // each type of element.
-//     const cardElement = elements.getElement(CardElement);
-
-//     // Use your card Element with other Stripe.js APIs
-//     const { error, paymentMethod } = await stripe.createPaymentMethod({
-//       type: "card",
-//       card: cardElement,
-//     });
-
-//     if (error) {
-//       console.log("[error]", error);
-//     } else {
-//       try {
-//         const { id } = paymentMethod;
-//         const response = await fetch(
-//           "http://localhost:5000/api/users/payment",
-//           {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ amount: 300, id: id }),
-//           }
-//         );
-//         if (response.data.success) {
-//           console.log("Successful payment");
-//           setSuccess(true);
-//         }
-//       } catch (err) {
-//         console.log(err.message);
-//       }
-//     }
-//   };
-
-//   return (
-//     <React.Fragment>
-//       {!success ? (
-//         <form onSubmit={handleSubmit}>
-//           <fieldset className="FormGroup">
-//             <div className="FormRow">
-//               <CardElement options={CARD_OPTIONS} />
-//             </div>
-//           </fieldset>
-//           <button type="submit" disabled={!stripe}>
-//             Pay
-//           </button>
-//         </form>
-//       ) : (
-//         <h2>Enjoy your product</h2>
-//       )}
-//     </React.Fragment>
-//   );
-// };
-
-// export default PaymentForm;

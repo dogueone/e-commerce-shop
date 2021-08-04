@@ -15,6 +15,13 @@
   background: brown;
 } */
 
+.book-item {
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .book-item__category {
   font-size: 0.75rem;
   color: #7d879c;

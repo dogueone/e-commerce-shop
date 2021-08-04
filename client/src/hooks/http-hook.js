@@ -4,6 +4,10 @@ export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  const clearError = () => {
+    setError(null);
+  };
+
   const activeHttpRequests = useRef([]);
 
   const sendRequest = useCallback(
@@ -30,11 +34,11 @@ export const useHttpClient = () => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-
         setIsLoading(false);
         return responseData;
         //we do not make it into the catch block if we have 4xx or 5xx status codes(because of fetch API)
       } catch (err) {
+        console.log("setting error");
         setError(err.message);
         setIsLoading(false);
         throw err;
@@ -42,10 +46,6 @@ export const useHttpClient = () => {
     },
     []
   );
-
-  const clearError = () => {
-    setError(null);
-  };
 
   useEffect(() => {
     return () => {

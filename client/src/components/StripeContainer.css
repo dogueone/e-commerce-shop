@@ -11,16 +11,18 @@ body {
   align-content: center;
   height: 100vh;
   width: 100vw;
-}
-form {
-  width: 30vw;
+} */
+
+.stripe-form {
+  /* width: 500px; */
   align-self: center;
-  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+  /* box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
     0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
-  border-radius: 7px;
+  border-radius: 7px; */
   padding: 40px;
+  min-width: 342px;
 }
-input {
+/* input {
   border-radius: 6px;
   margin-bottom: 6px;
   padding: 12px;
@@ -32,7 +34,7 @@ input {
   box-sizing: border-box;
 } */
 
-/* .result-message {
+.result-message {
   line-height: 22px;
   font-size: 16px;
 }
@@ -64,7 +66,7 @@ input {
   margin-bottom: 32px;
 }
 
-button {
+.stripe-button {
   background: #5469d4;
   font-family: Arial, sans-serif;
   color: #ffffff;
@@ -79,10 +81,11 @@ button {
   box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
   width: 100%;
 }
-button:hover {
+
+.stripe-button:hover {
   filter: contrast(115%);
 }
-button:disabled {
+.stripe-button:disabled {
   opacity: 0.5;
   cursor: default;
 }
@@ -148,4 +151,4 @@ button:disabled {
   form {
     width: 80vw;
   }
-} */
+}

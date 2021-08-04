@@ -36,6 +36,18 @@
   background-color: var(--success-color);
 }
 
+.button--neutral {
+  background-color: lightgrey;
+  border-color: lightgrey;
+  text-align: center;
+}
+
+.button--neutral:hover,
+.button--neutral:active {
+  background-color: grey;
+  border-color: grey;
+}
+
 .button--danger {
   background-color: var(--danger-color);
   border-color: var(--danger-color);
@@ -61,6 +73,5 @@
 }
 
 .button--big {
-  font-weight: bold;
   width: 100%;
 }

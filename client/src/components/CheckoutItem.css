@@ -1,0 +1,4 @@
+.checkout-item-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(4, 1fr);
+}

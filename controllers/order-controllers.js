@@ -8,10 +8,18 @@ const getOrder = async (req, res, next) => {
   let totalPrice = 0;
   let bookId;
   try {
+    if (orderData.length < 1) {
+      //optional just in case
+      throw Error;
+    }
     for (item of orderData) {
       bookId = item.id;
       const book = await Product.findById(item.id);
       totalPrice += book.price * item.quantity;
+      if (totalPrice <= 0) {
+        //optional just in case
+        throw Error;
+      }
       confirmedOrder.push({ content: book, quantity: item.quantity });
     }
   } catch (err) {
