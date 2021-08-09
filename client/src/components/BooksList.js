@@ -60,7 +60,6 @@ const BooksList = (props) => {
               validLocalData={props.validLocalData}
               updateCart={props.updateCart}
               clearCartState={props.clearCartState}
-              key={book.content.id}
               id={book.content.id}
               title={book.content.title}
               description={book.content.description}
@@ -75,23 +74,23 @@ const BooksList = (props) => {
   }
 
   return (
-    <TransitionGroup component="ul" className="books-list">
+    <ul className="books-list">
       {props.items.map((book) => (
-        <CSSTransition key={book.id} classNames="book-item" timeout={500}>
-          <BookItem
-            key={book.id}
-            id={book.id}
-            title={book.title}
-            description={book.description}
-            image={book.image}
-            price={book.price}
-            onDeleteBook={props.onDeleteBook}
-            creatorId={book.creator}
-            setShowPopUp={props.setShowPopUp}
-          />
-        </CSSTransition>
+        <BookItem
+          key={book.id}
+          id={book.id}
+          title={book.title}
+          description={book.description}
+          image={book.image}
+          price={book.price}
+          onDeleteBook={props.onDeleteBook}
+          creatorId={book.creator}
+          dispatch={props.dispatch}
+          popUpList={props.popUpList}
+          // order={}
+        />
       ))}
-    </TransitionGroup>
+    </ul>
   );
 };
 

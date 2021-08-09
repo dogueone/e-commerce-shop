@@ -6,4 +6,6 @@ export const MiscContext = createContext({
   setCartQantity: () => {},
   clearCart: () => {},
   addToCart: () => {},
+  sorting: "A-Z Order",
+  setSorting: () => {},
 });

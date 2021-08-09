@@ -1,0 +1,29 @@
+.sort {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sort-label {
+  white-space: nowrap;
+  font-size: 1.1rem;
+  font-weight: 450;
+  margin-left: 1rem;
+  padding: 0 1rem;
+}
+
+.sort-dropdown {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  appearance: none;
+  width: 140px;
+  height: 37px;
+  margin-right: 1rem;
+  padding-left: 0.6rem;
+  padding-right: 1rem;
+  background-image: url("../icons/expand.svg");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem top 50%;
+}

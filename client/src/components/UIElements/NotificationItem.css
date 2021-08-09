@@ -1,4 +1,4 @@
-.pop-up {
+/* .pop-up {
   position: absolute;
   height: 50px;
   width: 200px;
@@ -14,24 +14,40 @@
   justify-content: center;
   align-items: center;
   z-index: 5;
-}
+} */
 
-.pop-up-enter {
+.notification-enter {
   transform: translateY(-3rem);
   opacity: 0;
 }
 
-.pop-up-enter-active {
+.notification-enter-active {
   transform: translateY(0);
   opacity: 1;
   transition: all 500ms;
 }
 
-.pop-up-exit {
+.notification-exit {
+  transform: translateY(0);
   opacity: 1;
 }
 
-.pop-up-exit-active {
+.notification-exit-active {
+  transform: translateX(-10rem);
   opacity: 0;
   transition: all 1000ms;
+}
+
+.notification {
+  background-color: brown;
+  width: 400px;
+  height: 2rem;
+}
+
+.add-to-cart {
+  background-color: green;
+}
+
+.delete-item {
+  background-color: red;
 }

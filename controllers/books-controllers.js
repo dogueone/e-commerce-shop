@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 
@@ -98,7 +97,7 @@ const createBook = async (req, res, next) => {
     title,
     image: req.file.path,
     description,
-    price: Number.price.toFixed(2),
+    price: Number(price).toFixed(2),
     creator,
   });
 
@@ -180,7 +179,7 @@ const deleteBook = async (req, res, next) => {
 
   try {
     book = await Product.findById(bookId).populate("creator");
-    throw error;
+    // throw error;
   } catch (err) {
     return next(
       new HttpError("Fetching book failed, please try again later", 500)

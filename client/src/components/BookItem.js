@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import Modal from "./UIElements/Modal";
 import { AuthContext } from "../context/auth-context";
@@ -21,11 +22,29 @@ const BookItem = (props) => {
 
   const addToCartHandler = () => {
     misc.addToCart(props.id);
-    props.setShowPopUp(true);
+    // props.setPopUpList((prevState) => [
+    //   ...prevState,
+    //   { id: props.id, content: "Added to cart" },
+    // ]);
+
+    props.dispatch({
+      type: "ADDTOCART",
+      payload: {
+        ukey: uuidv4(),
+        content: props.title + " has been added to cart",
+      },
+    });
   };
 
   const deleteBookHandler = async () => {
     setAlert(false);
+    props.dispatch({
+      type: "DELETEITEM",
+      payload: {
+        title: props.title,
+        content: props.title + " has been deleted",
+      },
+    });
     try {
       await sendRequest(
         `http://localhost:5000/api/books/${props.id}`,
