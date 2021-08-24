@@ -1,0 +1,38 @@
+.expanded-layout {
+  /* display: grid;
+  grid-template-columns: 3fr, 1fr;
+  grid-template-areas:
+    "header header header"
+    "list list expandedItem"; */
+  display: flex;
+  justify-content: flex-start;
+}
+
+.expanded-item-enter {
+  opacity: 0;
+  transform: translateX(15rem);
+}
+.expanded-item-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 500ms;
+}
+.expanded-item-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.expanded-item-exit-active {
+  opacity: 0;
+  transform: translateX(15rem);
+  transition: all 500ms ease;
+}
+
+.expanded-item-appear {
+  opacity: 0;
+  transform: translateX(15rem);
+}
+.expanded-item-appear-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 500ms;
+}

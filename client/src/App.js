@@ -22,7 +22,7 @@ const App = () => {
   const [cartItemsQuantity, setCartItemsQuantity] = useState();
   const [checkingToken, setCheckingToken] = useState(true);
   const [sorting, setSorting] = useState("A-Z Order");
-  console.log(sorting);
+
   const clearCart = useCallback((message = "Clearing cart") => {
     localStorage.removeItem("cart");
     console.log(message);

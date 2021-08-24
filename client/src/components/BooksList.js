@@ -1,17 +1,14 @@
-import React from "react";
+import React, { createRef } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import FlipMove from "react-flip-move";
 
-import {
-  CSSTransition,
-  SwitchTransition,
-  swithcRTransitionGroup,
-  TransitionGroup,
-} from "react-transition-group";
+import SortAnimationList from "../components/SortAnimationList";
 import CheckoutItem from "./CheckoutItem";
 import "./BooksList.css";
 import BookItem from "./BookItem";
-import OrderItem from "./OrderItem";
+// import OrderItem from "./OrderItem";
 import CartItem from "./CartItem";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const BooksList = (props) => {
   // if (props.items.length === 0) {
@@ -74,9 +71,18 @@ const BooksList = (props) => {
   }
 
   return (
-    <ul className="books-list">
+    // <ul className="books-list">
+    <FlipMove
+      typeName="ul"
+      className={`books-list ${props.shrinkOnExpand && "book-list--shrink"}`}
+      // staggerDurationBy={150}
+      enterAnimation="fade"
+      leaveAnimation="fade"
+    >
+      {/* <SortAnimationList> */}
       {props.items.map((book) => (
         <BookItem
+          ref={createRef()}
           key={book.id}
           id={book.id}
           title={book.title}
@@ -87,10 +93,13 @@ const BooksList = (props) => {
           creatorId={book.creator}
           dispatch={props.dispatch}
           popUpList={props.popUpList}
+          expandHandler={props.expandHandler}
           // order={}
         />
       ))}
-    </ul>
+      {/* </SortAnimationList> */}
+    </FlipMove>
+    // </ul>
   );
 };
 

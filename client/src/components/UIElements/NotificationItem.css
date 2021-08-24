@@ -16,38 +16,43 @@
   z-index: 5;
 } */
 
+.notification {
+  display: flex;
+  align-items: center;
+  background-color: brown;
+  border-radius: 10px;
+  margin: 0.15rem;
+  color: black;
+  padding: 0.5rem 0.75rem;
+  width: 20rem;
+}
+
 .notification-enter {
-  transform: translateY(-3rem);
+  transform: translateY(3rem);
   opacity: 0;
 }
 
 .notification-enter-active {
-  transform: translateY(0);
+  transform: translateY(0rem);
   opacity: 1;
   transition: all 500ms;
 }
 
 .notification-exit {
-  transform: translateY(0);
+  transform: translateY(0rem);
   opacity: 1;
 }
 
 .notification-exit-active {
-  transform: translateX(-10rem);
+  transform: translateX(6rem);
   opacity: 0;
   transition: all 1000ms;
 }
 
-.notification {
-  background-color: brown;
-  width: 400px;
-  height: 2rem;
-}
-
 .add-to-cart {
-  background-color: green;
+  background-color: var(--success-color);
 }
 
 .delete-item {
-  background-color: red;
+  background-color: var(--danger-color);
 }

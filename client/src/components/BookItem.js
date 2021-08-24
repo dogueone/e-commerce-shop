@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,27 +13,51 @@ import BookImage from "./UIElements/BookImage";
 import Card from "./UIElements/Card";
 import "./BookItem.css";
 
-const BookItem = (props) => {
+const BookItem = forwardRef((props, ref) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [alert, setAlert] = useState(false);
 
   const auth = useContext(AuthContext);
   const misc = useContext(MiscContext);
 
-  const addToCartHandler = () => {
-    misc.addToCart(props.id);
-    // props.setPopUpList((prevState) => [
-    //   ...prevState,
-    //   { id: props.id, content: "Added to cart" },
-    // ]);
+  const imageClickHandler = () => {
+    props.expandHandler(props.id);
+  };
 
-    props.dispatch({
-      type: "ADDTOCART",
-      payload: {
-        ukey: uuidv4(),
-        content: props.title + " has been added to cart",
-      },
-    });
+  const declineHandler = () => {
+    setAlert(false);
+  };
+
+  const addToCartHandler = () => {
+    //TO CHECK FOR ITEM QUANTITY (TEMPORARILY SOLUTION), because there is no data about max available items to sell for now
+    let quantity;
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const queryItem = cart.find((item) => item.id === props.id);
+      quantity = queryItem.quantity;
+    } catch (error) {
+      // clearCart(error.name);
+      console.log(error);
+    }
+    misc.addToCart(props.id);
+
+    if (quantity && quantity >= 10) {
+      props.dispatch({
+        type: "MAXIMUMITEMS",
+        payload: {
+          ukey: uuidv4(),
+          content: "Can't add more than 10 items",
+        },
+      });
+    } else {
+      props.dispatch({
+        type: "ADDTOCART",
+        payload: {
+          ukey: uuidv4(),
+          content: props.title + " added to cart",
+        },
+      });
+    }
   };
 
   const deleteBookHandler = async () => {
@@ -42,7 +66,7 @@ const BookItem = (props) => {
       type: "DELETEITEM",
       payload: {
         title: props.title,
-        content: props.title + " has been deleted",
+        content: props.title + " successfully deleted",
       },
     });
     try {
@@ -59,15 +83,14 @@ const BookItem = (props) => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-
       <Modal
         header="Action Confirmation"
-        onCancel={() => setAlert(false)}
+        onCancel={declineHandler}
         show={alert}
         children={"This action will delete item permanently, are you sure?"}
         footer={
           <React.Fragment>
-            <Button neutral onClick={() => setAlert(false)}>
+            <Button neutral onClick={declineHandler}>
               Decline
             </Button>
             <Button danger onClick={deleteBookHandler}>
@@ -76,24 +99,28 @@ const BookItem = (props) => {
           </React.Fragment>
         }
       ></Modal>
-      <li className="book-item">
+      <li ref={ref}>
         {isLoading ? (
           <LoadingSpinner />
         ) : (
-          <Card className="book-item__content animated">
-            <Link to={`books/${props.id}`}>
-              <BookImage
-                imageStyle="book-item__image"
-                img={`http://localhost:5000/${props.image}`}
-                alt={props.title}
-              />
-            </Link>
+          <Card className="book-item__content">
+            {/* <Link to={`books/${props.id}`}> */}
+            <BookImage
+              onClick={imageClickHandler}
+              imageStyle="book-item__image"
+              img={`http://localhost:5000/${props.image}`}
+              alt={props.title}
+            />
+            {/* </Link> */}
             <div className="book-item__category">
               <p>Books</p>
             </div>
-            <div className="book-item__info">
-              <p>{props.title}</p>
-            </div>
+
+            <Link to={`books/${props.id}`}>
+              <div className="book-item__info">
+                <p>{props.title}</p>
+              </div>
+            </Link>
             {/* <div className="book-item__info">
               <p>check description</p>
             </div> */}
@@ -122,6 +149,6 @@ const BookItem = (props) => {
       </li>
     </React.Fragment>
   );
-};
+});
 
 export default BookItem;

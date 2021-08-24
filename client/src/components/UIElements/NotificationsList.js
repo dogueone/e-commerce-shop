@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, createRef } from "react";
+import FlipMove from "react-flip-move";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import NotificationItem from "./NotificationItem";
@@ -13,7 +14,7 @@ const NotificationsList = ({ popUpList, dispatch }) => {
         console.log(list.length);
         dispatch({ type: "ITEMTIMEOUT" });
       }
-    }, 1000);
+    }, 1250);
     return () => {
       console.log("clear");
       clearTimeout(timer);
@@ -21,27 +22,56 @@ const NotificationsList = ({ popUpList, dispatch }) => {
   }, [popUpList]);
 
   return (
-    <TransitionGroup component="ul" className="notifications-list">
+    // <TransitionGroup component="ul" className="notifications-list">
+    <FlipMove
+      enterAnimation={{
+        from: {
+          transform: "translateY(5rem)",
+          opacity: 0.1,
+        },
+        to: {
+          transform: "translateY(0rem)",
+        },
+      }}
+      leaveAnimation={{
+        from: {
+          transform: "translateY(-2.8rem)",
+        },
+        to: {
+          transform: "translateY(-2.8rem) translateX(5rem)",
+
+          opacity: 0,
+        },
+      }}
+      typeName="ul"
+      className="notifications-list"
+      // enterAnimation="fade"
+      // leaveAnimation="fade"
+      duration="250"
+    >
       {popUpList.map((item) => {
         return (
-          <CSSTransition
-            classNames="notification"
+          // <CSSTransition
+          //   classNames="notification"
+          //   key={item.ukey}
+          //   mountOnEnter
+          //   unmountOnExit
+          //   timeout={{
+          //     enter: 500,
+          //     exit: 1000,
+          //   }}
+          // >
+          <NotificationItem
+            ref={() => createRef()}
             key={item.ukey}
-            mountOnEnter
-            unmountOnExit
-            timeout={{
-              enter: 500,
-              exit: 1000,
-            }}
-          >
-            <NotificationItem
-              content={item.content}
-              popUpStyle={item.popUpStyle}
-            />
-          </CSSTransition>
+            content={item.content}
+            popUpStyle={item.popUpStyle}
+          />
+          // </CSSTransition>
         );
       })}
-    </TransitionGroup>
+    </FlipMove>
+    // </TransitionGroup>
   );
 };
 

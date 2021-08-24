@@ -1,10 +1,14 @@
 .books-list {
   list-style: none;
   display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  align-items: center;
   flex-wrap: wrap;
+  /* justify-content: space-evenly; */
+  gap: 8px;
+  margin: 0 1rem;
+}
+
+.book-list--shrink {
+  grid-area: list;
 }
 
 .checkout-list {

@@ -41,3 +41,10 @@
   align-items: center;
   justify-content: space-between;
 } */
+
+.expanded-item {
+  width: 28.4rem;
+  height: fit-content;
+  overflow: visible;
+  margin-right: 1.6rem;
+}
