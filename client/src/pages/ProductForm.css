@@ -3,12 +3,11 @@
   flex-direction: column;
   margin: auto;
   width: 90%;
-  max-width: 40rem;
+  max-width: 36rem;
+  min-width: 15rem;
   justify-content: center;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   border-radius: 6px;
-}
-
-.product-form__btn {
+  background-color: white;
 }

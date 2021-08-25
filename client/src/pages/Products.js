@@ -175,11 +175,12 @@ const Products = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            // margin: "0rem 1rem",
+            paddingBottom: "1rem",
           }}
         >
           <div
             style={{
+              color: "white",
               fontSize: "1.3rem",
               fontWeight: "450",
               whiteSpace: "nowrap",

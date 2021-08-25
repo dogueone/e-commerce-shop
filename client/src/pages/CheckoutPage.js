@@ -94,6 +94,7 @@ const CheckoutPage = () => {
                 4000 0000 0000 9995 - payment declined
               </p>
               <Button
+                mr
                 style={{ height: "2.5rem" }}
                 neutral
                 onClick={() => setPaymentAction(false)}
@@ -197,7 +198,7 @@ const CheckoutPage = () => {
                 marginRight: "16px",
               }}
             >
-              <Button size={"big"} onClick={() => setPaymentAction(true)}>
+              <Button wide onClick={() => setPaymentAction(true)}>
                 Pay
               </Button>
             </div>

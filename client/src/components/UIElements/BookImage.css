@@ -1,6 +1,7 @@
 .book-item__image {
   width: 200px;
   height: 200px;
+  margin-bottom: 0.375rem;
 }
 
 .book-item__image img {
@@ -23,8 +24,8 @@
 }
 
 .cart-item__image {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 }
 
 .cart-item__image img {

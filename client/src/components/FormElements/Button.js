@@ -26,7 +26,7 @@ const Button = (props) => {
           props.inverse && "button--inverse"
         } ${props.danger && "button--danger"} ${
           props.neutral && "button--neutral"
-        }`}
+        } ${props.wide && "wide"} ${props.mr && "mr-1"}`}
       >
         {props.children}
       </Link>
@@ -39,7 +39,7 @@ const Button = (props) => {
         props.inverse && "button--inverse"
       } ${props.danger && "button--danger"} ${
         props.neutral && "button--neutral"
-      }`}
+      } ${props.wide && "wide"} ${props.mr && "mr-1"}`}
       type={props.type}
       onClick={props.onClick}
       disabled={props.disabled}

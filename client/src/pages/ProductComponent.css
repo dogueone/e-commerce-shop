@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: space-between;
   grid-area: expandedItem;
+  gap: 1rem;
 }
 
 .expanded-item--hide-badge {
@@ -16,7 +17,7 @@
   border-bottom-right-radius: 150px;
   font-size: 2rem;
   cursor: pointer;
-  height: 4rem;
+  height: 2.7rem;
   width: 1.5rem;
   display: flex;
   justify-content: center;
@@ -45,10 +46,24 @@
   justify-content: center;
 }
 
+.product-component__content--info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .product-component__content--price {
   align-self: flex-start;
   color: var(--price-color);
   font-size: 1.6rem;
+}
+
+.product-component__content--title {
+  font-size: 1.6rem;
+  font-weight: 450;
+  color: var(--black-color);
+  margin-right: 2rem;
 }
 
 .product-component__content--button {

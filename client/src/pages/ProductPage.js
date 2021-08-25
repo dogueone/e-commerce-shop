@@ -102,45 +102,58 @@ const ProductPage = () => {
         </div>
       )} */}
       {!isLoading && loadedProduct && (
-        <Card>
-          <div className="product-page">
-            <div className="product-page__image">
-              <BookImage
-                imageStyle="product-image"
-                img={`http://localhost:5000/${loadedProduct.image}`}
-                alt={loadedProduct.title}
-              />
-            </div>
-            <div className="product-page__content">
-              <div className="product-page__content--price">
-                {`$${loadedProduct.price}`}
-              </div>
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-                tempore, modi laudantium deleniti saepe mollitia architecto
-                impedit beatae incidunt a sint officia quaerat unde obcaecati,
-                cum distinctio odio? Deserunt, aliquid?
-              </div>
-              <div className="product-page__content--cart">
-                <select onChange={onSelectHandler}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                <Button
-                  onClick={() => {
-                    console.log(amount);
-                    misc.addToCart(loadedProduct.id, amount);
-                  }}
-                >
-                  Add Product
-                </Button>
-              </div>
-            </div>
+        <>
+          <div
+            style={{
+              color: "white",
+              fontSize: "1.5rem",
+              fontWeight: "450",
+              whiteSpace: "nowrap",
+              marginLeft: "3rem",
+            }}
+          >
+            {loadedProduct.title}
           </div>
-        </Card>
+          <Card>
+            <div className="product-page">
+              <div className="product-page__image">
+                <BookImage
+                  imageStyle="product-image"
+                  img={`http://localhost:5000/${loadedProduct.image}`}
+                  alt={loadedProduct.title}
+                />
+              </div>
+              <div className="product-page__content">
+                <div className="product-page__content--price">
+                  {`$${loadedProduct.price}`}
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
+                  tempore, modi laudantium deleniti saepe mollitia architecto
+                  impedit beatae incidunt a sint officia quaerat unde obcaecati,
+                  cum distinctio odio? Deserunt, aliquid?
+                </div>
+                <div className="product-page__content--cart">
+                  <select onChange={onSelectHandler}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <Button
+                    onClick={() => {
+                      console.log(amount);
+                      misc.addToCart(loadedProduct.id, amount);
+                    }}
+                  >
+                    Add Product
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </>
       )}
     </React.Fragment>
   );

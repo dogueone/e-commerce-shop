@@ -22,18 +22,27 @@
 }
 
 .book-item__info {
-  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--black-color);
+  font-size: 0.85rem;
   cursor: pointer;
   font-weight: 500;
+  margin-bottom: 2px;
 }
 
 .book-item__price {
   color: #4e54c8;
+  margin-bottom: 6px;
 }
 
 .book-item__image {
-  align-self: center;
   cursor: pointer;
+}
+.book-item__update {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 /* .book-item__image:hover {

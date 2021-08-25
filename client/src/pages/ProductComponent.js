@@ -101,8 +101,11 @@ const ProductComponent = (props) => {
             />
           </div>
           <div className="product-component__content">
-            <div className="product-component__content--price">
-              {`$${props.data.price}`}
+            <div className="product-component__content--info">
+              <span className="product-component__content--price">{`$${props.data.price}`}</span>
+              <span className="product-component__content--title">
+                {props.data.title}
+              </span>
             </div>
             <div>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius

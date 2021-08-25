@@ -139,8 +139,17 @@ const AuthPage = (props) => {
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && <LoadingSpinner asOverlay />}
       <Card className="authentication">
-        <h2>Login required</h2>
-        <hr />
+        <h2
+          style={{
+            fontWeight: "500",
+            paddingBottom: "1rem",
+            whiteSpace: "nowrap",
+            borderBottom: "1px solid #ddd",
+            textAlign: "center",
+          }}
+        >
+          {isLoginMode ? "Login" : "Sign up"}
+        </h2>
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
             <Input
@@ -171,11 +180,11 @@ const AuthPage = (props) => {
             errorText="Please enter a valid password."
             onInput={inputHandler}
           />
-          <Button type="submit" disabled={!formState.isValid}>
+          <Button mr type="submit" disabled={!formState.isValid}>
             {isLoginMode ? "LOGIN" : "SIGNUP"}
           </Button>
         </form>
-        <Button type="inverse" onClick={switchModeHandler}>
+        <Button onClick={switchModeHandler}>
           SWITCH TO {isLoginMode ? "SIGNUP" : "LOGIN"}
         </Button>
       </Card>

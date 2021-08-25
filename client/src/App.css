@@ -7,10 +7,11 @@
 
   --price-color: #4e54c8;
   --grey-color: #e3e9ef;
+  --black-color: #373f50;
 }
 
 .main-content {
-  margin: 5rem auto;
+  margin: 10.4rem auto;
   max-width: 1260px;
 }
 
@@ -24,6 +25,15 @@
 
 .unselectable {
   user-select: none;
+}
+
+.background-layer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 13.6rem;
+  background-color: rgb(55, 63, 80);
+  z-index: -1;
 }
 
 /* .center {

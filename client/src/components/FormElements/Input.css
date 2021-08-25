@@ -9,7 +9,7 @@
 }
 
 .form-control label {
-  font-weight: bold;
+  font-weight: 450;
   margin-bottom: 0.5rem;
 }
 
@@ -26,7 +26,7 @@
 .form-control textarea:focus {
   outline: none;
   background: #ebebeb;
-  border-color: #510077;
+  border-color: #ddd;
 }
 
 .form-control--invalid label,

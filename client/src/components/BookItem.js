@@ -90,10 +90,10 @@ const BookItem = forwardRef((props, ref) => {
         children={"This action will delete item permanently, are you sure?"}
         footer={
           <React.Fragment>
-            <Button neutral onClick={declineHandler}>
+            <Button mr neutral onClick={declineHandler}>
               Decline
             </Button>
-            <Button danger onClick={deleteBookHandler}>
+            <Button mr danger onClick={deleteBookHandler}>
               Accept
             </Button>
           </React.Fragment>
@@ -116,10 +116,8 @@ const BookItem = forwardRef((props, ref) => {
               <p>Books</p>
             </div>
 
-            <Link to={`books/${props.id}`}>
-              <div className="book-item__info">
-                <p>{props.title}</p>
-              </div>
+            <Link className="book-item__info" to={`books/${props.id}`}>
+              {props.title}
             </Link>
             {/* <div className="book-item__info">
               <p>check description</p>
@@ -127,20 +125,25 @@ const BookItem = forwardRef((props, ref) => {
             <div className="book-item__price">
               <p>{"$" + props.price}</p>
             </div>
-            <Button size={"big"} onClick={addToCartHandler}>
-              ADD TO CART
+            <Button
+              // style={{
+              //   display: "flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              //   fontSize: "0.9rem",
+              // }}
+              wide
+              onClick={addToCartHandler}
+            >
+              Add to cart
             </Button>
             {auth.isLoggedIn && auth.userId === props.creatorId && (
               <div className="book-item__update">
-                <Button
-                  neutral
-                  size={"small"}
-                  to={`/books/edit-product/${props.id}`}
-                >
-                  EDIT
+                <Button neutral wide to={`/books/edit-product/${props.id}`}>
+                  Edit
                 </Button>
-                <Button size={"small"} danger onClick={() => setAlert(true)}>
-                  DELETE
+                <Button danger wide onClick={() => setAlert(true)}>
+                  Delete
                 </Button>
               </div>
             )}

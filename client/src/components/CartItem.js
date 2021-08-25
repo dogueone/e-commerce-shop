@@ -127,12 +127,9 @@ const CartItem = (props) => {
                 alt={props.title}
               />
             </Link>
-
             <div className="cart-item__info">
-              <h4>
-                <Link to={`/books/${props.id}`}>{props.title}</Link>
-              </h4>
-              <p>{props.price}</p>
+              <Link to={`/books/${props.id}`}>{props.title}</Link>
+              <span>{"$" + props.price.toFixed(2)}</span>
             </div>
           </div>
           <div className="cart-item__ui">

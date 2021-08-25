@@ -1,7 +1,7 @@
 .card {
   margin: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  /* border-radius: 6px; */
+  border-radius: 4px;
   padding: 1rem;
   overflow: hidden;
   background: white;
@@ -24,8 +24,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  /* height: 24rem; */
 }
 
 .order-item__content {
@@ -43,8 +41,18 @@
 } */
 
 .expanded-item {
-  width: 28.4rem;
+  width: 28rem;
   height: fit-content;
   overflow: visible;
   margin-right: 1.6rem;
+}
+
+.shop-cart__order {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24rem;
+  height: fit-content;
+  min-width: fit-content;
 }

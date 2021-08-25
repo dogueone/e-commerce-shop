@@ -211,6 +211,7 @@ const App = () => {
       >
         <BrowserRouter>
           <Fragment>
+            <div className="background-layer"></div>
             <MainNavigation />
             <main className="main-content">{routes}</main>
           </Fragment>

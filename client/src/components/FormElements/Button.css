@@ -6,7 +6,7 @@
   background: var(--success-color);
   color: black;
   cursor: pointer;
-  margin-right: 1rem;
+  white-space: nowrap;
   text-decoration: none;
   display: inline-block;
   transition: border-color, background-color 250ms linear;
@@ -20,7 +20,7 @@
 .button:active {
   background-color: #0da868;
   color: white;
-  border-color: #27dd91;
+  border-color: #0da868;
 }
 
 .button--inverse {
@@ -73,5 +73,13 @@
 }
 
 .button--big {
+  font-size: 1.2rem;
+}
+
+.mr-1 {
+  margin-right: 1rem;
+}
+
+.wide {
   width: 100%;
 }

@@ -264,8 +264,9 @@ const ShopCartPage = (props) => {
       {showBackup && (
         <div
           style={{
+            whiteSpace: "nowrap",
             position: "absolute",
-            top: "15%",
+            top: "12.8%",
             left: "40%",
             fontSize: "1.5rem",
             margin: "auto",
@@ -275,7 +276,32 @@ const ShopCartPage = (props) => {
           Shopping Cart is empty
         </div>
       )}
+      {/* <div className="background-layer"></div> */}
       <article className="shop-cart">
+        <CSSTransition
+          key={1}
+          appear={true}
+          classNames="cart-item"
+          timeout={500}
+          in={loadedCart.length > 0}
+          unmountOnExit
+          mountOnEnter
+        >
+          <div
+            style={{
+              color: "white",
+              fontSize: "1.3rem",
+              fontWeight: "450",
+              whiteSpace: "nowrap",
+              display: "flex",
+              marginLeft: "3rem",
+              marginBottom: "1rem",
+              alignSelf: "flex-start",
+            }}
+          >
+            Showing 9 products
+          </div>
+        </CSSTransition>
         <BooksList
           cart
           items={loadedCart}
@@ -291,17 +317,18 @@ const ShopCartPage = (props) => {
           unmountOnExit
           mountOnEnter
         >
-          <Card>
-            <aside className="shop-cart__order">
+          <div style={{ position: "absolute", top: "15%", left: "65%" }}>
+            <Card className="shop-cart__order">
               <section className="shop-cart__order--total">
-                <h4>Total</h4>
-                <p>
-                  {loadedCart
-                    .reduce((sum, item) => {
-                      return sum + item.content.price * item.quantity;
-                    }, 0)
-                    .toFixed(2)}
-                </p>
+                <h4>Subtotal</h4>
+                <span>
+                  {"$" +
+                    loadedCart
+                      .reduce((sum, item) => {
+                        return sum + item.content.price * item.quantity;
+                      }, 0)
+                      .toFixed(2)}
+                </span>
               </section>
               <section className="shop-cart__order--link">
                 {auth.isLoggedIn ? (
@@ -324,9 +351,21 @@ const ShopCartPage = (props) => {
                   </Button>
                 )}
               </section>
-            </aside>
-          </Card>
+            </Card>
+            <div style={{ margin: "1rem" }}>
+              <Button
+                onClick={() => {
+                  clearLoadedCart();
+                  misc.clearCart();
+                }}
+                neutral
+              >
+                Clear cart
+              </Button>
+            </div>
+          </div>
         </CSSTransition>
+
         {/* <CSSTransition
           in={loadedCart.length < 1 && !isLoading}
           timeout={500}

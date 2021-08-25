@@ -109,7 +109,7 @@ const EditProductPage = (props) => {
   if (isLoading) {
     return (
       <div className="center">
-        <LoadingSpinner />;
+        <LoadingSpinner />
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import Button from "./Button";
+import "./ImageUpload.css";
 
 const ImageUpload = (props) => {
   const [file, setFile] = useState();
@@ -57,7 +58,7 @@ const ImageUpload = (props) => {
           {!previewUrl && <p> Please pick an image </p>}
         </div>
         <Button type="button" size="big" onClick={pickImageHandler}>
-          PICK IMAGE
+          Pick image
         </Button>
       </div>
       {/* {!isValid && !file && <p>{props.errorText}</p>} */}
