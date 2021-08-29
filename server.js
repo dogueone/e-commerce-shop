@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 
 //middleware to serve images statically
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
+//to serve other files statically, it works for index.html, assets.. but not for routes
+app.use(express.static(path.join("public")));
 
 // To allow cross origin request on this server(CORS-security mechanism build in the modern browsers) - to allow client to make a request to a different server ( by deafault its not allowed and client can only sent requests to the same host and port)
 app.use((req, res, next) => {
@@ -39,19 +41,27 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", (req, res, next) => {
-  console.log("Runs every time");
-  next();
-});
+// app.use("/", (req, res, next) => {
+//   console.log("Runs every time");
+//   next();
+// });
 
 app.use("/api/users", usersRoutes);
 app.use("/api/books", booksRoutes); // => /api/books/... routes will be forwarded
 app.use("/api/order", orderRoutes);
 
+//any request now going to any url will be served statically
+// app.use(express.static(path.join("public")));
+
+//to catch unhandled requests (unknown routes) so the react-router can take over and resolve unknown URL
 app.use((req, res, next) => {
-  const error = new HttpError("Could not find this route", 404);
-  throw error;
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
+
+// app.use((req, res, next) => {
+//   const error = new HttpError("Could not find this route", 404);
+//   throw error;
+// });
 
 // special error handling middleware
 app.use((error, req, res, next) => {
