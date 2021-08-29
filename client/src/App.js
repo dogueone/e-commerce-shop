@@ -1,18 +1,32 @@
 import "./App.css";
-import React, { Fragment, useState, useCallback, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useEffect,
+  Suspense,
+} from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import { AuthContext } from "./context/auth-context";
 import { MiscContext } from "./context/misc-context";
-import EditProductPage from "./pages/EditProductPage";
-import AuthPage from "./pages/AuthPage";
+// import EditProductPage from "./pages/EditProductPage";
+// import AuthPage from "./pages/AuthPage";
 import ProductsPage from "./pages/Products";
-import NewProductPage from "./pages/NewProductPage";
+// import NewProductPage from "./pages/NewProductPage";
 import MainNavigation from "./components/Navigation/MainNavigation";
-import ProductPage from "./pages/ProductPage";
-import ShopCartPage from "./pages/ShopCartPage";
-import CheckoutPage from "./pages/CheckoutPage";
+// import ProductPage from "./pages/ProductPage";
+// import ShopCartPage from "./pages/ShopCartPage";
+// import CheckoutPage from "./pages/CheckoutPage";
 import LoadingSpinner from "./components/UIElements/LoadingSpinner";
+
+//code splitting
+const EditProductPage = React.lazy(() => import("./pages/EditProductPage"));
+const AuthPage = React.lazy(() => import("./pages/AuthPage"));
+const NewProductPage = React.lazy(() => import("./pages/NewProductPage"));
+const ProductPage = React.lazy(() => import("./pages/ProductPage"));
+const ShopCartPage = React.lazy(() => import("./pages/ShopCartPage"));
+const CheckoutPage = React.lazy(() => import("./pages/CheckoutPage"));
 
 let logoutTimer;
 
@@ -219,7 +233,14 @@ const App = () => {
             ) : (
               <main className="main-content">{routes}</main>
             )} */}
-            {<main className="main-content">{routes}</main>}
+
+            {
+              <main className="main-content">
+                <Suspense fallback={<LoadingSpinner asOverlay />}>
+                  {routes}
+                </Suspense>
+              </main>
+            }
           </Fragment>
         </BrowserRouter>
       </MiscContext.Provider>
