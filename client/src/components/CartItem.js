@@ -123,7 +123,7 @@ const CartItem = (props) => {
             <Link to={`/books/${props.id}`}>
               <BookImage
                 imageStyle={"cart-item__image"}
-                img={`http://localhost:5000/${props.image}`}
+                img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
                 alt={props.title}
               />
             </Link>

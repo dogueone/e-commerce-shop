@@ -11,6 +11,8 @@ import BooksList from "../components/BooksList";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import "./ShopCartPage.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import BackElement from "../components/UIElements/BackElement";
+import Dropdown from "../components/UIElements/Dropdown";
 
 const ShopCartPage = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
@@ -197,7 +199,7 @@ const ShopCartPage = (props) => {
       const fetchBooks = async () => {
         try {
           loadedBooks = await sendRequest(
-            `http://localhost:5000/api/books/local/${LocalDataIds}`
+            `${process.env.REACT_APP_BACKEND_URL}/books/local/${LocalDataIds}`
           );
 
           if (loadedBooks) {
@@ -261,54 +263,41 @@ const ShopCartPage = (props) => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && <LoadingSpinner asOverlay />}
-      {showBackup && (
-        <div
-          style={{
-            whiteSpace: "nowrap",
-            position: "absolute",
-            top: "12.8%",
-            left: "40%",
-            fontSize: "1.5rem",
-            margin: "auto",
-            color: "#ddd",
-          }}
-        >
-          Shopping Cart is empty
-        </div>
-      )}
+      {showBackup && <BackElement>Shoping cart is empty</BackElement>}
       {/* <div className="background-layer"></div> */}
       <article className="shop-cart">
-        <CSSTransition
-          key={1}
-          appear={true}
-          classNames="cart-item"
-          timeout={500}
-          in={loadedCart.length > 0}
-          unmountOnExit
-          mountOnEnter
-        >
-          <div
-            style={{
-              color: "white",
-              fontSize: "1.3rem",
-              fontWeight: "450",
-              whiteSpace: "nowrap",
-              display: "flex",
-              marginLeft: "3rem",
-              marginBottom: "1rem",
-              alignSelf: "flex-start",
-            }}
+        <div style={{ width: "100%" }}>
+          <CSSTransition
+            key={1}
+            appear={true}
+            classNames="cart-item"
+            timeout={500}
+            in={loadedCart.length > 0}
+            unmountOnExit
+            mountOnEnter
           >
-            Showing 9 products
-          </div>
-        </CSSTransition>
-        <BooksList
-          cart
-          items={loadedCart}
-          validLocalData={validLocalData}
-          updateCart={updateLoadedCartItem}
-          clearCartState={clearLoadedCart}
-        />
+            <div
+              style={{
+                color: "white",
+                fontSize: "1.3rem",
+                fontWeight: "450",
+                whiteSpace: "nowrap",
+                display: "flex",
+                marginLeft: "3rem",
+                marginBottom: "2rem",
+              }}
+            >
+              {`Showing ${loadedCart.length} products`}
+            </div>
+          </CSSTransition>
+          <BooksList
+            cart
+            items={loadedCart}
+            validLocalData={validLocalData}
+            updateCart={updateLoadedCartItem}
+            clearCartState={clearLoadedCart}
+          />
+        </div>
         <CSSTransition
           timeout={500}
           classNames="page-group1"
@@ -317,7 +306,7 @@ const ShopCartPage = (props) => {
           unmountOnExit
           mountOnEnter
         >
-          <div style={{ position: "absolute", top: "15%", left: "65%" }}>
+          <div style={{ margin: "0 1.6rem 0 1rem" }}>
             <Card className="shop-cart__order">
               <section className="shop-cart__order--total">
                 <h4>Subtotal</h4>
@@ -330,6 +319,7 @@ const ShopCartPage = (props) => {
                       .toFixed(2)}
                 </span>
               </section>
+              <Dropdown />
               <section className="shop-cart__order--link">
                 {auth.isLoggedIn ? (
                   <Button

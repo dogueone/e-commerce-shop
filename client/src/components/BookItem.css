@@ -15,10 +15,15 @@
   background: brown;
 } */
 
+.book-item__p {
+  width: 100%;
+}
+
 .book-item__category {
   font-size: 0.75rem;
   color: #7d879c;
   cursor: pointer;
+  margin-top: 4px;
 }
 
 .book-item__info {
@@ -27,7 +32,7 @@
   font-size: 0.85rem;
   cursor: pointer;
   font-weight: 500;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .book-item__price {
@@ -48,3 +53,17 @@
 /* .book-item__image:hover {
   cursor: pointer;
 } */
+
+@media (max-width: 540px) {
+  .book-item__p {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: initial;
+    height: 10rem;
+  }
+
+  .book-item__p > *:last-child {
+    margin-top: 1rem;
+  }
+}

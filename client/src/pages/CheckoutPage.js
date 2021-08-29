@@ -11,6 +11,7 @@ import BookList from "../components/BooksList";
 import { AuthContext } from "../context/auth-context";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import "./CheckoutPage.css";
+import BackElement from "../components/UIElements/BackElement";
 
 const CheckoutPage = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -36,7 +37,7 @@ const CheckoutPage = () => {
         });
         try {
           const responseData = await sendRequest(
-            "http://localhost:5000/api/order/cart/order",
+            `${process.env.REACT_APP_BACKEND_URL}/order/cart/order`,
             "POST",
             JSON.stringify(MutatedLoadedCart),
             {
@@ -53,21 +54,11 @@ const CheckoutPage = () => {
   }, [sendRequest, history, location.state, auth.isLoggedIn]);
 
   if (isLoading) {
-    return (
-      <div className="center">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner asOverlay />;
   }
 
   if (!loadedOrder && !error) {
-    return (
-      <div className="center">
-        <Card>
-          <h2>Could not find any books!</h2>
-        </Card>
-      </div>
-    );
+    return <BackElement>Could not find any products</BackElement>;
   }
 
   return (

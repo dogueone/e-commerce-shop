@@ -15,7 +15,6 @@
 }
 
 .sort-dropdown {
-  border: 1px solid #ddd;
   border-radius: 4px;
   appearance: none;
   width: 140px;
@@ -26,4 +25,5 @@
   background-image: url("../icons/expand.svg");
   background-repeat: no-repeat;
   background-position: right 0.5rem top 50%;
+  outline: none;
 }

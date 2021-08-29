@@ -22,8 +22,22 @@
   position: absolute;
   top: 0;
   left: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner__background {
+  background: rgba(255, 255, 255, 0.9) !;
+}
+
+.loading-spinner__inner {
+  height: 100%;
+  width: 100%;
   background: rgba(255, 255, 255, 0.9);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

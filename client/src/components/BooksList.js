@@ -74,7 +74,7 @@ const BooksList = (props) => {
     // <ul className="books-list">
     <FlipMove
       typeName="ul"
-      className={`books-list ${props.shrinkOnExpand && "book-list--shrink"}`}
+      className={"books-list"}
       // staggerDurationBy={150}
       enterAnimation="fade"
       leaveAnimation="fade"

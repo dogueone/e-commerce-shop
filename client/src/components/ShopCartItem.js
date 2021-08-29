@@ -48,7 +48,7 @@ const ShopCartItem = (props) => {
     <li className="cart-item-grid">
       <span>
         <BookImage
-          img={`http://localhost:5000/${props.image}`}
+          img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
           alt={props.title}
           imageStyle={"cart-image"}
         />

@@ -10,7 +10,7 @@ const OrderItem = (props) => {
       <Card className="order-item__content">
         <BookImage
           imageStyle={"order-item__image"}
-          img={`http://localhost:5000/${props.image}`}
+          img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
           alt={props.title}
         />
 

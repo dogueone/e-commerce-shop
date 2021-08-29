@@ -7,7 +7,7 @@ const path = require("path");
 const usersRoutes = require("./routes/users-routes.js");
 const booksRoutes = require("./routes/books-routes.js");
 const orderRoutes = require("./routes/order-routes.js");
-const connectDB = require("./config/db");
+const connectDB = require("./db");
 const HttpError = require("./models/http-error");
 
 const app = express();

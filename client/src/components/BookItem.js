@@ -71,7 +71,7 @@ const BookItem = forwardRef((props, ref) => {
     });
     try {
       await sendRequest(
-        `http://localhost:5000/api/books/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/books/${props.id}`,
         "DELETE",
         null,
         { Authorization: "Bearer " + auth.token }
@@ -99,23 +99,18 @@ const BookItem = forwardRef((props, ref) => {
           </React.Fragment>
         }
       ></Modal>
-      <li ref={ref}>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <Card className="book-item__content">
-            {/* <Link to={`books/${props.id}`}> */}
-            <BookImage
-              onClick={imageClickHandler}
-              imageStyle="book-item__image"
-              img={`http://localhost:5000/${props.image}`}
-              alt={props.title}
-            />
-            {/* </Link> */}
+      <li ref={ref} style={{ height: "min-content" }}>
+        <Card className="book-item__content">
+          <BookImage
+            onClick={imageClickHandler}
+            imageStyle="book-item__image"
+            img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
+            alt={props.title}
+          />
+          <div className="book-item__p">
             <div className="book-item__category">
               <p>Books</p>
             </div>
-
             <Link className="book-item__info" to={`books/${props.id}`}>
               {props.title}
             </Link>
@@ -125,30 +120,32 @@ const BookItem = forwardRef((props, ref) => {
             <div className="book-item__price">
               <p>{"$" + props.price}</p>
             </div>
-            <Button
-              // style={{
-              //   display: "flex",
-              //   alignItems: "center",
-              //   justifyContent: "center",
-              //   fontSize: "0.9rem",
-              // }}
-              wide
-              onClick={addToCartHandler}
-            >
-              Add to cart
-            </Button>
-            {auth.isLoggedIn && auth.userId === props.creatorId && (
-              <div className="book-item__update">
-                <Button neutral wide to={`/books/edit-product/${props.id}`}>
-                  Edit
-                </Button>
-                <Button danger wide onClick={() => setAlert(true)}>
-                  Delete
-                </Button>
-              </div>
-            )}
-          </Card>
-        )}
+            <div>
+              <Button
+                // style={{
+                //   display: "flex",
+                //   alignItems: "center",
+                //   justifyContent: "center",
+                //   fontSize: "0.9rem",
+                // }}
+                wide
+                onClick={addToCartHandler}
+              >
+                Add to cart
+              </Button>
+              {auth.isLoggedIn && auth.userId === props.creatorId && (
+                <div className="book-item__update">
+                  <Button neutral wide to={`/books/edit-product/${props.id}`}>
+                    Edit
+                  </Button>
+                  <Button danger wide onClick={() => setAlert(true)}>
+                    Delete
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </Card>
       </li>
     </React.Fragment>
   );

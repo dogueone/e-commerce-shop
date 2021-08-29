@@ -1,0 +1,14 @@
+.back-element {
+  white-space: nowrap;
+  position: absolute;
+  top: 8.6rem;
+  left: calc(50% - 8rem);
+  font-size: 1.5rem;
+  color: #ddd;
+}
+
+@media (max-width: 540px) {
+  .back-element {
+    left: 3.1rem;
+  }
+}

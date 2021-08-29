@@ -1,10 +1,31 @@
 .nav-links {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   list-style: none;
-  height: 100%;
+  gap: 0.5rem;
+  height: 3.4rem;
+  margin-left: 2.1rem;
+}
+
+/* .side-drawer {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  background: transparent;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.26);
+} */
+.nav-links li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem;
+  padding-top: 0.1rem;
+  color: white;
+  white-space: nowrap;
 }
 
 /* .nav-links li:last-child {
@@ -13,7 +34,7 @@
 
 .nav-links li a {
   font-weight: 500;
-  color: black;
+  color: white;
   text-decoration: none;
 }
 
@@ -22,44 +43,46 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 2.3rem;
+  height: 2.3rem;
   border-radius: 50%;
-  background: #dddddd;
+  background: white;
+  color: red;
 }
 
 .cart-button--icon {
-  color: #333;
+  color: rgb(55, 63, 80);
 }
 
 .cart-button--badge {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.1rem;
-  width: 1.1rem;
+  height: 1rem;
+  width: 1rem;
   font-size: 0.8rem;
   background-color: red;
   color: white;
   border-radius: 50%;
   position: absolute;
-  top: -7px;
-  right: -7px;
+  top: -6px;
+  right: -2px;
 }
 
 .cart-button--icon:hover {
-  color: blue;
+  color: #4732a7;
+}
+
+.cart-button--icon.active {
+  color: white;
 }
 
 .nav-links a:hover {
-  color: blue;
+  color: #8d91ee;
 }
 
 .nav-links a.active {
-}
-
-.logout {
-  margin: 0 1rem;
+  color: #8d91ee;
 }
 
 .search-icon {
@@ -69,24 +92,22 @@
 
 @media (min-width: 768px) {
   .nav-links {
-    display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
     margin: auto 1rem auto 1rem;
-    width: 50rem;
+    /* width: 50rem; */
   }
 
   .nav-links li {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     margin: 0 1rem;
   }
 
   .nav-links li.nav-links__search {
-    flex-grow: 1;
+    /* flex-grow: 1; */
     align-items: center;
     justify-content: flex-end;
   }
@@ -96,6 +117,21 @@
     color: black;
     width: auto;
     height: auto;
+  }
+
+  .nav-links a:hover {
+    color: #4732a7;
+  }
+
+  .nav-links a.active {
+    color: #4732a7;
+  }
+
+  .cart-button {
+    background-color: var(--icon-color);
+  }
+  .cart-button--icon {
+    color: var(--purple-color);
   }
 
   /* .nav-links li:after {

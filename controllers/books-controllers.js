@@ -142,6 +142,7 @@ const updateBook = async (req, res, next) => {
 
   let updatedBook;
   try {
+    // throw error;
     updatedBook = await Product.findById(bookId);
   } catch (err) {
     return next(

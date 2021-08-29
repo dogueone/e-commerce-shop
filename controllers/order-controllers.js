@@ -1,6 +1,6 @@
 const HttpError = require("../models/http-error");
 const Product = require("../models/product");
-const stripe = require("stripe")("sk_test_hDKKFLxammA11qB3ZQD022lN00s65ZuMXS");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 
 const getOrder = async (req, res, next) => {
   const orderData = req.body;

@@ -12,6 +12,7 @@ import Modal from "../components/UIElements/Modal";
 import BookContent from "../components/BookContent";
 import BookPages from "../components/BookPages";
 import "./ProductComponent.css";
+import Dropdown from "../components/UIElements/Dropdown";
 
 // const BOOKS = [
 //   {
@@ -91,52 +92,59 @@ const ProductComponent = (props) => {
           </Card>
         </div>
       )} */}
-      <Card className="expanded-item">
-        <div className="product-component">
-          <div className="product-component__image">
-            <BookImage
-              imageStyle="product-image"
-              img={`http://localhost:5000/${props.data.image}`}
-              alt={props.data.title}
-            />
+      <Card className="expanded-item product-component">
+        <div className="product-component__image">
+          <BookImage
+            imageStyle="product-image"
+            img={`${process.env.REACT_APP_ASSET_URL}/${props.data.image}`}
+            alt={props.data.title}
+          />
+        </div>
+        <div className="product-component__content">
+          <div className="product-component__content--info">
+            <span className="product-component__content--price">{`$${props.data.price}`}</span>
+            <span className="product-component__content--title">
+              {props.data.title}
+            </span>
           </div>
-          <div className="product-component__content">
-            <div className="product-component__content--info">
-              <span className="product-component__content--price">{`$${props.data.price}`}</span>
-              <span className="product-component__content--title">
-                {props.data.title}
+          <div>{props.data.description}</div>
+          <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
+            tempore, modi laudantium deleniti saepe mollitia architecto impedit
+            beatae incidunt a sint officia quaerat unde obcaecati, cum
+            distinctio odio? Deserunt, aliquid?
+          </div>
+          <Dropdown />
+          <div className="product-component__content--cart">
+            <select onChange={onSelectHandler}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <Button
+              onClick={() => {
+                console.log(amount);
+                misc.addToCart(props.data.id, amount);
+              }}
+            >
+              Add Product
+            </Button>
+            <Button
+              neutral
+              onClick={onHideHandler}
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <span>Hide</span>
+              <span className="material-icons-outlined expanded-item--hide-badge">
+                arrow_right_alt
               </span>
-            </div>
-            <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-              tempore, modi laudantium deleniti saepe mollitia architecto
-              impedit beatae incidunt a sint officia quaerat unde obcaecati, cum
-              distinctio odio? Deserunt, aliquid?
-            </div>
-            <div className="product-component__content--cart">
-              <select onChange={onSelectHandler}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-              <Button
-                onClick={() => {
-                  console.log(amount);
-                  misc.addToCart(props.data.id, amount);
-                }}
-              >
-                Add Product
-              </Button>
-            </div>
+            </Button>
           </div>
-          <span
-            onClick={onHideHandler}
-            className="material-icons-outlined expanded-item--hide-badge"
-          >
-            arrow_right
-          </span>
         </div>
       </Card>
     </div>

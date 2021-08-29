@@ -51,7 +51,7 @@ const ProductPage = () => {
     const fetchProductData = async () => {
       try {
         const data = await sendRequest(
-          `http://localhost:5000/api/books/${productId}`
+          `${process.env.REACT_APP_BACKEND_URL}/books/${productId}`
         );
         setLoadedProduct(data.book);
         console.log(data);
@@ -119,7 +119,7 @@ const ProductPage = () => {
               <div className="product-page__image">
                 <BookImage
                   imageStyle="product-image"
-                  img={`http://localhost:5000/${loadedProduct.image}`}
+                  img={`${process.env.REACT_APP_ASSET_URL}/${loadedProduct.image}`}
                   alt={loadedProduct.title}
                 />
               </div>

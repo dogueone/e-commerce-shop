@@ -24,7 +24,7 @@ export default function CheckoutForm(props) {
     });
 
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:5000/api/order/payment", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/order/payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

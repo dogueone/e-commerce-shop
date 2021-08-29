@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
+import Card from "../components/UIElements/Card";
 import ImageUpload from "../components/FormElements/ImageUpload";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
@@ -15,7 +16,7 @@ import {
   VALIDATOR_MAX,
 } from "../util/validators";
 import Input from "../components/FormElements/Input";
-import "./ProductForm.css";
+import BackElement from "../components/UIElements/BackElement";
 
 // const formReducer = (state, action) => {
 //   switch (action.type) {
@@ -104,7 +105,7 @@ const NewProductPage = (props) => {
     formData.append("creator", auth.userId);
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/books/add-book",
+        `${process.env.REACT_APP_BACKEND_URL}/books/add-book`,
         "POST",
         formData,
         { Authorization: "Bearer " + auth.token }
@@ -116,32 +117,34 @@ const NewProductPage = (props) => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="product-form" onSubmit={productSubmitHandler}>
-        {isLoading && <LoadingSpinner asOverlay />}
-        <Input
-          id="title"
-          element="input"
-          type="text"
-          label="Title"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid title."
-          onInput={inputHandler}
-        />
-        <Input
-          id="description"
-          element="textarea"
-          label="Description"
-          validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="Please enter a valid description (at least 5 characters)."
-          onInput={inputHandler}
-        />
-        <ImageUpload
-          id="image"
-          onInput={inputHandler}
-          center
-          errorText="Please provide an image."
-        />
-        {/* <Input
+      {auth.isLoggedIn ? (
+        <Card className="product-form">
+          <form onSubmit={productSubmitHandler}>
+            {isLoading && <LoadingSpinner asOverlay />}
+            <Input
+              id="title"
+              element="input"
+              type="text"
+              label="Title"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid title."
+              onInput={inputHandler}
+            />
+            <Input
+              id="description"
+              element="textarea"
+              label="Description"
+              validators={[VALIDATOR_MINLENGTH(5)]}
+              errorText="Please enter a valid description (at least 5 characters)."
+              onInput={inputHandler}
+            />
+            <ImageUpload
+              id="image"
+              onInput={inputHandler}
+              center
+              errorText="Please provide an image."
+            />
+            {/* <Input
           id="image"
           element="input"
           type="url"
@@ -150,26 +153,45 @@ const NewProductPage = (props) => {
           errorText="Please upload an image."
           onInput={inputHandler}
         /> */}
-        <Input
-          step="0.01"
-          id="price"
-          element="input"
-          type="number"
-          label="Price"
-          validators={[
-            VALIDATOR_REQUIRE(),
-            VALIDATOR_MIN(0.01),
-            VALIDATOR_MAX(999.99),
-          ]}
-          errorText="Please enter a valid price."
-          onInput={inputHandler}
-        />
-        <div className="product-form__btn">
-          <Button type="submit" disabled={!formState.isValid}>
-            ADD PRODUCT
-          </Button>
-        </div>
-      </form>
+            <Input
+              step="0.01"
+              id="price"
+              element="input"
+              type="number"
+              label="Price"
+              validators={[
+                VALIDATOR_REQUIRE(),
+                VALIDATOR_MIN(0.01),
+                VALIDATOR_MAX(999.99),
+              ]}
+              errorText="Please enter a valid price."
+              onInput={inputHandler}
+            />
+            <div className="product-form__btn">
+              <Button type="submit" disabled={!formState.isValid}>
+                ADD PRODUCT
+              </Button>
+            </div>
+          </form>
+        </Card>
+      ) : (
+        <BackElement>
+          <div>
+            <Button
+              to={{
+                pathname: "/auth",
+                state: { prevLocation: props.location },
+              }}
+            >
+              Login
+            </Button>
+            <span style={{ marginLeft: "0.6rem", color: "white" }}>
+              {" "}
+              to add new product.
+            </span>
+          </div>
+        </BackElement>
+      )}
     </React.Fragment>
   );
 };

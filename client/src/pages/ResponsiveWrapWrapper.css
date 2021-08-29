@@ -1,0 +1,19 @@
+/* Hardcodded */
+
+@media (min-width: 769px) {
+  .responsive-shrink {
+    max-width: 266px;
+  }
+}
+
+@media (min-width: 951px) {
+  .responsive-shrink {
+    max-width: 524px;
+  }
+}
+
+@media (min-width: 1202px) {
+  .responsive-shrink {
+    max-width: 774px;
+  }
+}

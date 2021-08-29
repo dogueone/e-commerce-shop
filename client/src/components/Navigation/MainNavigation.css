@@ -43,7 +43,7 @@
 }
 
 .main-navigation__header-nav {
-  height: 100%;
+  display: none;
 }
 
 .main-navigation__drawer-nav {
@@ -51,6 +51,10 @@
 
 @media (min-width: 768px) {
   .main-navigation__menu-btn {
+    display: none;
+  }
+
+  .main-navigation__drawer-nav {
     display: none;
   }
 

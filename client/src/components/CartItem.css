@@ -1,6 +1,6 @@
 .cart-item {
   width: 100%;
-  min-width: 30.5rem;
+  min-width: 24rem;
 }
 
 .cart-item__container {
@@ -90,3 +90,5 @@
 .cart-item__ui--remove span:last-child {
   margin-left: 4px;
 }
+
+@media (max-width: 768px) :;

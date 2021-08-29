@@ -12,6 +12,7 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import ProductPage from "./pages/ProductPage";
 import ShopCartPage from "./pages/ShopCartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import LoadingSpinner from "./components/UIElements/LoadingSpinner";
 
 let logoutTimer;
 
@@ -185,7 +186,7 @@ const App = () => {
   }
 
   if (checkingToken) {
-    return <div>Loading Spinner</div>;
+    return null;
   }
 
   return (
@@ -213,7 +214,12 @@ const App = () => {
           <Fragment>
             <div className="background-layer"></div>
             <MainNavigation />
-            <main className="main-content">{routes}</main>
+            {/* {checkingToken ? (
+              <LoadingSpinner asOverlay />
+            ) : (
+              <main className="main-content">{routes}</main>
+            )} */}
+            {<main className="main-content">{routes}</main>}
           </Fragment>
         </BrowserRouter>
       </MiscContext.Provider>

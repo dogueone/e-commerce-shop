@@ -143,7 +143,7 @@ const Products = () => {
     const fetchBooks = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/books"
+          `${process.env.REACT_APP_BACKEND_URL}/books`
         );
 
         if (misc.sorting) {
@@ -159,11 +159,7 @@ const Products = () => {
   let content;
 
   if (isLoading) {
-    content = (
-      <div className="center">
-        <LoadingSpinner asOverlay />
-      </div>
-    );
+    return <LoadingSpinner asOverlay />;
   }
 
   if (!isLoading && loadedBooks) {
@@ -171,30 +167,29 @@ const Products = () => {
       <>
         <div
           style={{
-            gridArea: "header",
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingBottom: "1rem",
+            flexDirection: "column",
+            gap: "1rem",
           }}
         >
-          <div
-            style={{
-              color: "white",
-              fontSize: "1.3rem",
-              fontWeight: "450",
-              whiteSpace: "nowrap",
-              display: "flex",
-              marginLeft: "3rem",
-              marginBottom: "1rem",
-            }}
-          >
-            Showing 10 products
+          <div className="content-header">
+            <div
+              style={{
+                color: "white",
+                fontSize: "1.3rem",
+                fontWeight: "450",
+                whiteSpace: "nowrap",
+                display: "flex",
+                marginLeft: "3rem",
+                marginBottom: "1rem",
+              }}
+            >
+              {`Showing ${loadedBooks.length} products`}
+            </div>
+            <Sort sortProducts={sortProducts}></Sort>
           </div>
-          <Sort sortProducts={sortProducts}></Sort>
-        </div>
-        <div className={"expanded-layout"}>
-          {/* <div
+          <div className={"expanded-layout"}>
+            {/* <div
             style={{
               fontSize: "1.3rem",
               gridArea: "showing",
@@ -208,27 +203,31 @@ const Products = () => {
           >
             Showing 10 products
           </div> */}
-
-          <BooksList
-            dispatch={dispatch}
-            expandHandler={expandHandler}
-            // setPopUpList={setPopUpList}
-            popUpList={popUpList}
-            // setShowPopUp={setShowPopUp}
-            items={loadedBooks}
-            onDeleteBook={onDeleteBookHandler}
-            shrinkOnExpand={!!showExpandedItem}
-          />
-
-          <CSSTransition
-            appear={true}
-            classNames="expanded-item"
-            timeout={500}
-            in={showExpandedItem}
-            unmountOnExit
-          >
-            <ProductComponent data={expandedItem} hideHandler={hideHandler} />
-          </CSSTransition>
+            <div
+              className={`shrink-order ${
+                showExpandedItem && "responsive-shrink"
+              }`}
+            >
+              <BooksList
+                dispatch={dispatch}
+                expandHandler={expandHandler}
+                // setPopUpList={setPopUpList}
+                popUpList={popUpList}
+                // setShowPopUp={setShowPopUp}
+                items={loadedBooks}
+                onDeleteBook={onDeleteBookHandler}
+              />
+            </div>
+            <CSSTransition
+              appear={true}
+              classNames="expanded-item"
+              timeout={500}
+              in={showExpandedItem}
+              unmountOnExit
+            >
+              <ProductComponent data={expandedItem} hideHandler={hideHandler} />
+            </CSSTransition>
+          </div>
         </div>
       </>
     );

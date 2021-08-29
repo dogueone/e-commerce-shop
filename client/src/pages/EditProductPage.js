@@ -16,7 +16,7 @@ import {
 } from "../util/validators";
 import Input from "../components/FormElements/Input";
 import Button from "../components/FormElements/Button";
-import "./ProductForm.css";
+import BackElement from "../components/UIElements/BackElement";
 
 const EditProductPage = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
@@ -53,7 +53,7 @@ const EditProductPage = (props) => {
     const fetchBook = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/books/${bookId}`
+          `${process.env.REACT_APP_BACKEND_URL}/books/${bookId}`
         );
         setLoadedBook(responseData.book);
         console.log(loadedBook);
@@ -89,7 +89,7 @@ const EditProductPage = (props) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/books/${bookId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/books/${bookId}`,
         "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,
@@ -107,51 +107,42 @@ const EditProductPage = (props) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="center">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner asOverlay />;
   }
 
-  if (!loadedBook && !error) {
-    return (
-      <div className="center">
-        <Card>
-          <h2>Could not find Book!</h2>
-        </Card>
-      </div>
-    );
-  }
+  // if (!loadedBook && !error) {
+  //   return <BackElement>Could not find such product</BackElement>;
+  // }
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedBook && (
-        <form className="product-form" onSubmit={bookUpdateSubmitHandler}>
-          <Input
-            id="title"
-            element="input"
-            type="text"
-            label="Title"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please enter a valid title."
-            onInput={inputHandler}
-            initialValue={loadedBook.title}
-            initialValid={true}
-          />
-          <Input
-            id="description"
-            element="textarea"
-            type="text"
-            label="Description"
-            validators={[VALIDATOR_MINLENGTH(5)]}
-            errorText="Please enter a valid description (at least 5 characters)."
-            onInput={inputHandler}
-            initialValue={loadedBook.description}
-            initialValid={true}
-          />
-          {/* <Input
+        <Card className="product-form">
+          <form onSubmit={bookUpdateSubmitHandler}>
+            <Input
+              id="title"
+              element="input"
+              type="text"
+              label="Title"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid title."
+              onInput={inputHandler}
+              initialValue={loadedBook.title}
+              initialValid={true}
+            />
+            <Input
+              id="description"
+              element="textarea"
+              type="text"
+              label="Description"
+              validators={[VALIDATOR_MINLENGTH(5)]}
+              errorText="Please enter a valid description (at least 5 characters)."
+              onInput={inputHandler}
+              initialValue={loadedBook.description}
+              initialValid={true}
+            />
+            {/* <Input
             id="image"
             element="input"
             type="text"
@@ -162,27 +153,28 @@ const EditProductPage = (props) => {
             initialValue={loadedBook.image}
             initialValid={true}
           /> */}
-          <Input
-            id="price"
-            element="input"
-            type="number"
-            label="Price"
-            validators={[
-              VALIDATOR_REQUIRE(),
-              VALIDATOR_MIN(1),
-              VALIDATOR_MAX(999.99),
-            ]}
-            errorText="Please enter a valid price."
-            onInput={inputHandler}
-            initialValue={loadedBook.price}
-            initialValid={true}
-          />
-          <div>
-            <Button type="submit" disabled={!formState.isValid}>
-              UPDATE PRODUCT
-            </Button>
-          </div>
-        </form>
+            <Input
+              id="price"
+              element="input"
+              type="number"
+              label="Price"
+              validators={[
+                VALIDATOR_REQUIRE(),
+                VALIDATOR_MIN(1),
+                VALIDATOR_MAX(999.99),
+              ]}
+              errorText="Please enter a valid price."
+              onInput={inputHandler}
+              initialValue={loadedBook.price}
+              initialValid={true}
+            />
+            <div>
+              <Button type="submit" disabled={!formState.isValid}>
+                UPDATE PRODUCT
+              </Button>
+            </div>
+          </form>
+        </Card>
       )}
     </React.Fragment>
   );

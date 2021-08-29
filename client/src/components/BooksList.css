@@ -2,7 +2,7 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-evenly; */
+  justify-content: flex-start;
   gap: 8px;
   margin: 0 1rem;
 }
@@ -84,3 +84,12 @@
 }
 /* .cart-item-appear-done {
 } */
+
+@media (max-width: 768px) {
+  .books-list {
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0 1rem;
+  }
+}
