@@ -137,7 +137,7 @@ const AuthPage = (props) => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {isLoading && <LoadingSpinner asOverlay background />}
+      {isLoading && <LoadingSpinner asOverlay />}
       <Card className="authentication">
         <h2
           style={{

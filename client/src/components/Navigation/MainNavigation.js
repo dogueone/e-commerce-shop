@@ -6,6 +6,7 @@ import SideDrawer from "./SideDrawer";
 import MainHeader from "./MainHeader";
 import NavLinks from "./NavLinks";
 import "./MainNavigation.css";
+import NavCart from "./NavCart";
 
 // function debounce(fn, ms) {
 //   let timer;
@@ -73,6 +74,10 @@ const MainNavigation = (props) => {
           <h1 className="main-navigation__title">
             <Link to="/">Shop</Link>
           </h1>
+          <div className="main-navigation__cart">
+            <NavCart />
+          </div>
+
           <nav className="main-navigation__header-nav">
             <NavLinks />
           </nav>

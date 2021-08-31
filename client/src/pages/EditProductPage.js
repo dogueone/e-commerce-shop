@@ -154,16 +154,17 @@ const EditProductPage = (props) => {
             initialValid={true}
           /> */}
             <Input
+              step="0.1"
               id="price"
               element="input"
               type="number"
               label="Price"
               validators={[
                 VALIDATOR_REQUIRE(),
-                VALIDATOR_MIN(1),
+                VALIDATOR_MIN(0.1),
                 VALIDATOR_MAX(999.99),
               ]}
-              errorText="Please enter a valid price."
+              errorText="Please enter a valid price from $0.1 to $999.99"
               onInput={inputHandler}
               initialValue={loadedBook.price}
               initialValid={true}

@@ -15,12 +15,12 @@ body {
 
 .stripe-form {
   /* width: 500px; */
-  align-self: center;
+  /* align-self: center; */
   /* box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
     0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
   border-radius: 7px; */
-  padding: 40px;
-  min-width: 342px;
+  padding: 1rem 0rem 1rem 0rem;
+  min-width: 16.75rem;
 }
 /* input {
   border-radius: 6px;
@@ -147,8 +147,8 @@ body {
     transform: rotate(360deg);
   }
 }
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 600px) {
   form {
     width: 80vw;
   }
-}
+} */

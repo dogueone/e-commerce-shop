@@ -7,7 +7,7 @@
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   overflow: hidden;
-  min-width: 267px;
+  min-width: 16rem;
 }
 
 .modal__header {

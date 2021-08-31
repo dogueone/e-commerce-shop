@@ -57,8 +57,11 @@ const CheckoutPage = () => {
     return <LoadingSpinner asOverlay />;
   }
 
+  // if (!loadedOrder && !error) {
+  //   return <BackElement>Could not find any products</BackElement>;
+  // }
   if (!loadedOrder && !error) {
-    return <BackElement>Could not find any products</BackElement>;
+    return null;
   }
 
   return (

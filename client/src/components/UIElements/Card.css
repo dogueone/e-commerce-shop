@@ -63,14 +63,7 @@
   grid-area: expandedItem;
   gap: 1rem;
   width: 25rem;
-  overflow: visible;
 }
-
-/* .expanded-item {
-  width: 25rem;
-  overflow: visible;
-  min-width: 24rem;
-} */
 
 .shop-cart__order {
   border-radius: 10px;
@@ -82,7 +75,7 @@
   min-width: fit-content;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 950px) {
   .shop-cart__order {
     width: 100%;
     min-width: 21.5rem;
@@ -91,7 +84,6 @@
   .expanded-item {
     width: 100%;
     max-width: 30rem;
-    margin: 5px 1rem;
   }
 }
 
@@ -103,7 +95,6 @@
   }
   .expanded-item {
     max-width: 27rem;
-    margin: 5px 1rem;
     box-shadow: none;
   }
 }

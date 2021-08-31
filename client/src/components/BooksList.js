@@ -10,7 +10,7 @@ import BookItem from "./BookItem";
 import CartItem from "./CartItem";
 // import { Link } from "react-router-dom";
 
-const BooksList = (props) => {
+const BooksList = (props, ref) => {
   // if (props.items.length === 0) {
   //   return (
   //     <div>

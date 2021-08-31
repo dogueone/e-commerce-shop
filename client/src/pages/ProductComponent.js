@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { MiscContext } from "../context/misc-context";

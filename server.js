@@ -20,26 +20,26 @@ app.use(bodyParser.json());
 //middleware to serve images statically
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
 //to serve other files statically, it works for index.html, assets.. but not for routes
-app.use(express.static(path.join("public")));
+// app.use(express.static(path.join("public")));
 
 // To allow cross origin request on this server(CORS-security mechanism build in the modern browsers) - to allow client to make a request to a different server ( by deafault its not allowed and client can only sent requests to the same host and port)
-// app.use((req, res, next) => {
-//   //give access to any client (* - any host can sent requests)
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   //browser by default sent first options request before send post request (to look if post request allowed by the server) Origin, X-Requested-With, Accept - set automaticaly
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "POST, GET, PATCH, DELETE, OPTIONS"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   if (req.method === "OPTIONS") {
-//     return res.sendStatus(200);
-//   }
-//   next();
-// });
+app.use((req, res, next) => {
+  //give access to any client (* - any host can sent requests)
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  //browser by default sent first options request before send post request (to look if post request allowed by the server) Origin, X-Requested-With, Accept - set automaticaly
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, GET, PATCH, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // app.use("/", (req, res, next) => {
 //   console.log("Runs every time");
@@ -54,14 +54,14 @@ app.use("/api/order", orderRoutes);
 // app.use(express.static(path.join("public")));
 
 //to catch unhandled requests (unknown routes) so the react-router can take over and resolve unknown URL
-app.use((req, res, next) => {
-  res.sendFile(path.resolve(__dirname, "public", "index.html"));
-});
-
 // app.use((req, res, next) => {
-//   const error = new HttpError("Could not find this route", 404);
-//   throw error;
+//   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 // });
+
+app.use((req, res, next) => {
+  const error = new HttpError("Could not find this route", 404);
+  throw error;
+});
 
 // special error handling middleware
 app.use((error, req, res, next) => {

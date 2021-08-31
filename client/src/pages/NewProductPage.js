@@ -154,17 +154,17 @@ const NewProductPage = (props) => {
           onInput={inputHandler}
         /> */}
             <Input
-              step="0.01"
+              step="0.1"
               id="price"
               element="input"
               type="number"
               label="Price"
               validators={[
                 VALIDATOR_REQUIRE(),
-                VALIDATOR_MIN(0.01),
+                VALIDATOR_MIN(0.1),
                 VALIDATOR_MAX(999.99),
               ]}
-              errorText="Please enter a valid price."
+              errorText="Please enter a valid price from $0.1 to $999.99"
               onInput={inputHandler}
             />
             <div className="product-form__btn">

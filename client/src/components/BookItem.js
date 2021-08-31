@@ -118,7 +118,7 @@ const BookItem = forwardRef((props, ref) => {
               <p>check description</p>
             </div> */}
             <div className="book-item__price">
-              <p>{"$" + props.price}</p>
+              <p>{"$" + props.price.toFixed(2)}</p>
             </div>
             <div>
               <Button

@@ -85,7 +85,7 @@
 /* .cart-item-appear-done {
 } */
 
-@media (max-width: 768px) {
+@media (max-width: 950px) {
   .books-list {
     justify-content: center;
     align-items: center;

@@ -3,12 +3,12 @@ import { NavLink, Link } from "react-router-dom";
 
 // import SearchBar from "../UIElements/SearchBar";
 import { AuthContext } from "../../context/auth-context";
-import { MiscContext } from "../../context/misc-context";
+import NavCart from "./NavCart";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
   const auth = useContext(AuthContext);
-  const misc = useContext(MiscContext);
+
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   return (
@@ -38,31 +38,8 @@ const NavLinks = (props) => {
             </NavLink>
           </li> */}
       </React.Fragment>
-      <li>
-        <NavLink to="/cart" exact>
-          {/* {props.mobileView ? (
-            `Shoping Cart ${
-              misc.cartItemsQuantity > 0 && misc.cartItemsQuantity
-            }`
-          ) : (
-            <div className="cart-button">
-              <span className="material-icons-outlined cart-button--icon">
-                shopping_cart
-              </span>
-              {misc.cartItemsQuantity > 0 && (
-                <span className="cart-button--badge">{`${misc.cartItemsQuantity}`}</span>
-              )}
-            </div>
-          )} */}
-          <div className="cart-button">
-            <span className="material-icons-outlined cart-button--icon">
-              shopping_cart
-            </span>
-            {misc.cartItemsQuantity > 0 && (
-              <span className="cart-button--badge">{`${misc.cartItemsQuantity}`}</span>
-            )}
-          </div>
-        </NavLink>
+      <li className="cart-button__hide">
+        <NavCart />
       </li>
       {!auth.isLoggedIn && (
         <li>

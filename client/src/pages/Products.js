@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useContext, useReducer } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useReducer,
+  useRef,
+  createRef,
+} from "react";
 
 import { CSSTransition } from "react-transition-group";
 import ProductComponent from "./ProductComponent";
@@ -91,8 +98,15 @@ const Products = () => {
   const [showExpandedItem, setShowExpandedItem] = useState(false);
   const misc = useContext(MiscContext);
 
+  const expandedItemRef = useRef();
+
   const expandHandler = (id) => {
     const expandData = loadedBooks.find((item) => item.id === id);
+    expandedItemRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
     setExpandedItem(expandData);
     setShowExpandedItem(true);
   };
@@ -156,6 +170,13 @@ const Products = () => {
     fetchBooks();
   }, [sendRequest]);
 
+  // useEffect(() => {
+  //   if (showExpandedItem === true) {
+  //     console.log(expandedItemRef.current);
+  //     expandedItemRef.current.scrollIntoView(true);
+  //   }
+  // }, [showExpandedItem]);
+
   let content;
 
   if (isLoading) {
@@ -169,40 +190,16 @@ const Products = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "1rem",
+            gap: "1.4rem",
           }}
         >
           <div className="content-header">
-            <div
-              style={{
-                color: "white",
-                fontSize: "1.3rem",
-                fontWeight: "450",
-                whiteSpace: "nowrap",
-                display: "flex",
-                marginLeft: "3rem",
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="showing-title">
               {`Showing ${loadedBooks.length} products`}
             </div>
-            <Sort sortProducts={sortProducts}></Sort>
+            <Sort ref={expandedItemRef} sortProducts={sortProducts}></Sort>
           </div>
           <div className={"expanded-layout"}>
-            {/* <div
-            style={{
-              fontSize: "1.3rem",
-              gridArea: "showing",
-              fontWeight: "450",
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              marginLeft: "3rem",
-              marginBottom: "1rem",
-            }}
-          >
-            Showing 10 products
-          </div> */}
             <div
               className={`shrink-order ${
                 showExpandedItem && "responsive-shrink"

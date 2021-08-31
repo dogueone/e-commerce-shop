@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { forwardRef, useContext, useEffect } from "react";
 
 import "./Sort.css";
 import { MiscContext } from "../context/misc-context";
 
-const Sort = (props) => {
+const Sort = forwardRef((props, ref) => {
   const misc = useContext(MiscContext);
 
   const selectHandler = (e) => {
@@ -19,7 +19,7 @@ const Sort = (props) => {
   // onChange={(e) => misc.setSorting(e.target.value)
 
   return (
-    <div className="sort">
+    <div ref={ref} className="sort">
       <span className="sort-label">Sort By: </span>
       <select
         className="sort-dropdown"
@@ -33,6 +33,5 @@ const Sort = (props) => {
       </select>
     </div>
   );
-};
-
+});
 export default Sort;

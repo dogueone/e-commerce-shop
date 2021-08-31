@@ -29,7 +29,7 @@
 }
 
 .loading-spinner__background {
-  background: rgba(255, 255, 255, 0.9) !;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .loading-spinner__inner {
