@@ -107,6 +107,7 @@ const NewProductPage = (props) => {
       const responseData = await sendRequest(
         `${process.env.REACT_APP_BACKEND_URL}/books/add-book`,
         "POST",
+        //formData automatically add right headers for multipart data
         formData,
         { Authorization: "Bearer " + auth.token }
       );

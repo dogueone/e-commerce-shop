@@ -119,7 +119,7 @@ const ProductPage = () => {
               <div className="product-page__image">
                 <BookImage
                   imageStyle="product-image"
-                  img={`${process.env.REACT_APP_ASSET_URL}/${loadedProduct.image}`}
+                  img={"image"}
                   alt={loadedProduct.title}
                 />
               </div>

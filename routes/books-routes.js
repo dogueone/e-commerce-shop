@@ -2,7 +2,7 @@ const express = require("express");
 const { body } = require("express-validator");
 
 const checkAuth = require("../middleware/check-auth");
-const fileUpload = require("../middleware/file-upload");
+const fileUpload = require("../services/awsUpload");
 const booksControllers = require("../controllers/books-controllers");
 const router = express.Router();
 

@@ -7,6 +7,7 @@ const ImageUpload = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (!file) {
@@ -31,15 +32,38 @@ const ImageUpload = (props) => {
     let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
+      console.log(event.target.files);
       // console.dir(pickedFile);
+      if (pickedFile.size > 500000) {
+        console.log(pickedFile.size);
+        setFile();
+        setIsValid(false);
+        setImageError(true);
+        setPreviewUrl();
+        props.onInput(props.id, null, false);
+        return;
+      }
       setFile(pickedFile);
       setIsValid(true);
+      setImageError(false);
       fileIsValid = true;
+      props.onInput(props.id, pickedFile, fileIsValid);
+      return;
     } else if (!file) {
+      console.log(event.target.files);
+      // console.log("!file");
+      setFile();
       setIsValid(false);
+      setImageError(true);
       fileIsValid = false;
+      props.onInput(props.id, null, false);
+      return;
     }
-    props.onInput(props.id, pickedFile, fileIsValid);
+    // console.log("Canceled");
+    setFile();
+    setIsValid(false);
+    setPreviewUrl();
+    props.onInput(props.id, null, false);
   };
 
   return (
@@ -55,13 +79,21 @@ const ImageUpload = (props) => {
       <div className={`image-upload ${props.center && "image-center"}`}>
         <div className="image-upload__preview">
           {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {!previewUrl && <p> Please pick an image </p>}
+          {/* {!isValid && !file && <p>{props.errorText}</p>} */}
         </div>
         <Button type="button" size="big" onClick={pickImageHandler}>
-          Pick image
+          Upload Image
         </Button>
+        {/* <Button type="button" size="big" onClick={pickImageUrlHandler}>
+          Image URL
+        </Button> */}
       </div>
-      {/* {!isValid && !file && <p>{props.errorText}</p>} */}
+
+      {imageError && (
+        <p className={"image-error"}>
+          Image should be .jpg,.png,.jpeg, 500kb size max.
+        </p>
+      )}
     </div>
   );
 };

@@ -18,6 +18,8 @@ import { useHttpClient } from "../hooks/http-hook";
 import BooksList from "../components/BooksList";
 import { MiscContext } from "../context/misc-context";
 import "./Products.css";
+import BackElement from "../components/UIElements/BackElement";
+import Button from "../components/FormElements/Button";
 
 const reducer = (popUpList, action) => {
   switch (action.type) {
@@ -88,7 +90,7 @@ const reducer = (popUpList, action) => {
   }
 };
 
-const Products = () => {
+const Products = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [loadedBooks, setLoadedBooks] = useState();
   // const [showPopUp, setShowPopUp] = useState(false);
@@ -246,6 +248,13 @@ const Products = () => {
       {/* <PopUp show={showPopUp}>Item added to the cart</PopUp> */}
       {/* <button onClick={sortProducts}>Sort</button> */}
       {/* {isLoading && <LoadingSpinner asOverlay />} */}
+      {/* {!isLoading && !loadedBooks && (
+        <BackElement>
+          <div>
+            <Button to="/books/add-product">Add product</Button>
+          </div>
+        </BackElement>
+      )} */}
       {content}
       <NotificationsList
         popUpList={popUpList}

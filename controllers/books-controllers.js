@@ -1,10 +1,18 @@
 const fs = require("fs");
+// const { v1: uuidv1 } = require("uuid");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+// const aws = require("aws-sdk");
 
 const HttpError = require("../models/http-error");
 const Product = require("../models/product");
 const User = require("../models/user");
+
+// const MIME_TYPE_MAP = {
+//   "image/png": "png",
+//   "image/jpeg": "jpeg",
+//   "image/jpg": "jpg",
+// };
 
 const getBooks = async (req, res, next) => {
   let books;
@@ -91,18 +99,22 @@ const createBook = async (req, res, next) => {
     );
   }
 
+  if (!req.file) {
+    return next(new HttpError("Something wrong with image, try again", 422));
+  }
+
   const { title, description, price, creator } = req.body;
 
   const createdBook = new Product({
     title,
-    image: req.file.path,
+    // image: req.file.path,
+    image: process.env.CLOUDFLARE_DOMAIN + req.file.key,
     description,
     price: Number(price).toFixed(2),
     creator,
   });
 
   let user;
-
   try {
     user = await User.findById(creator);
   } catch (err) {
@@ -124,7 +136,79 @@ const createBook = async (req, res, next) => {
     const error = new HttpError("Creating book failed, please try again.", 500);
     return next(error);
   }
+
   res.status(201).json({ book: createdBook });
+
+  // aws.config.setPromisesDependency();
+  // aws.config.update({
+  //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  //   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  //   region: process.env.AWS_REGION,
+  // });
+  // const s3 = new aws.S3();
+  // const ext = MIME_TYPE_MAP[req.file.mimetype];
+  // const params = {
+  //   ACL: "public-read",
+  //   Bucket: process.env.AWS_BUCKET_NAME,
+  //   Body: fs.createReadStream(req.file.path),
+  //   Key: `images/${uuidv1() + "." + ext}`,
+  // };
+
+  // s3.upload(params, (err, data) => {
+  //   if (err) {
+  //     console.log("Error occured while trying to upload to S3 bucket", err);
+  //     return next(
+  //       new HttpError("Error occured while trying to upload an image", 500)
+  //     );
+  //   }
+  //   if (data) {
+  //     console.log(data);
+  //     fs.unlinkSync(req.file.path); // Empty temp folder
+  //     const locationUrl = data.Location;
+  //     const { title, description, price, creator } = req.body;
+
+  //     const createdBook = new Product({
+  //       title,
+  //       // image: req.file.path,
+  //       image: locationUrl,
+  //       description,
+  //       price: Number(price).toFixed(2),
+  //       creator,
+  //     });
+
+  //     const asyncBlock = async () => {
+  //       let user;
+  //       try {
+  //         user = await User.findById(creator);
+  //       } catch (err) {
+  //         return next(
+  //           new HttpError("Creating book failed, please try again", 500)
+  //         );
+  //       }
+
+  //       if (!user) {
+  //         return next(new HttpError("Could not find user for provide id", 404));
+  //       }
+
+  //       try {
+  //         const sess = await mongoose.startSession();
+  //         sess.startTransaction();
+  //         await createdBook.save({ session: sess });
+  //         user.books.push(createdBook); // adds only _id of a book to user
+  //         await user.save({ session: sess });
+  //         await sess.commitTransaction();
+  //       } catch (err) {
+  //         const error = new HttpError(
+  //           "Creating book failed, please try again.",
+  //           500
+  //         );
+  //         return next(error);
+  //       }
+  //     };
+  //     asyncBlock();
+  //     res.status(201).json({ book: createdBook });
+  //   }
+  // });
 };
 
 const updateBook = async (req, res, next) => {
@@ -197,7 +281,7 @@ const deleteBook = async (req, res, next) => {
     return next(new HttpError("Could not find book for provide id", 404));
   }
 
-  const imagePath = book.image;
+  // const imagePath = book.image;
 
   try {
     const sess = await mongoose.startSession();
@@ -212,9 +296,9 @@ const deleteBook = async (req, res, next) => {
     );
   }
 
-  fs.unlink(imagePath, (err) => {
-    console.log(err);
-  });
+  // fs.unlink(imagePath, (err) => {
+  //   console.log(err);
+  // });
 
   res.status(200).json({ message: "Deleted place." });
 };

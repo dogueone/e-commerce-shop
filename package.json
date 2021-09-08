@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/dogueone/e-commerce-shop#readme",
   "dependencies": {
+    "aws-sdk": "^2.980.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
@@ -26,6 +27,7 @@
     "mongoose": "^5.10.15",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "stripe": "^8.156.0",
     "uuid": "^8.3.2"
   },

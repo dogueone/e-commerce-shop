@@ -99,12 +99,12 @@ const BookItem = forwardRef((props, ref) => {
           </React.Fragment>
         }
       ></Modal>
-      <li ref={ref} style={{ height: "min-content" }}>
+      <li ref={ref}>
         <Card className="book-item__content">
           <BookImage
             onClick={imageClickHandler}
             imageStyle="book-item__image"
-            img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
+            img={"image"}
             alt={props.title}
           />
           <div className="book-item__p">

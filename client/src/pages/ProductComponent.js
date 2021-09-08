@@ -96,7 +96,7 @@ const ProductComponent = (props) => {
         <div className="product-component__image">
           <BookImage
             imageStyle="product-image"
-            img={`${process.env.REACT_APP_ASSET_URL}/${props.data.image}`}
+            img={props.data.image}
             alt={props.data.title}
           />
         </div>

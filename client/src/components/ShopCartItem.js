@@ -47,11 +47,7 @@ const ShopCartItem = (props) => {
   return (
     <li className="cart-item-grid">
       <span>
-        <BookImage
-          img={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
-          alt={props.title}
-          imageStyle={"cart-image"}
-        />
+        <BookImage img={"image"} alt={props.title} imageStyle={"cart-image"} />
       </span>
       <span>{props.title}</span>
       <span>{props.price}</span>

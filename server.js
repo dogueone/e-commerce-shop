@@ -18,7 +18,7 @@ connectDB();
 app.use(bodyParser.json());
 
 //middleware to serve images statically
-app.use("/uploads/images", express.static(path.join("uploads", "images")));
+// app.use("/uploads/images", express.static(path.join("uploads", "images")));
 //to serve other files statically, it works for index.html, assets.. but not for routes
 // app.use(express.static(path.join("public")));
 
@@ -67,9 +67,10 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   //
   if (req.file) {
-    fs.unlink(req.file.path, (err) => {
-      console.log(err);
-    });
+    // fs.unlink(req.file.path, (err) => {
+    //   console.log(err);
+    // });
+    console.log(req.file);
   }
   if (res.headerSent) {
     return next(error);
