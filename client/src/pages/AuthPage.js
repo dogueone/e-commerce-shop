@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
-import { AuthContext } from "../context/auth-context";
 import Card from "../components/UIElements/Card";
 import { useForm } from "../hooks/form-hook";
 import {
@@ -18,9 +18,10 @@ import "./AuthPage.css";
 import { Redirect } from "react-router-dom";
 
 const AuthPage = (props) => {
-  const auth = useContext(AuthContext);
   const [isLoginMode, setLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const location = useLocation();
 
@@ -53,7 +54,14 @@ const AuthPage = (props) => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.userId, responseData.token);
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            userId: responseData.userId,
+            token: responseData.token,
+            isLoggedIn: !!responseData.token,
+          },
+        });
       } catch (err) {}
     } else {
       try {
@@ -69,7 +77,14 @@ const AuthPage = (props) => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.userId, responseData.token);
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            userId: responseData.userId,
+            token: responseData.token,
+            isLoggedIn: !!responseData.token,
+          },
+        });
       } catch (err) {}
     }
   };

@@ -91,8 +91,6 @@ const BooksList = (props, ref) => {
           price={book.price}
           onDeleteBook={props.onDeleteBook}
           creatorId={book.creator}
-          dispatch={props.dispatch}
-          popUpList={props.popUpList}
           expandHandler={props.expandHandler}
           // order={}
         />

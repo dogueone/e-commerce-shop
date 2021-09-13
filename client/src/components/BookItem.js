@@ -1,9 +1,9 @@
 import React, { useContext, useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { connect, useSelector, useDispatch } from "react-redux";
 
 import Modal from "./UIElements/Modal";
-import { AuthContext } from "../context/auth-context";
 import { MiscContext } from "../context/misc-context";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
@@ -11,14 +11,37 @@ import { useHttpClient } from "../hooks/http-hook";
 import Button from "../components/FormElements/Button";
 import BookImage from "./UIElements/BookImage";
 import Card from "./UIElements/Card";
+import * as actionTypes from "../store/actions/notificationsA";
 import "./BookItem.css";
+
+// const mapStateToProps = (state) => {
+//   return {
+//     popUpList: state,
+//   };
+// };
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onProductAdded: (payload) => {
+//       dispatch({ type: actionTypes.ADD_TO_CART, payload: payload });
+//     },
+//     onProductRemoved: (payload) => {
+//       dispatch({ type: actionTypes.DELETE_ITEM, payload: payload });
+//     },
+//     onMaximumItems: (payload) => {
+//       dispatch({ type: actionTypes.MAXIMUM_ITEMS, payload: payload });
+//     },
+//   };
+// };
 
 const BookItem = forwardRef((props, ref) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [alert, setAlert] = useState(false);
 
-  const auth = useContext(AuthContext);
   const misc = useContext(MiscContext);
+
+  const popUpList = useSelector((state) => state.notifications);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const imageClickHandler = () => {
     props.expandHandler(props.id);
@@ -41,29 +64,46 @@ const BookItem = forwardRef((props, ref) => {
     }
     misc.addToCart(props.id);
 
+    console.log(popUpList);
+
     if (quantity && quantity >= 10) {
-      props.dispatch({
-        type: "MAXIMUMITEMS",
+      dispatch({
+        type: actionTypes.MAXIMUM_ITEMS,
         payload: {
           ukey: uuidv4(),
           content: "Can't add more than 10 items",
         },
       });
     } else {
-      props.dispatch({
-        type: "ADDTOCART",
+      dispatch({
+        type: actionTypes.ADD_TO_CART,
         payload: {
           ukey: uuidv4(),
           content: props.title + " added to cart",
         },
       });
     }
+    // if (quantity && quantity >= 10) {
+    //   props.onMaximumItems({
+    //     ukey: uuidv4(),
+    //     content: "Can't add more than 10 items",
+    //   });
+    // } else {
+    //   props.onProductAdded({
+    //     ukey: uuidv4(),
+    //     content: props.title + " added to cart",
+    //   });
+    // }
   };
 
   const deleteBookHandler = async () => {
     setAlert(false);
-    props.dispatch({
-      type: "DELETEITEM",
+    // props.onProductRemoved({
+    //   title: props.title,
+    //   content: props.title + " successfully deleted",
+    // });
+    dispatch({
+      type: actionTypes.DELETE_ITEM,
       payload: {
         title: props.title,
         content: props.title + " successfully deleted",
@@ -151,4 +191,10 @@ const BookItem = forwardRef((props, ref) => {
   );
 });
 
+// export default React.forwardRef((props, ref) => {
+//   return <BookItem {...props} inputRef={ref} />;
+// });
+
 export default BookItem;
+
+// export default connect(mapStateToProps, mapDispatchToProps)(BookItem);

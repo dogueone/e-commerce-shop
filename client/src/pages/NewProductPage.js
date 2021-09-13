@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Card from "../components/UIElements/Card";
 import ImageUpload from "../components/FormElements/ImageUpload";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import ErrorModal from "../components/UIElements/ErrorModal";
-import { AuthContext } from "../context/auth-context";
 import { useHttpClient } from "../hooks/http-hook";
 import { useForm } from "../hooks/form-hook";
 import Button from "../components/FormElements/Button";
@@ -43,8 +43,9 @@ import BackElement from "../components/UIElements/BackElement";
 // };
 
 const NewProductPage = (props) => {
-  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [formState, inputHandler] = useForm(
     {

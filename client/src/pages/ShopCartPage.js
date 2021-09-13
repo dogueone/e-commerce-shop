@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Button from "../components/FormElements/Button";
-import { AuthContext } from "../context/auth-context";
 import { MiscContext } from "../context/misc-context";
 import { useHttpClient } from "../hooks/http-hook";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
@@ -21,7 +20,8 @@ const ShopCartPage = (props) => {
   const [showBackup, setShowBackup] = useState(false);
 
   const misc = useContext(MiscContext);
-  const auth = useContext(AuthContext);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const clearLoadedCart = () => {
     setLoadedCart([]);

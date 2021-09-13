@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 // import SearchBar from "../UIElements/SearchBar";
-import { AuthContext } from "../../context/auth-context";
 import NavCart from "./NavCart";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
-  const auth = useContext(AuthContext);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -50,7 +51,12 @@ const NavLinks = (props) => {
       )}
       {auth.isLoggedIn && (
         <li>
-          <Link to="/" onClick={auth.logout}>
+          <Link
+            to="/"
+            onClick={() => {
+              dispatch({ type: "LOGOUT" });
+            }}
+          >
             <span className="material-icons-outlined">logout</span>
           </Link>
         </li>

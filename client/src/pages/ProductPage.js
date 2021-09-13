@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import NotificationsList from "../components/UIElements/NotificationsList";
+import { useSelector, useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
+import * as actionTypes from "../store/actions/notificationsA";
 import { MiscContext } from "../context/misc-context";
 import Button from "../components/FormElements/Button";
 import BookImage from "../components/UIElements/BookImage";
@@ -46,6 +50,40 @@ const ProductPage = () => {
   const productId = useParams().bid;
   const [amount, setAmount] = useState(1);
   const misc = useContext(MiscContext);
+  // const notifications = useSelector((state) => state.notifications);
+  const dispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    //TO CHECK FOR ITEM QUANTITY (TEMPORARILY SOLUTION), because there is no data about max available items to sell for now
+    let quantity;
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const queryItem = cart.find((item) => item.id === loadedProduct.id);
+      quantity = queryItem.quantity;
+    } catch (error) {
+      // clearCart(error.name);
+      console.log(error);
+    }
+    misc.addToCart(loadedProduct.id, amount);
+
+    if (quantity && quantity >= 10) {
+      dispatch({
+        type: actionTypes.MAXIMUM_ITEMS,
+        payload: {
+          ukey: uuidv4(),
+          content: "Can't add more than 10 items",
+        },
+      });
+    } else {
+      dispatch({
+        type: actionTypes.ADD_TO_CART,
+        payload: {
+          ukey: uuidv4(),
+          content: loadedProduct.title + " added to cart",
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -141,20 +179,14 @@ const ProductPage = () => {
                     <option value="4">4</option>
                     <option value="5">5</option>
                   </select>
-                  <Button
-                    onClick={() => {
-                      console.log(amount);
-                      misc.addToCart(loadedProduct.id, amount);
-                    }}
-                  >
-                    Add Product
-                  </Button>
+                  <Button onClick={addToCartHandler}>Add Product</Button>
                 </div>
               </div>
             </div>
           </Card>
         </>
       )}
+      <NotificationsList />
     </React.Fragment>
   );
 

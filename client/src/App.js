@@ -7,8 +7,8 @@ import React, {
   Suspense,
 } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import { AuthContext } from "./context/auth-context";
 import { MiscContext } from "./context/misc-context";
 // import EditProductPage from "./pages/EditProductPage";
 // import AuthPage from "./pages/AuthPage";
@@ -31,12 +31,13 @@ const CheckoutPage = React.lazy(() => import("./pages/CheckoutPage"));
 let logoutTimer;
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [expirationDate, setExpirationDate] = useState();
   const [cartItemsQuantity, setCartItemsQuantity] = useState();
   const [checkingToken, setCheckingToken] = useState(true);
   const [sorting, setSorting] = useState("A-Z Order");
+
+  const auth = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const clearCart = useCallback((message = "Clearing cart") => {
     localStorage.removeItem("cart");
@@ -53,7 +54,6 @@ const App = () => {
       return;
     }
 
-    // let updatedCart;
     let existedItem;
     try {
       if (cart.length !== 0) {
@@ -106,7 +106,6 @@ const App = () => {
       }
     } catch (error) {
       clearCart(error.name);
-      // window.location.reload();
     }
   }, []);
 
@@ -116,38 +115,18 @@ const App = () => {
       : clearCart();
   }, []);
 
-  const login = useCallback((userId, token, expiration) => {
-    setToken(token);
-    setUserId(userId);
-    const tokenExpirationDate =
-      expiration || new Date(new Date().getTime() + 1000 * 60 * 60);
-    setExpirationDate(tokenExpirationDate);
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        userId: userId,
-        token: token,
-        expiration: tokenExpirationDate.toISOString(),
-      })
-    );
-    setCheckingToken(false);
-  }, []);
-
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
-    setExpirationDate(null);
-    localStorage.removeItem("userData");
-  }, []);
-
   useEffect(() => {
+    const { token, expirationDate } = auth;
     if (token && expirationDate) {
       const remainingTime = expirationDate.getTime() - new Date().getTime();
-      logoutTimer = setTimeout(logout, remainingTime);
+      console.log("logout timer");
+      logoutTimer = setTimeout(() => {
+        dispatch({ type: "LOGOUT" });
+      }, remainingTime);
     } else {
       clearTimeout(logoutTimer);
     }
-  }, [token, expirationDate, logout]);
+  }, [auth.token, auth.expirationDate]);
 
   useEffect(() => {
     const storageData = JSON.parse(localStorage.getItem("userData"));
@@ -156,15 +135,22 @@ const App = () => {
       storageData.token &&
       new Date(storageData.expiration) > new Date()
     ) {
-      login(
-        storageData.userId,
-        storageData.token,
-        new Date(storageData.expiration)
-      );
+      console.log("not expired");
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          userId: storageData.userId,
+          token: storageData.token,
+          expiration: new Date(storageData.expiration),
+          isLoggedIn: !!storageData.token,
+        },
+      });
+      setCheckingToken(false);
     } else {
+      console.log("no token, or expired");
       setCheckingToken(false);
     }
-  }, [login]);
+  }, []);
 
   useEffect(() => {
     updateQuantity(); //update cart items quantity
@@ -172,7 +158,7 @@ const App = () => {
 
   let routes;
 
-  if (token) {
+  if (auth.token) {
     routes = (
       <Switch>
         <Route path="/" component={ProductsPage} exact />
@@ -200,51 +186,42 @@ const App = () => {
   }
 
   if (checkingToken) {
+    console.log("checking token");
     return null;
   }
 
   return (
-    <AuthContext.Provider
+    <MiscContext.Provider
       value={{
-        userId: userId,
-        token: token,
-        isLoggedIn: !!token,
-        login: login,
-        logout: logout,
+        cartItemsQuantity: cartItemsQuantity,
+        updateQuantity: updateQuantity,
+        setCartQuantity: setCartQuantity,
+        clearCart: clearCart,
+        addToCart: addToCart,
+        sorting: sorting,
+        setSorting: setSorting,
       }}
     >
-      <MiscContext.Provider
-        value={{
-          cartItemsQuantity: cartItemsQuantity,
-          updateQuantity: updateQuantity,
-          setCartQuantity: setCartQuantity,
-          clearCart: clearCart,
-          addToCart: addToCart,
-          sorting: sorting,
-          setSorting: setSorting,
-        }}
-      >
-        <BrowserRouter>
-          <Fragment>
-            <div className="background-layer"></div>
-            <MainNavigation />
-            {/* {checkingToken ? (
+      <BrowserRouter>
+        <Fragment>
+          <div className="background-layer"></div>
+          <MainNavigation />
+          {/* {checkingToken ? (
               <LoadingSpinner asOverlay />
             ) : (
               <main className="main-content">{routes}</main>
             )} */}
 
-            {
-              <main className="main-content">
-                <Suspense fallback={<LoadingSpinner asOverlay />}>
-                  {routes}
-                </Suspense>
-              </main>
-            }
-          </Fragment>
-        </BrowserRouter>
-      </MiscContext.Provider>
-    </AuthContext.Provider>
+          {
+            <main className="main-content">
+              <Suspense fallback={<LoadingSpinner asOverlay />}>
+                {routes}
+              </Suspense>
+            </main>
+          }
+        </Fragment>
+      </BrowserRouter>
+    </MiscContext.Provider>
   );
 };
 

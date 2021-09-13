@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useHistory, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import Modal from "../components/UIElements/Modal";
 import Button from "../components/FormElements/Button";
@@ -8,7 +9,6 @@ import { useHttpClient } from "../hooks/http-hook";
 import StripeContainer from "../components/StripeContainer";
 import LoadingSpinner from "../components/UIElements/LoadingSpinner";
 import BookList from "../components/BooksList";
-import { AuthContext } from "../context/auth-context";
 import ErrorModal from "../components/UIElements/ErrorModal";
 import "./CheckoutPage.css";
 import BackElement from "../components/UIElements/BackElement";
@@ -19,7 +19,8 @@ const CheckoutPage = () => {
   const [paymentAction, setPaymentAction] = useState(false);
   const location = useLocation();
   const history = useHistory();
-  const auth = useContext(AuthContext);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!location.state) {

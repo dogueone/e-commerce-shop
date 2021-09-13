@@ -1,6 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
+import * as actionTypes from "../store/actions/notificationsA";
 import { MiscContext } from "../context/misc-context";
 import Button from "../components/FormElements/Button";
 import BookImage from "../components/UIElements/BookImage";
@@ -46,6 +49,7 @@ const ProductComponent = (props) => {
   // const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [amount, setAmount] = useState(1);
   const misc = useContext(MiscContext);
+  const dispatch = useDispatch();
 
   // const loadedBook = BOOKS.find((book) => book.id === bookId);
 
@@ -53,6 +57,38 @@ const ProductComponent = (props) => {
 
   // const openModalHandler = () => setShowModal(true);
   // const closeModalHandler = () => setShowModal(false);
+
+  const addToCartHandler = () => {
+    //TO CHECK FOR ITEM QUANTITY (TEMPORARILY SOLUTION), because there is no data about max available items to sell for now
+    let quantity;
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const queryItem = cart.find((item) => item.id === props.data.id);
+      quantity = queryItem.quantity;
+    } catch (error) {
+      // clearCart(error.name);
+      console.log(error);
+    }
+    misc.addToCart(props.data.id, amount);
+
+    if (quantity && quantity >= 10) {
+      dispatch({
+        type: actionTypes.MAXIMUM_ITEMS,
+        payload: {
+          ukey: uuidv4(),
+          content: "Can't add more than 10 items",
+        },
+      });
+    } else {
+      dispatch({
+        type: actionTypes.ADD_TO_CART,
+        payload: {
+          ukey: uuidv4(),
+          content: props.data.title + " added to cart",
+        },
+      });
+    }
+  };
 
   const onSelectHandler = (event) => {
     setAmount(parseInt(event.target.value, 10));
@@ -96,7 +132,8 @@ const ProductComponent = (props) => {
         <div className="product-component__image">
           <BookImage
             imageStyle="product-image"
-            img={props.data.image}
+            // img={props.data.image}
+            img={"image"}
             alt={props.data.title}
           />
         </div>
@@ -123,14 +160,7 @@ const ProductComponent = (props) => {
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-            <Button
-              onClick={() => {
-                console.log(amount);
-                misc.addToCart(props.data.id, amount);
-              }}
-            >
-              Add Product
-            </Button>
+            <Button onClick={addToCartHandler}>Add Product</Button>
             <Button
               neutral
               onClick={onHideHandler}

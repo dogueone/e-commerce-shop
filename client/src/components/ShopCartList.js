@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import ShopCartItem from "./ShopCartItem";
 import "./ShopCartList.css";
 import Button from "./FormElements/Button";
-import { AuthContext } from "../context/auth-context";
 
 const ShopCartList = (props) => {
-  const auth = useContext(AuthContext);
   const location = useLocation();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   return (
     <ul className="cart-list-grid">

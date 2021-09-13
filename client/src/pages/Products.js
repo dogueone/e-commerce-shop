@@ -21,81 +21,79 @@ import "./Products.css";
 import BackElement from "../components/UIElements/BackElement";
 import Button from "../components/FormElements/Button";
 
-const reducer = (popUpList, action) => {
-  switch (action.type) {
-    case "ADDTOCART":
-      console.log("ADDTOCART");
-      if (popUpList.length >= 4) {
-        let listToMutate = [
-          {
-            content: action.payload.content,
-            ukey: action.payload.ukey,
-            popUpStyle: "add-to-cart",
-          },
-          ...popUpList.map((obj) => ({ ...obj })),
-        ];
-        listToMutate.pop();
-        return listToMutate;
-      } else {
-        return [
-          {
-            content: action.payload.content,
-            ukey: action.payload.ukey,
-            popUpStyle: "add-to-cart",
-          },
-          ...popUpList.map((obj) => ({ ...obj })),
-        ];
-      }
+// const reducer = (popUpList, action) => {
+//   switch (action.type) {
+//     case "ADDTOCART":
+//       console.log("ADDTOCART");
+//       if (popUpList.length >= 4) {
+//         let listToMutate = [
+//           {
+//             content: action.payload.content,
+//             ukey: action.payload.ukey,
+//             popUpStyle: "add-to-cart",
+//           },
+//           ...popUpList.map((obj) => ({ ...obj })),
+//         ];
+//         listToMutate.pop();
+//         return listToMutate;
+//       } else {
+//         return [
+//           {
+//             content: action.payload.content,
+//             ukey: action.payload.ukey,
+//             popUpStyle: "add-to-cart",
+//           },
+//           ...popUpList.map((obj) => ({ ...obj })),
+//         ];
+//       }
 
-    case "DELETEITEM":
-      console.log("DELETEITEM");
-      return [
-        ...popUpList.map((obj) => ({ ...obj })),
-        {
-          content: action.payload.content,
-          ukey: action.payload.ukey,
-          popUpStyle: "delete-item",
-        },
-      ];
-    case "MAXIMUMITEMS":
-      if (popUpList.length >= 4) {
-        let listToMutate = [
-          {
-            content: action.payload.content,
-            ukey: action.payload.ukey,
-            popUpStyle: "delete-item",
-          },
-          ...popUpList.map((obj) => ({ ...obj })),
-        ];
-        listToMutate.pop();
-        return listToMutate;
-      } else {
-        return [
-          {
-            ukey: action.payload.ukey,
-            content: action.payload.content,
-            popUpStyle: "delete-item",
-          },
-          ...popUpList.map((obj) => ({ ...obj })),
-        ];
-      }
+//     case "DELETEITEM":
+//       console.log("DELETEITEM");
+//       return [
+//         ...popUpList.map((obj) => ({ ...obj })),
+//         {
+//           content: action.payload.content,
+//           ukey: action.payload.ukey,
+//           popUpStyle: "delete-item",
+//         },
+//       ];
+//     case "MAXIMUMITEMS":
+//       if (popUpList.length >= 4) {
+//         let listToMutate = [
+//           {
+//             content: action.payload.content,
+//             ukey: action.payload.ukey,
+//             popUpStyle: "delete-item",
+//           },
+//           ...popUpList.map((obj) => ({ ...obj })),
+//         ];
+//         listToMutate.pop();
+//         return listToMutate;
+//       } else {
+//         return [
+//           {
+//             ukey: action.payload.ukey,
+//             content: action.payload.content,
+//             popUpStyle: "delete-item",
+//           },
+//           ...popUpList.map((obj) => ({ ...obj })),
+//         ];
+//       }
 
-    case "ITEMTIMEOUT":
-      console.log("ITEMTIMEOUT");
-      let NewData = [...popUpList.map((obj) => ({ ...obj }))];
-      NewData.shift();
-      console.log(NewData);
+//     case "ITEMTIMEOUT":
+//       console.log("ITEMTIMEOUT");
+//       let NewData = [...popUpList.map((obj) => ({ ...obj }))];
+//       NewData.shift();
+//       console.log(NewData);
 
-      return NewData;
-  }
-};
+//       return NewData;
+//   }
+// };
 
 const Products = (props) => {
   const { error, clearError, sendRequest, isLoading } = useHttpClient();
   const [loadedBooks, setLoadedBooks] = useState();
-  // const [showPopUp, setShowPopUp] = useState(false);
-  // const [popUpList, setPopUpList] = useState([]);
-  const [popUpList, dispatch] = useReducer(reducer, []);
+  // const [popUpList, dispatch] = useReducer(reducer, []);
   const [expandedItem, setExpandedItem] = useState();
   const [showExpandedItem, setShowExpandedItem] = useState(false);
   const misc = useContext(MiscContext);
@@ -208,11 +206,7 @@ const Products = (props) => {
               }`}
             >
               <BooksList
-                dispatch={dispatch}
                 expandHandler={expandHandler}
-                // setPopUpList={setPopUpList}
-                popUpList={popUpList}
-                // setShowPopUp={setShowPopUp}
                 items={loadedBooks}
                 onDeleteBook={onDeleteBookHandler}
               />
@@ -256,10 +250,7 @@ const Products = (props) => {
         </BackElement>
       )} */}
       {content}
-      <NotificationsList
-        popUpList={popUpList}
-        dispatch={dispatch}
-      ></NotificationsList>
+      <NotificationsList />
     </React.Fragment>
   );
 };
