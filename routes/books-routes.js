@@ -25,8 +25,8 @@ router.post(
   //middleware to retrieve a single file
   fileUpload.single("image"),
   [
-    body("title").not().isEmpty(),
-    body("description").isLength({ min: 5 }),
+    body("title").not().isEmpty().isLength({ max: 14 }),
+    body("description").isLength({ min: 5, max: 30 }),
     body("price").isFloat({ min: 0.1, max: 999.99 }),
   ],
   booksControllers.createBook
@@ -35,8 +35,8 @@ router.post(
 router.patch(
   "/:bid",
   [
-    body("title").not().isEmpty(),
-    body("description").isLength({ min: 5 }),
+    body("title").not().isEmpty().isLength({ max: 14 }),
+    body("description").isLength({ min: 5, max: 30 }),
     body("price").isFloat({ min: 0.1, max: 999.99 }),
   ],
   booksControllers.updateBook

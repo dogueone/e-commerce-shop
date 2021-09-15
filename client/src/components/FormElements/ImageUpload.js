@@ -8,6 +8,7 @@ const ImageUpload = (props) => {
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [placeholder, setPlaceholder] = useState(false);
 
   useEffect(() => {
     if (!file) {
@@ -25,6 +26,27 @@ const ImageUpload = (props) => {
   //to utilize element without seeing it
   const pickImageHandler = () => {
     filePickerRef.current.click();
+  };
+
+  const placeholderHandler = () => {
+    const relevantPlaceholder = placeholder;
+    let value;
+    if (relevantPlaceholder === false) {
+      value = "placeholder";
+    } else {
+      value = null;
+    }
+    setPlaceholder((prevState) => {
+      return !prevState;
+    });
+    filePickerRef.current.value = "";
+    setFile();
+    setPreviewUrl();
+    setIsValid(false);
+    setImageError(false);
+    console.log("placeholder is " + !relevantPlaceholder);
+    console.log("value is " + value);
+    props.onInput(props.id, value, !relevantPlaceholder);
   };
 
   const pickedHandler = (event) => {
@@ -76,18 +98,40 @@ const ImageUpload = (props) => {
         accept=".jpg,.png,.jpeg"
         onChange={pickedHandler}
       />
-      <div className={`image-upload ${props.center && "image-center"}`}>
-        <div className="image-upload__preview">
-          {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {/* {!isValid && !file && <p>{props.errorText}</p>} */}
+      {!placeholder && (
+        <div className={`image-upload ${props.center && "image-center"}`}>
+          <div className="image-upload__preview">
+            {previewUrl && <img src={previewUrl} alt="Preview" />}
+            {/* {!isValid && !file && <p>{props.errorText}</p>} */}
+          </div>
+          <Button type="button" size="big" onClick={pickImageHandler}>
+            Upload Image
+          </Button>
         </div>
-        <Button type="button" size="big" onClick={pickImageHandler}>
-          Upload Image
-        </Button>
-        {/* <Button type="button" size="big" onClick={pickImageUrlHandler}>
+      )}
+      <div style={{ display: "flex", marginTop: "1rem" }}>
+        <input
+          style={{ all: "revert", marginLeft: "0" }}
+          name="placeholder"
+          type="checkbox"
+          onChange={placeholderHandler}
+        />
+        <label
+          style={{
+            all: "revert",
+            color: "var(--light-purple-color)",
+            fontWeight: "450",
+            marginLeft: "4px",
+          }}
+          htmlFor="placeholder"
+        >
+          Use placeholder image
+        </label>
+      </div>
+
+      {/* <Button type="button" size="big" onClick={pickImageUrlHandler}>
           Image URL
         </Button> */}
-      </div>
 
       {imageError && (
         <p className={"image-error"}>

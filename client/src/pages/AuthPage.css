@@ -15,3 +15,17 @@
   margin-bottom: 1rem;
   width: 100%;
 }
+
+.test-user {
+  margin-bottom: 1rem;
+  font-size: 14px;
+}
+.test-user div {
+  margin-bottom: 0.5rem;
+}
+
+.test-user__info {
+  font-size: 16px;
+  color: var(--light-purple-color);
+  font-weight: 450;
+}

@@ -4,27 +4,37 @@ const initialState = [];
 
 const reducer = (popUpList = initialState, action) => {
   switch (action.type) {
+    case actionTypes.ITEM_TIMEOUT:
+      console.log("ITEMTIMEOUT");
+      let NewData = [...popUpList.map((obj) => ({ ...obj }))];
+
+      const ResultData = NewData.filter(
+        (item) => item.ukey !== action.payload.ukey
+      );
+      // shift();
+      console.log(ResultData);
+      return ResultData;
     case actionTypes.ADD_TO_CART:
       console.log("ADDTOCART");
-      if (popUpList.length >= 4) {
+      if (popUpList.length >= 3) {
         let listToMutate = [
+          ...popUpList.map((obj) => ({ ...obj })),
           {
             content: action.payload.content,
             ukey: action.payload.ukey,
             popUpStyle: "add-to-cart",
           },
-          ...popUpList.map((obj) => ({ ...obj })),
         ];
-        listToMutate.pop();
+        listToMutate.shift();
         return listToMutate;
       } else {
         return [
+          ...popUpList.map((obj) => ({ ...obj })),
           {
             content: action.payload.content,
             ukey: action.payload.ukey,
             popUpStyle: "add-to-cart",
           },
-          ...popUpList.map((obj) => ({ ...obj })),
         ];
       }
 
@@ -39,35 +49,27 @@ const reducer = (popUpList = initialState, action) => {
         },
       ];
     case actionTypes.MAXIMUM_ITEMS:
-      if (popUpList.length >= 4) {
+      if (popUpList.length >= 3) {
         let listToMutate = [
+          ...popUpList.map((obj) => ({ ...obj })),
           {
             content: action.payload.content,
             ukey: action.payload.ukey,
             popUpStyle: "delete-item",
           },
-          ...popUpList.map((obj) => ({ ...obj })),
         ];
-        listToMutate.pop();
+        listToMutate.shift();
         return listToMutate;
       } else {
         return [
+          ...popUpList.map((obj) => ({ ...obj })),
           {
             ukey: action.payload.ukey,
             content: action.payload.content,
             popUpStyle: "delete-item",
           },
-          ...popUpList.map((obj) => ({ ...obj })),
         ];
       }
-
-    case actionTypes.ITEM_TIMEOUT:
-      console.log("ITEMTIMEOUT");
-      let NewData = [...popUpList.map((obj) => ({ ...obj }))];
-
-      NewData.shift();
-      console.log(NewData);
-      return NewData;
 
     default:
       return popUpList;

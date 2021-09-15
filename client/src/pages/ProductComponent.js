@@ -72,21 +72,17 @@ const ProductComponent = (props) => {
     misc.addToCart(props.data.id, amount);
 
     if (quantity && quantity >= 10) {
-      dispatch({
-        type: actionTypes.MAXIMUM_ITEMS,
-        payload: {
-          ukey: uuidv4(),
+      dispatch(
+        actionTypes.pushNotification(actionTypes.maximumItemsAC, {
           content: "Can't add more than 10 items",
-        },
-      });
+        })
+      );
     } else {
-      dispatch({
-        type: actionTypes.ADD_TO_CART,
-        payload: {
-          ukey: uuidv4(),
+      dispatch(
+        actionTypes.pushNotification(actionTypes.addToCartAC, {
           content: props.data.title + " added to cart",
-        },
-      });
+        })
+      );
     }
   };
 

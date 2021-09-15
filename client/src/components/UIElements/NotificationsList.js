@@ -8,44 +8,62 @@ import NotificationItem from "./NotificationItem";
 import "./NotificationsList.css";
 
 const NotificationsList = ({ popUpList, onItemTimeout }) => {
-  console.log(popUpList);
-  const list = [...popUpList];
+  // console.log(popUpList);
+  // const list = [...popUpList];
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (list.length) {
-        console.log(list.length);
-        onItemTimeout();
-      }
-    }, 1250);
-    return () => {
-      console.log("clear");
-      clearTimeout(timer);
-    };
-  }, [popUpList]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (list.length) {
+  //       console.log(list.length);
+  //       onItemTimeout();
+  //     }
+  //   }, 1250);
+  //   return () => {
+  //     console.log("clear");
+  //     clearTimeout(timer);
+  //   };
+  // }, [popUpList]);
 
   return (
     // <TransitionGroup component="ul" className="notifications-list">
     <FlipMove
-      enterAnimation={{
-        from: {
-          transform: "translateY(5rem)",
-          opacity: 0.1,
-        },
-        to: {
-          transform: "translateY(0rem)",
-        },
-      }}
-      leaveAnimation={{
-        from: {
-          transform: "translateY(-2.8rem)",
-        },
-        to: {
-          transform: "translateY(-2.8rem) translateX(5rem)",
+      // enterAnimation={{
+      //   from: {
+      //     transform: "translateY(5rem)",
+      //     opacity: 0.1,
+      //   },
+      //   to: {
+      //     transform: "translateY(0rem)",
+      //   },
+      // }}
+      // leaveAnimation={{
+      //   from: {
+      //     transform: "translateY(-2.8rem)",
+      //   },
+      //   to: {
+      //     transform: "translateY(-2.8rem) translateX(5rem)",
 
-          opacity: 0,
-        },
-      }}
+      //     opacity: 0,
+      //   },
+      // }}
+      // enterAnimation={{
+      //   from: {
+      //     transform: "translateX(-5rem)",
+      //     opacity: 0.1,
+      //   },
+      //   to: {
+      //     transform: "translateX(0rem)",
+      //   },
+      // }}
+      // leaveAnimation={{
+      //   from: {
+      //     transform: "translateX(0rem)",
+      //   },
+      //   to: {
+      //     transform: "translateX(0rem)",
+      //     opacity: 0,
+      //   },
+      // }}
       typeName="ul"
       className="notifications-list"
       // enterAnimation="fade"
@@ -61,7 +79,7 @@ const NotificationsList = ({ popUpList, onItemTimeout }) => {
           //   unmountOnExit
           //   timeout={{
           //     enter: 500,
-          //     exit: 1000,
+          //     exit: 500,
           //   }}
           // >
           <NotificationItem
@@ -74,7 +92,7 @@ const NotificationsList = ({ popUpList, onItemTimeout }) => {
         );
       })}
     </FlipMove>
-    // </TransitionGroup>
+    //  </TransitionGroup>
   );
 };
 

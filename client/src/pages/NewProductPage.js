@@ -12,6 +12,7 @@ import Button from "../components/FormElements/Button";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
+  VALIDATOR_MAXLENGTH,
   VALIDATOR_MIN,
   VALIDATOR_MAX,
 } from "../util/validators";
@@ -128,16 +129,16 @@ const NewProductPage = (props) => {
               element="input"
               type="text"
               label="Title"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a valid title."
+              validators={[VALIDATOR_REQUIRE(), VALIDATOR_MAXLENGTH(14)]}
+              errorText="Please enter a valid title (1-14 characters)."
               onInput={inputHandler}
             />
             <Input
               id="description"
               element="textarea"
               label="Description"
-              validators={[VALIDATOR_MINLENGTH(5)]}
-              errorText="Please enter a valid description (at least 5 characters)."
+              validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_MAXLENGTH(30)]}
+              errorText="Please enter a valid description (5-30 characters)."
               onInput={inputHandler}
             />
             <ImageUpload
@@ -188,7 +189,6 @@ const NewProductPage = (props) => {
               Login
             </Button>
             <span style={{ marginLeft: "0.6rem", color: "white" }}>
-              {" "}
               to add new product.
             </span>
           </div>

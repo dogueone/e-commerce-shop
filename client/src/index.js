@@ -2,12 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import thunk from "redux-thunk";
 
 import "./index.css";
 import { Provider } from "react-redux";
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import notificationsR from "./store/reducers/notificationsR";
 import authR from "./store/reducers/authR";
+
+//react-devtools-ext
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+//middleware
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
+      console.log("[Middleware] dispatching", action);
+      const result = next(action);
+      console.log("[Middleware] next state", store.getState());
+      return result;
+    };
+  };
+};
 
 const rootReducer = combineReducers({
   auth: authR,
@@ -16,21 +32,8 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(logger),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(logger, thunk))
 );
-
-//middleware
-const logger = (store) => {
-  return (next) => {
-    return (action) => {
-      console.log("[Middleware] dispatching", action);
-      const result = next(action);
-      console.lgo("[Middleware] next state", store.getState());
-      return result;
-    };
-  };
-};
 
 ReactDOM.render(
   <React.StrictMode>

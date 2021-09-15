@@ -167,16 +167,27 @@ const AuthPage = (props) => {
         </h2>
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
-            <Input
-              id="name"
-              element="input"
-              type="text"
-              label="Name"
-              validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(3)]}
-              errorText="Please enter a valid name."
-              onInput={inputHandler}
-            />
+            <>
+              <Input
+                id="name"
+                element="input"
+                type="text"
+                label="Name"
+                validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(3)]}
+                errorText="Please enter a valid name."
+                onInput={inputHandler}
+              />
+              <div>
+                <div
+                  className="test-user__info"
+                  style={{ marginBottom: "1rem" }}
+                >
+                  Not a real email. Use any made-up email.
+                </div>
+              </div>
+            </>
           )}
+
           <Input
             id="email"
             element="input"
@@ -186,15 +197,27 @@ const AuthPage = (props) => {
             errorText="Please enter a valid email."
             onInput={inputHandler}
           />
+
           <Input
             id="password"
             element="input"
             type="password"
             validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(6)]}
             label="Password"
-            errorText="Please enter a valid password."
+            errorText={
+              isLoginMode
+                ? "Please enter a valid password"
+                : "Password should be at least 6 characters."
+            }
             onInput={inputHandler}
           />
+          {isLoginMode && (
+            <div className="test-user">
+              <div className="test-user__info">Don't want to register?</div>
+              <div>Email: test@test.com</div>
+              <div>Password: 123456</div>
+            </div>
+          )}
           <Button mr type="submit" disabled={!formState.isValid}>
             {isLoginMode ? "LOGIN" : "SIGNUP"}
           </Button>

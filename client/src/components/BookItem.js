@@ -65,23 +65,35 @@ const BookItem = forwardRef((props, ref) => {
     misc.addToCart(props.id);
 
     console.log(popUpList);
+    const ukey = uuidv4();
 
     if (quantity && quantity >= 10) {
-      dispatch({
-        type: actionTypes.MAXIMUM_ITEMS,
-        payload: {
-          ukey: uuidv4(),
+      dispatch(
+        actionTypes.pushNotification(actionTypes.maximumItemsAC, {
           content: "Can't add more than 10 items",
-        },
-      });
+        })
+      );
+      // dispatch({
+      //   type: actionTypes.MAXIMUM_ITEMS,
+      //   payload: {
+      //     ukey: ukey,
+      //     content: "Can't add more than 10 items",
+      //   },
+      // });
     } else {
-      dispatch({
-        type: actionTypes.ADD_TO_CART,
-        payload: {
-          ukey: uuidv4(),
+      dispatch(
+        actionTypes.pushNotification(actionTypes.addToCartAC, {
           content: props.title + " added to cart",
-        },
-      });
+        })
+      );
+      // dispatch({
+      //   type: actionTypes.ADD_TO_CART,
+      //   payload: {
+      //     ukey: ukey,
+      //     content: props.title + " added to cart",
+      //   },
+      // });
+      // dispatch(actionTypes.itemTimeoutACAsync({ ukey }));
     }
     // if (quantity && quantity >= 10) {
     //   props.onMaximumItems({
@@ -102,13 +114,18 @@ const BookItem = forwardRef((props, ref) => {
     //   title: props.title,
     //   content: props.title + " successfully deleted",
     // });
-    dispatch({
-      type: actionTypes.DELETE_ITEM,
-      payload: {
-        title: props.title,
+    // dispatch({
+    //   type: actionTypes.DELETE_ITEM,
+    //   payload: {
+    //     title: props.title,
+    //     content: props.title + " successfully deleted",
+    //   },
+    // });
+    dispatch(
+      actionTypes.pushNotification(actionTypes.deleteItemAC, {
         content: props.title + " successfully deleted",
-      },
-    });
+      })
+    );
     try {
       await sendRequest(
         `${process.env.REACT_APP_BACKEND_URL}/books/${props.id}`,
@@ -144,12 +161,12 @@ const BookItem = forwardRef((props, ref) => {
           <BookImage
             onClick={imageClickHandler}
             imageStyle="book-item__image"
-            img={"image"}
+            img={props.image}
             alt={props.title}
           />
           <div className="book-item__p">
             <div className="book-item__category">
-              <p>Books</p>
+              <p>Category</p>
             </div>
             <Link className="book-item__info" to={`books/${props.id}`}>
               {props.title}

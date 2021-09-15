@@ -11,6 +11,7 @@ import { useForm } from "../hooks/form-hook";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
+  VALIDATOR_MAXLENGTH,
   VALIDATOR_MIN,
   VALIDATOR_MAX,
 } from "../util/validators";
@@ -125,8 +126,8 @@ const EditProductPage = (props) => {
               element="input"
               type="text"
               label="Title"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a valid title."
+              validators={[VALIDATOR_REQUIRE(), VALIDATOR_MAXLENGTH(14)]}
+              errorText="Please enter a valid title (1-14 characters)."
               onInput={inputHandler}
               initialValue={loadedBook.title}
               initialValid={true}
@@ -136,8 +137,8 @@ const EditProductPage = (props) => {
               element="textarea"
               type="text"
               label="Description"
-              validators={[VALIDATOR_MINLENGTH(5)]}
-              errorText="Please enter a valid description (at least 5 characters)."
+              validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_MAXLENGTH(30)]}
+              errorText="Please enter a valid description (5-30 characters)."
               onInput={inputHandler}
               initialValue={loadedBook.description}
               initialValid={true}

@@ -10,7 +10,7 @@ const User = require("../models/user");
 
 // const MIME_TYPE_MAP = {
 //   "image/png": "png",
-//   "image/jpeg": "jpeg",
+//   "image/jpeg": "jpeg",**
 //   "image/jpg": "jpg",
 // };
 
@@ -98,17 +98,26 @@ const createBook = async (req, res, next) => {
       new HttpError("Invalid inputs passed, please check your data.", 422)
     );
   }
+  console.log(req.body);
 
-  if (!req.file) {
+  if (!req.file && req.body.image !== "placeholder") {
     return next(new HttpError("Something wrong with image, try again", 422));
   }
 
   const { title, description, price, creator } = req.body;
 
+  let image;
+
+  if (req.body.image === "placeholder") {
+    image = process.env.CLOUDFLARE_DOMAIN + "images/placeholder";
+  } else {
+    image = process.env.CLOUDFLARE_DOMAIN + req.file.key;
+  }
+
   const createdBook = new Product({
     title,
     // image: req.file.path,
-    image: process.env.CLOUDFLARE_DOMAIN + req.file.key,
+    image: image,
     description,
     price: Number(price).toFixed(2),
     creator,
