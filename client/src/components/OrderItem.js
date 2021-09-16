@@ -10,7 +10,7 @@ const OrderItem = (props) => {
       <Card className="order-item__content">
         <BookImage
           imageStyle={"order-item__image"}
-          img={"image"}
+          img={props.image}
           alt={props.title}
         />
 

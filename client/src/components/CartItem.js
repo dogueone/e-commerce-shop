@@ -123,7 +123,7 @@ const CartItem = (props) => {
             <Link to={`/books/${props.id}`}>
               <BookImage
                 imageStyle={"cart-item__image"}
-                img={"image"}
+                img={props.image}
                 alt={props.title}
               />
             </Link>

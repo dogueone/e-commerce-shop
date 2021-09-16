@@ -128,8 +128,7 @@ const ProductComponent = (props) => {
         <div className="product-component__image">
           <BookImage
             imageStyle="product-image"
-            // img={props.data.image}
-            img={"image"}
+            img={props.data.image}
             alt={props.data.title}
           />
         </div>

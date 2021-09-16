@@ -47,7 +47,11 @@ const ShopCartItem = (props) => {
   return (
     <li className="cart-item-grid">
       <span>
-        <BookImage img={"image"} alt={props.title} imageStyle={"cart-image"} />
+        <BookImage
+          img={props.image}
+          alt={props.title}
+          imageStyle={"cart-image"}
+        />
       </span>
       <span>{props.title}</span>
       <span>{props.price}</span>

@@ -162,7 +162,6 @@ const ProductPage = () => {
               <BookImage
                 imageStyle="product-image"
                 img={loadedProduct.image}
-                // img={"image"}
                 alt={loadedProduct.title}
               />
             </div>
