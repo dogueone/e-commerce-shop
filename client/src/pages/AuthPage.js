@@ -182,7 +182,7 @@ const AuthPage = (props) => {
                   className="test-user__info"
                   style={{ marginBottom: "1rem" }}
                 >
-                  Not a real email. Use any made-up email.
+                  Not your real email. Any made-up email.
                 </div>
               </div>
             </>

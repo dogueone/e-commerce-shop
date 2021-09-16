@@ -6,6 +6,10 @@ const fileUpload = require("../services/awsUpload");
 const booksControllers = require("../controllers/books-controllers");
 const router = express.Router();
 
+let imageMiddleware = (req, res, next) => {
+  next();
+};
+
 router.get("/", booksControllers.getBooks);
 
 router.get("/:bid", booksControllers.getBookById);
@@ -21,8 +25,18 @@ router.use(checkAuth);
 // router.get("/user/:uid", booksControllers.getBooksByUserId);
 
 router.post(
+  "/add-book-placeholder",
+  [
+    body("image").not().isEmpty(),
+    body("title").not().isEmpty().isLength({ max: 14 }),
+    body("description").isLength({ min: 5, max: 30 }),
+    body("price").isFloat({ min: 0.1, max: 999.99 }),
+  ],
+  booksControllers.createBook
+);
+
+router.post(
   "/add-book",
-  //middleware to retrieve a single file
   fileUpload.single("image"),
   [
     body("title").not().isEmpty().isLength({ max: 14 }),

@@ -39,10 +39,12 @@
 }
 
 .notification-exit {
+  opacity: 1;
 }
 
 .notification-exit-active {
   transition: all 500ms;
+  opacity: 0;
 }
 
 .add-to-cart {

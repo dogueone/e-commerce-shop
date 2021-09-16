@@ -97,24 +97,51 @@ const NewProductPage = (props) => {
 
   const productSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
 
-    const formData = new FormData();
-    formData.append("title", formState.inputs.title.value);
-    formData.append("image", formState.inputs.image.value);
-    formData.append("description", formState.inputs.description.value);
-    formData.append("price", formState.inputs.price.value);
-    formData.append("creator", auth.userId);
-    try {
-      const responseData = await sendRequest(
-        `${process.env.REACT_APP_BACKEND_URL}/books/add-book`,
-        "POST",
-        //formData automatically add right headers for multipart data
-        formData,
-        { Authorization: "Bearer " + auth.token }
-      );
-      history.push("/");
-    } catch (err) {}
+    let formData;
+    let headers;
+
+    if (formState.inputs.image.value === "placeholder") {
+      formData = JSON.stringify({
+        image: formState.inputs.image.value,
+        title: formState.inputs.title.value,
+        description: formState.inputs.description.value,
+        price: formState.inputs.price.value,
+        creator: auth.userId,
+      });
+      headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + auth.token,
+      };
+
+      try {
+        const responseData = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/books/add-book-placeholder`,
+          "POST",
+          formData,
+          headers
+        );
+        history.push("/");
+      } catch (err) {}
+    } else {
+      formData = new FormData();
+      formData.append("title", formState.inputs.title.value);
+      formData.append("image", formState.inputs.image.value);
+      formData.append("description", formState.inputs.description.value);
+      formData.append("price", formState.inputs.price.value);
+      formData.append("creator", auth.userId);
+      headers = { Authorization: "Bearer " + auth.token };
+      try {
+        const responseData = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/books/add-book`,
+          "POST",
+          //new formData automatically add right headers for multipart data ("multipart/form-data")
+          formData,
+          headers
+        );
+        history.push("/");
+      } catch (err) {}
+    }
   };
 
   return (

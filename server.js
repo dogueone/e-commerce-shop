@@ -15,7 +15,13 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json());
+// app.use(
+//   express.urlencoded({
+//     extended: true,
+//   })
+// );
 
 //middleware to serve images statically
 // app.use("/uploads/images", express.static(path.join("uploads", "images")));
