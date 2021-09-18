@@ -18,33 +18,6 @@ import BookContent from "../components/BookContent";
 import BookPages from "../components/BookPages";
 import "./ProductPage.css";
 
-// const BOOKS = [
-//   {
-//     id: "1",
-//     title: "Book1",
-//     image: "hfdafda",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "1.99",
-//   },
-//   {
-//     id: "2",
-//     title: "Book2",
-//     image: "fsafafaf",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "2.99",
-//   },
-//   {
-//     id: "3",
-//     title: "Book3",
-//     image: "adfsafsdafas",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "3.99",
-//   },
-// ];
-
 const ProductPage = () => {
   const [loadedProduct, setLoadedProduct] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -113,13 +86,6 @@ const ProductPage = () => {
     fetchProductData();
   }, [sendRequest]);
 
-  // const loadedBook = BOOKS.find((book) => book.id === bookId);
-
-  // const [showModal, setShowModal] = useState(false);
-
-  // const openModalHandler = () => setShowModal(true);
-  // const closeModalHandler = () => setShowModal(false);
-
   const onSelectHandler = (event) => {
     setAmount(parseInt(event.target.value, 10));
     console.log(event.target.value);
@@ -167,7 +133,9 @@ const ProductPage = () => {
             </div>
             <div className="product-page__content">
               <div className="product-page__content--info">
-                <span className="product-page__content--price">{`$${loadedProduct.price}`}</span>
+                <span className="product-page__content--price">{`$${loadedProduct.price.toFixed(
+                  2
+                )}`}</span>
               </div>
               <div>{loadedProduct.description}</div>
               <div>
@@ -189,105 +157,11 @@ const ProductPage = () => {
               </div>
             </div>
           </Card>
-          {/* <Card>
-            <div className="product-page">
-              <div className="product-page__image">
-                <BookImage
-                  imageStyle="product-image"
-                  img={"image"}
-                  alt={loadedProduct.title}
-                />
-              </div>
-              <div className="product-page__content">
-                <div className="product-page__content--price">
-                  {`$${loadedProduct.price}`}
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-                  tempore, modi laudantium deleniti saepe mollitia architecto
-                  impedit beatae incidunt a sint officia quaerat unde obcaecati,
-                  cum distinctio odio? Deserunt, aliquid?
-                </div>
-                <div className="product-page__content--cart">
-                  <select onChange={onSelectHandler}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                  <Button onClick={addToCartHandler}>Add Product</Button>
-                </div>
-              </div>
-            </div>
-          </Card> */}
         </>
       )}
       <NotificationsList />
     </React.Fragment>
   );
-
-  // <React.Fragment>
-  // {
-  //   showModal && <Modal hideModal={closeModalHandler} />;
-  // }
-  //   <div className="product-page">
-  //     <BookContent content={loadedProduct} showModal={openModalHandler} />
-  //     <BookPages content={loadedProduct} />
-  //   </div>
-  // </React.Fragment>
 };
 
 export default ProductPage;
-
-// BOOKS.filter((book) => book.id === bookId);
-
-{
-  /* <div className="product-component__image">
-          <BookImage
-            imageStyle="product-image"
-            // img={loadedProduct.image}
-            img={"image"}
-            alt={loadedProduct.title}
-          />
-        </div>
-        <div className="product-component__content">
-          <div className="product-component__content--info">
-            <span className="product-component__content--price">{`$${loadedProduct.price}`}</span>
-            <span className="product-component__content--title">
-              {loadedProduct.title}
-            </span>
-          </div>
-          <div>{loadedProduct.description}</div>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-            tempore, modi laudantium deleniti saepe mollitia architecto impedit
-            beatae incidunt a sint officia quaerat unde obcaecati, cum
-            distinctio odio? Deserunt, aliquid?
-          </div>
-          <Dropdown />
-          <div className="product-component__content--cart">
-            <select onChange={onSelectHandler}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-            <Button onClick={addToCartHandler}>Add Product</Button>
-            <Button
-              neutral
-              onClick={onHideHandler}
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <span>Hide</span>
-              <span className="material-icons-outlined expanded-item--hide-badge">
-                arrow_right_alt
-              </span>
-            </Button>
-          </div>
-        </div> */
-}

@@ -17,33 +17,6 @@ import BookPages from "../components/BookPages";
 import "./ProductComponent.css";
 import Dropdown from "../components/UIElements/Dropdown";
 
-// const BOOKS = [
-//   {
-//     id: "1",
-//     title: "Book1",
-//     image: "hfdafda",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "1.99",
-//   },
-//   {
-//     id: "2",
-//     title: "Book2",
-//     image: "fsafafaf",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "2.99",
-//   },
-//   {
-//     id: "3",
-//     title: "Book3",
-//     image: "adfsafsdafas",
-//     description:
-//       "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos consequatur minima recusandae nemo quo corporis, molestiae nobis ut obcaecati ea saepe, hic praesentium cupiditate excepturi quibusdam sed! Totam, nihil velit.",
-//     price: "3.99",
-//   },
-// ];
-
 const ProductComponent = (props) => {
   // const [loadedProduct, setLoadedProduct] = useState();
   // const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -134,7 +107,9 @@ const ProductComponent = (props) => {
         </div>
         <div className="product-component__content">
           <div className="product-component__content--info">
-            <span className="product-component__content--price">{`$${props.data.price}`}</span>
+            <span className="product-component__content--price">{`$${props.data.price.toFixed(
+              2
+            )}`}</span>
             <span className="product-component__content--title">
               {props.data.title}
             </span>

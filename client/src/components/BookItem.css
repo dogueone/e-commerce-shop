@@ -67,3 +67,15 @@
     margin-top: 1rem;
   }
 }
+
+@media (max-width: 410px) {
+  .book-item__p {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: fit-content;
+  }
+  .book-item__p > *:last-child {
+    margin-top: 0;
+  }
+}

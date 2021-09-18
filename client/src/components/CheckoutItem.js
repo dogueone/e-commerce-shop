@@ -48,7 +48,7 @@ const CheckoutItem = (props) => {
     <li className="checkout-item-grid">
       <div>{props.number}</div>
       <div>{props.title}</div>
-      <div>{props.price}</div>
+      <div>{props.price.toFixed(2)}</div>
       <div>{props.quantity}</div>
       <div>{`$${(props.price * props.quantity).toFixed(2)}`}</div>
     </li>

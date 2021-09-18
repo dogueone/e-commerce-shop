@@ -14,8 +14,16 @@
 }
 
 .main-content {
-  margin: 10.4rem auto;
+  margin: 10.4rem auto 1rem auto;
+  padding-bottom: 1rem;
   max-width: 1260px;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none;
 }
 
 .all-center {
@@ -34,7 +42,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 200%;
+  width: 100%;
   height: 13.6rem;
   background-color: rgb(55, 63, 80);
   z-index: -1;

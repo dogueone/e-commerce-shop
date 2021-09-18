@@ -157,7 +157,7 @@ const BookItem = forwardRef((props, ref) => {
         }
       ></Modal>
       <li ref={ref}>
-        <Card className="book-item__content">
+        <Card className="book-item__content animated">
           <BookImage
             onClick={imageClickHandler}
             imageStyle="book-item__image"
@@ -168,9 +168,11 @@ const BookItem = forwardRef((props, ref) => {
             <div className="book-item__category">
               <p>Category</p>
             </div>
-            <Link className="book-item__info" to={`books/${props.id}`}>
+            <div className="book-item__info" onClick={imageClickHandler}>
               {props.title}
-            </Link>
+            </div>
+            {/* <Link className="book-item__info" to={`books/${props.id}`}>
+            </Link> */}
             {/* <div className="book-item__info">
               <p>check description</p>
             </div> */}

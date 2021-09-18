@@ -1,7 +1,7 @@
 .notifications-list {
   position: fixed !important;
-  top: 6%;
-  left: calc(100% - 22rem);
+  top: 70px;
+  left: 8px;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -9,6 +9,6 @@
 
 @media (max-width: 768px) {
   .notifications-list {
-    top: 10.5%;
+    top: 120px;
   }
 }

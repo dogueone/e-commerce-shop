@@ -3,7 +3,7 @@
   top: 4rem;
   left: 0;
   z-index: 4;
-  width: 100%;
+  width: 100vw;
   background-color: rgb(55, 63, 80);
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.26);
 }

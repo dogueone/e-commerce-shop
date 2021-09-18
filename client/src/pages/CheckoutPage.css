@@ -8,8 +8,6 @@
 .checkout-grid__footer {
   display: grid;
   grid-template-columns: 4fr 1fr;
-  border-top: 2px solid #ddd;
-  padding-top: 16px;
 }
 
 .checkout-grid__footer--info {
@@ -88,5 +86,25 @@
     grid-template-rows: repeat(3, 50px);
     margin: 16px;
     align-self: center;
+  }
+}
+
+@media (max-width: 490px) {
+  .checkout-grid__footer {
+    grid-template-columns: 1fr;
+  }
+  .checkout-ui {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    justify-content: space-between;
+    min-width: 500px;
+    margin-left: 16px;
+  }
+
+  .checkout-ui > * {
+    margin-left: 0 !important;
+    max-width: 14rem;
   }
 }

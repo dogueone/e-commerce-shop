@@ -39,6 +39,7 @@ const BooksList = (props, ref) => {
             price={book.content.price}
           />
         ))}
+        <li key={"footer"} className="cart-list-grid__footer"></li>
       </ul>
     );
   }

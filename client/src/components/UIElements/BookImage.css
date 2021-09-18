@@ -65,3 +65,14 @@
   height: 100%;
   object-fit: cover;
 }
+
+@media (max-width: 410px) {
+  .book-item__image {
+    width: 260px;
+    height: 260px;
+  }
+  /* .expanded-item {
+    max-width: 27rem;
+    box-shadow: none;
+  } */
+}

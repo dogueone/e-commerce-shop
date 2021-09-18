@@ -56,18 +56,15 @@ app.use("/api/users", usersRoutes);
 app.use("/api/books", booksRoutes); // => /api/books/... routes will be forwarded
 app.use("/api/order", orderRoutes);
 
-//any request now going to any url will be served statically
-// app.use(express.static(path.join("public")));
-
 //to catch unhandled requests (unknown routes) so the react-router can take over and resolve unknown URL
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
-app.use((req, res, next) => {
-  const error = new HttpError("Could not find this route", 404);
-  throw error;
-});
+// app.use((req, res, next) => {
+//   const error = new HttpError("Could not find this route", 404);
+//   throw error;
+// });
 
 // special error handling middleware
 app.use((error, req, res, next) => {

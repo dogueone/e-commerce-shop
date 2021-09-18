@@ -36,7 +36,7 @@
   grid-auto-rows: minmax(64px, auto);
   list-style: none;
   min-width: 530px;
-  margin-bottom: 64px;
+  margin-bottom: 16px;
 }
 
 .cart-list-grid div {
@@ -52,6 +52,13 @@
   background-color: var(--grey-color);
   font-weight: 500;
   width: 100%;
+}
+.cart-list-grid__footer {
+  display: grid;
+  grid-template-columns: 100px repeat(4, 1fr);
+  font-weight: 500;
+  width: 100%;
+  border-bottom: 2px solid #ddd;
 }
 
 .cart-item-enter {
