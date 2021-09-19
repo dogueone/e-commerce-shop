@@ -76,3 +76,10 @@
     box-shadow: none;
   } */
 }
+
+@media (max-width: 360px) {
+  .cart-item__image {
+    width: 200px;
+    height: 200px;
+  }
+}

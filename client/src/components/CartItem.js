@@ -127,44 +127,46 @@ const CartItem = (props) => {
                 alt={props.title}
               />
             </Link>
+          </div>
+          <div className="cart-item__div">
             <div className="cart-item__info">
               <Link to={`/books/${props.id}`}>{props.title}</Link>
               <span>{"$" + props.price.toFixed(2)}</span>
             </div>
-          </div>
-          <div className="cart-item__ui">
-            <h4>Quantity</h4>
-            <p className="cart-item__ui--change unselectable">
-              <span
-                className={`material-icons-outlined ${
-                  disableDecrement && "disabled"
-                }`}
-                onClick={
-                  disableDecrement ? undefined : decrementCartItemHandler
-                }
+            <div className="cart-item__ui">
+              <h4>Quantity</h4>
+              <p className="cart-item__ui--change unselectable">
+                <span
+                  className={`material-icons-outlined ${
+                    disableDecrement && "disabled"
+                  }`}
+                  onClick={
+                    disableDecrement ? undefined : decrementCartItemHandler
+                  }
+                >
+                  navigate_before
+                </span>
+                <span className="item-quantity">{props.quantity}</span>
+                <span
+                  className={`material-icons-outlined ${
+                    disableIncrement && "disabled"
+                  }`}
+                  onClick={
+                    disableIncrement ? undefined : incrementCartItemHandler
+                  }
+                >
+                  navigate_next
+                </span>
+              </p>
+              <p
+                className="cart-item__ui--remove unselectable"
+                onClick={removeItemHandler}
               >
-                navigate_before
-              </span>
-              <span className="item-quantity">{props.quantity}</span>
-              <span
-                className={`material-icons-outlined ${
-                  disableIncrement && "disabled"
-                }`}
-                onClick={
-                  disableIncrement ? undefined : incrementCartItemHandler
-                }
-              >
-                navigate_next
-              </span>
-            </p>
-            <p
-              className="cart-item__ui--remove unselectable"
-              onClick={removeItemHandler}
-            >
-              <span className="material-icons-outlined">highlight_off</span>
-              <span>Remove </span>
-            </p>
-            {/* <div>{"Subtotal: " + props.quantity * props.price}</div> */}
+                <span className="material-icons-outlined">highlight_off</span>
+                <span>Remove </span>
+              </p>
+              {/* <div>{"Subtotal: " + props.quantity * props.price}</div> */}
+            </div>
           </div>
         </div>
       </Card>

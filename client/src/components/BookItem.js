@@ -165,7 +165,7 @@ const BookItem = forwardRef((props, ref) => {
             alt={props.title}
           />
           <div className="book-item__p">
-            <div className="book-item__category">
+            <div className="book-item__category" onClick={imageClickHandler}>
               <p>Category</p>
             </div>
             <div className="book-item__info" onClick={imageClickHandler}>
@@ -179,7 +179,7 @@ const BookItem = forwardRef((props, ref) => {
             <div className="book-item__price">
               <p>{"$" + props.price.toFixed(2)}</p>
             </div>
-            <div>
+            <div className={"book-item__controls"}>
               <Button
                 // style={{
                 //   display: "flex",
