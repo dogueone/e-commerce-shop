@@ -56,7 +56,6 @@ const createPaymentIntent = async (req, res, next) => {
       return next(new HttpError("Wrong quantity " + bookId, 400));
     }
     totalPrice += book.price * item.quantity;
-    console.log(totalPrice);
     confirmedOrder.push({ content: book, quantity: item.quantity });
   }
 
@@ -77,7 +76,6 @@ const createPaymentIntent = async (req, res, next) => {
       // payment_method: id,
       // confirm: true,
     });
-    console.log(paymentIntent);
     res.json({
       clientSecret: paymentIntent.client_secret,
       message: "Payment successful",
