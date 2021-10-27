@@ -1,2 +1,5 @@
 node_modules/
 nodemon.json
+
+client/.env
+client/.env.production
