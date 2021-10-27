@@ -7,6 +7,7 @@ import React, {
   createRef,
 } from "react";
 
+import SearchBar from "../components/UIElements/SearchBar";
 import { CSSTransition } from "react-transition-group";
 import ProductComponent from "./ProductComponent";
 import NotificationsList from "../components/UIElements/NotificationsList";
@@ -96,6 +97,7 @@ const Products = (props) => {
   // const [popUpList, dispatch] = useReducer(reducer, []);
   const [expandedItem, setExpandedItem] = useState();
   const [showExpandedItem, setShowExpandedItem] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const misc = useContext(MiscContext);
 
   const expandedItemRef = useRef();
@@ -197,6 +199,11 @@ const Products = (props) => {
             <div className="showing-title">
               {`Showing ${loadedBooks.length} products`}
             </div>
+            <SearchBar
+              items={loadedBooks}
+              show={showSearchBar}
+              setShow={setShowSearchBar}
+            />
             <Sort ref={expandedItemRef} sortProducts={sortProducts}></Sort>
           </div>
           <div className={"expanded-layout"}>

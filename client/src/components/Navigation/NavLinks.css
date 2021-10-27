@@ -11,7 +11,7 @@
 
 /* .side-drawer {
   position: fixed;
-  top: 4rem;
+  top: 4rem;*
   left: 0;
   z-index: 100;
   width: 100%;
@@ -100,11 +100,6 @@
   color: #8d91ee;
 }
 
-.search-icon {
-  cursor: pointer;
-  margin-right: 1rem;
-}
-
 @media (min-width: 768px) {
   .nav-links {
     flex-direction: row;
@@ -119,11 +114,15 @@
     margin: 0 1rem;
   }
 
-  .nav-links li.nav-links__search {
-    /* flex-grow: 1; */
+  /* .nav-links li.nav-links__search {
     align-items: center;
     justify-content: flex-end;
-  }
+  } */
+
+  /* .search-icon {
+    cursor: pointer;
+    margin-right: 1rem;
+  } */
 
   .nav-links li a {
     display: inline-block;
